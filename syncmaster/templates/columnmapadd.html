@@ -1,0 +1,34 @@
+{% load static %}
+<!-- Update model from html transindex.html -->
+<div class="modal fade" id="coulmnmodalbody" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+                     <form id="cmapform">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                           <div class="form-group">
+                              <label for="recipient-name" class="control-label">Source Column Field</label>
+                              {{cform.sourcefield}}
+                              <p id="validationmsg" style="color:red;font-weight: 20px;"></p>
+                           </div>
+                           <div class="form-group">
+                              <label for="message-text" class="control-label">Target Column Field</label>
+                              {{cform.targetfield}}
+                           </div>
+                            <div class="form-group">
+                              <label>Short Id</label>
+                              <input type="text" class="form-control" id="shortid" name="shortid" value="{{ cform.shortid.value|default_if_none:''}}">
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-default" onclick="closemodal(event)">Close</button>
+                              <button type="button" class="btn btn-success" onclick="columnmapsave(event)" data-id="{{tbdetails.id}}" data-cmapid={{cmapid}}>Save</button>
+                           </div>
+                        </div>
+                     </form>
+
+   <script>
+     $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2();
+  });
+</script>

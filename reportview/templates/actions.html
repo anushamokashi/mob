@@ -1,0 +1,46 @@
+<div class="modal fade" id="repoactionbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+<h3 class="box-title"> Add Actions </h3>
+
+<form method="POST" >
+<form method="POST" id="grouping" action="/reportview/groupingsave/{{report.id}}/">
+    {% csrf_token %}
+
+    <div class="modal-body" style="height: auto;">
+
+        {{ form.non_field_errors }}
+        <div id="loading" style="display: none;">
+            <span id="load_text">loading...</span>
+        </div>
+        <div id="report_add_form_ajax" style="display: none;">
+            <span>Form submit successfully</span>
+        </div>
+
+        <div id="form_ajax_error" style="display: none;">
+            <span>cannot submit data due to errors</span>
+        </div>
+
+        <input class="btn btn-success pull-right" type="submit" value="Submit" style="margin-left: 5px;" />
+
+        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+        <br>
+        <br>
+
+
+<label> <input type="checkbox" name="Open_Tx_From_Report" >Open_Tx_From_Report</label>
+<br/>
+<label> <input type="checkbox" name="Contextmenu" >Contextmenu</label>
+<br/>
+<label> <input type="checkbox" name="Double_Click" >Double_Click</label>
+<br/>
+<label> <input type="checkbox" name="Mail" >Mail</label>
+<br/>
+<label> <input type="checkbox" name="Sms" >Sms</label>
+<br/>
+<label> <input type="checkbox" name="Print_Format" >Print_Format</label>
+<br/>
+<label> <input type="checkbox" name="CustomAction" >CustomAction</label>
+<br/>
+<label> <input type="checkbox" name="InlineButtonAction" >InlineButtonAction</label>
+ 
+</form>

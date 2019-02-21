@@ -1,0 +1,54 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+{% block sidemenu  %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu">
+  <li class="treeview">
+    <a href="/transactionview/viewcomponent/{{viewid}}">
+      <i class="fa  fa-file-text"></i> <span>View</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li>
+  <li class="treeview">
+    <a href="/actions/addactions/{{viewid}}">
+      <i class="fa fa-get-pocket"></i> <span>Action</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li>
+  <li class="active treeview">
+    <a href="/generateprocess/index/">
+      <i class="fa fa-cogs"></i> <span>Generate Process</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li>
+</ul>
+<!-- /.sidebar -->
+{% endblock sidemenu %}
+
+
+
+
+{% block maincontent %}
+
+<section class="content-header">
+    <h1>
+        Generate Process
+    </h1>
+    <ol class="breadcrumb">
+        <li> <a href="/transaction/transmain/"> <i class="fa fa-dashboard"> </i> Home </a> </li>
+        <li class="active"> Transactions</li>
+    </ol>
+</section>
+
+<!-- label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+  <!-- small box -->
+</div>
+
+{% endblock %}

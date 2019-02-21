@@ -1,0 +1,29 @@
+<div class="modal fade" id="actionbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+
+
+<h4 class="modal-title" id="lineModalLabel">Add CSV</h4>
+<form method="POST" id="csvform">
+
+ {% csrf_token %}
+   <div class="modal-body">
+  		<div class="row">
+
+	   
+	    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+	    <input class="btn btn-success pull-right" type="submit" value="Submit" onclick="csvsave(event)" data-id={{csv}} />
+	    <br><br>
+	    <label>Title*
+	    <input class="form-control"  style="width:263%" name="title" value="{{form.title.value}}"></label><br><br>
+
+	   
+	    <label>Description
+	    	 <textarea class="form-control"  rows="4" cols="66" name="description">{{form.description.value}}</textarea>
+	    </label>
+      </div>
+   </div>
+
+
+
+</form>

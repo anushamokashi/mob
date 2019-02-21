@@ -1,0 +1,6 @@
+INFO:django.server: "GET /signout/ HTTP/1.1" 302 0 (2018-04-04 16:20:40; basehttp.py:124)
+INFO:django.server: "GET / HTTP/1.1" 200 5370 (2018-04-04 16:20:40; basehttp.py:124)
+INFO:django.server: "GET /login/ HTTP/1.1" 200 1899 (2018-04-04 16:20:41; basehttp.py:124)
+INFO:django.server: "GET /login/js/index.js HTTP/1.1" 200 1899 (2018-04-04 16:20:41; basehttp.py:124)
+INFO:django.server: "POST /login/ HTTP/1.1" 200 2051 (2018-04-04 16:20:43; basehttp.py:124)
+INFO:django.server: "GET /login/js/index.js HTTP/1.1" 200 1899 (2018-04-04 16:20:43; basehttp.py:124)

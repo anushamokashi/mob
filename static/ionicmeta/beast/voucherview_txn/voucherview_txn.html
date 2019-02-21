@@ -1,0 +1,50 @@
+<ion-header>
+    <div *ngIf="!viewMode">
+        <ion-toolbar color="primary">
+            <ion-buttons left>
+                <button ion-button menuToggle>
+                    <ion-icon name="menu"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-title>Voucher View</ion-title>
+        </ion-toolbar>
+    </div>
+    <div *ngIf="viewMode">
+        <ion-navbar color="primary">
+            <ion-title>Voucher View</ion-title>
+            <ion-buttons *ngIf="modifyMode" end>
+                <button color="secondary" ion-button clear (click)="save($event)" data-modetype="modify" data-exp="">save</button>
+            </ion-buttons>
+        </ion-navbar>
+    </div>
+</ion-header>
+<ion-content>
+    <form id="myForm" name="myForm">
+        <ion-slides pager>
+            <ion-slide>
+                <ion-scroll scrollY="true" style="height:500px">
+                    <ion-list>
+                        <ion-item name="voucher_table_voucher_numberitem">
+                            <ion-label color="primary" stacked>Voucher No</ion-label>
+                            <ion-input type="number" placeholder="Voucher No" data-id="voucher_table_voucher_number" placeholder="Voucher No" data-readonly="False" data-projectid="21" data-fieldname="voucher_table_voucher_number" data-eformid="Voucher View" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-sqldbtype="" data-sqlvalue="" data-expression="" data-validateexp="" id="voucher_table_voucher_number" name="voucher_table_voucher_number" readonly="False" data-modeOfEntry="tbe" data-displayorder="1" data-suggestive="False" data-referjson='{"id":1106,"title":"voucherNo","txtabledetailid":"voucher_table","datatype":"IntegerField","field_slug":"voucher_table_voucher_number","isdbfield":true,"enum_meta":[]}' [(ngModel)]="preset_value.voucher_table_voucher_number" (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)"></ion-input>
+                        </ion-item>
+                    </ion-list>
+                </ion-scroll>
+            </ion-slide>
+            <ion-slide>
+                <ion-scroll scrollY="true" style="height:500px">
+                    <ion-list>
+                        <ion-item name="invoice_table_invoice_billitem">
+                            <ion-label color="primary" inline>Bill No</ion-label>
+                            <ion-input type="number" placeholder="Bill No" data-id="invoice_table_invoice_bill" placeholder="Bill No" data-readonly="False" data-projectid="21" data-fieldname="invoice_table_invoice_bill" data-eformid="Voucher View" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-sqldbtype="" data-sqlvalue="" data-expression="" data-validateexp="" id="invoice_table_invoice_bill" name="invoice_table_invoice_bill" readonly="False" data-modeOfEntry="tbe" data-displayorder="1" data-suggestive="False" data-referjson='{"id":1109,"title":"invoice_bill","txtabledetailid":"invoice_table","datatype":"IntegerField","field_slug":"invoice_table_invoice_bill","isdbfield":true,"enum_meta":[]}' [(ngModel)]="preset_value.invoice_table_invoice_bill" (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)"></ion-input>
+                        </ion-item>
+                        <ion-item name="invoice_tab_invoice_noitem">
+                            <ion-label color="primary" inline>Invoice No</ion-label>
+                            <ion-input type="number" placeholder="Invoice No" data-id="invoice_tab_invoice_no" placeholder="Invoice No" data-readonly="False" data-projectid="21" data-fieldname="invoice_tab_invoice_no" data-eformid="Voucher View" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-sqldbtype="" data-sqlvalue="" data-expression="" data-validateexp="" id="invoice_tab_invoice_no" name="invoice_tab_invoice_no" readonly="False" data-modeOfEntry="tbe" data-displayorder="2" data-suggestive="False" data-referjson='{"id":1107,"title":"invoice_no","txtabledetailid":"invoice_table","datatype":"IntegerField","field_slug":"invoice_tab_invoice_no","isdbfield":true,"enum_meta":[]}' [(ngModel)]="preset_value.invoice_tab_invoice_no" (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)"></ion-input>
+                        </ion-item>
+                    </ion-list>
+                </ion-scroll>
+            </ion-slide>
+        </ion-slides>
+    </form>
+</ion-content>

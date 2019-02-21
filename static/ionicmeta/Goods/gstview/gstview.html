@@ -1,0 +1,24 @@
+<ion-header><ion-toolbar color="primary"><ion-buttons left><button ion-button menuToggle><ion-icon name="menu"></ion-icon></button></ion-buttons><ion-title>GST VIEW</ion-title></ion-toolbar><ion-fab top right><button ion-fab mini style="margin:0px;" ><ion-icon name="star"></ion-icon></button><ion-fab-list side="bottom" style="margin:44px -8px"></ion-fab-list></ion-fab></ion-header><ion-content><form id="myForm" name="myForm"><ion-card data-event='{"": {"COMPEVENT": []}}'><ion-list class ="checkbox-group" id="cmpny_name" name="cmpny_name" data-readonly="False" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-sqldbtype="" data-expression="" data-validateexp="" data-id="cmpny_name" data-projectid="1" data-fieldname="cmpny_name" data-eformid="GST VIEW" readonly="False"   data-modeOfEntry="tbe" data-displayorder="1" data-suggestive="False"  data-referjson='{"id":286,"title":"cmpny name","txtabledetailid":"gstin","columnname":"cmpny name","datatype":"CharField","maxlength":100,"no_of_decimal_digits":0,"field_slug":"cmpny_name","isdbfield":true,"isnull":true,"is_system_component":false,"enum":63,"enum_meta":[{"key":"ss","value":"ss","enum_title_fk":63},{"key":"nn","value":"nn","enum_title_fk":63},{"key":"aa","value":"aa","enum_title_fk":63}]}'>
+								<ion-item>	<ion-label color="primary">User Name</ion-label>
+								</ion-item><ion-item>
+									<ion-label>ss</ion-label>
+									<ion-checkbox (ionChange)="checkChange($event,'cmpny_name')"></ion-checkbox>
+								</ion-item><ion-item>
+									<ion-label>nn</ion-label>
+									<ion-checkbox (ionChange)="checkChange($event,'cmpny_name')"></ion-checkbox>
+								</ion-item><ion-item>
+									<ion-label>aa</ion-label>
+									<ion-checkbox (ionChange)="checkChange($event,'cmpny_name')"></ion-checkbox>
+								</ion-item></ion-list><ion-list>
+					<ion-item>
+						<ion-label color="primary">Upload Files</ion-label>
+					</ion-item>
+					<ion-row>
+						<ion-col col-9>
+							<ion-input type="number" [(ngModel)]="fileCount" placeholder="Upload Files" readonly data-id="cmpnyid" data-projectid="1" data-fieldname="cmpnyid" data-eformid="GST VIEW" data-readonly="False" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="select last_name from muser;" data-sqldbtype="server" data-expression="" data-validateexp="" data-displayorder="2" id="cmpnyid" name="cmpnyid"  disabled="true" data-modeOfEntry="tbe" data-suggestive="False"  class="textpro" data-referjson='{"id":287,"title":"cmpny id","txtabledetailid":"gstin","columnname":"cmpnyid","datatype":"IntegerField","maxlength":13,"no_of_decimal_digits":null,"field_slug":"cmpnyid","isdbfield":true,"isnull":true,"is_system_component":false,"enum":null,"enum_meta":[]}'></ion-input>
+						</ion-col>
+						<ion-thumbnail item-end>
+							<button ion-button icon-end color="secondary" data-label="Upload Files" (click)="upload($event)" >Upload <ion-icon name="attach"></ion-icon></button>
+						</ion-thumbnail>
+					</ion-row>
+				</ion-list></ion-card></form></ion-content>

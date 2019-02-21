@@ -1,0 +1,71 @@
+<ion-header>
+  <!-- <ion-navbar>
+     <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button> 
+    <ion-title>Signup</ion-title>
+  </ion-navbar> -->
+</ion-header>
+<ion-content class="background">
+  <form id="myForm" name="myForm">
+    <ion-card data-event='{"": {"COMPEVENT": []}}'>
+      <ion-card-header>Sign Up</ion-card-header>
+      <ion-list no-line>   
+          
+        <ion-item  name="firstnameitem" >
+          <ion-input type="text" placeholder="First Name" data-id="firstname" data-projectid="1" data-fieldname="firstname" data-eformid="Registration view" data-readonly="False" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-displayorder="1" id="firstname" name="firstname" readonly="False" data-modeOfEntry="tbe" data-suggestive="False"  class="textpro" data-referjson='{"id":207139,"title":"","description":null,"slug":"firstname","sourcefield":"","source_table":"","table_slug":"logindetails","table_name":"logindetails","component_type":"CharField","related_table_component":[],"db_column":"firstname","is_db_field":true,"max_length":50,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'  (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)" required>
+          </ion-input>
+        </ion-item>
+        <div class="error" name ="firstnameer"> </div>
+         
+        <ion-item  name="lastnameitem" >
+          <ion-input type="text" placeholder="Last Name" data-id="lastname" data-projectid="1" data-fieldname="lastname" data-eformid="Registration view" data-readonly="False" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-displayorder="2" id="lastname" name="lastname" readonly="False" data-modeOfEntry="tbe" data-suggestive="False"  class="textpro" data-referjson='{"id":207140,"title":"","description":null,"slug":"lastname","sourcefield":"","source_table":"","table_slug":"logindetails","table_name":"logindetails","component_type":"CharField","related_table_component":[],"db_column":"lastname","is_db_field":true,"max_length":50,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'  (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)" required>
+          </ion-input>
+        </ion-item>
+        <div class="error" name ="lastnameer"></div>
+
+  
+        <ion-item  name="emailitem" >
+          <ion-input type="email" placeholder="Email_id" data-id="email" data-projectid="1" data-fieldname="email" data-eformid="Registration view" data-readonly="False" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-displayorder="3" id="email" name="email" readonly="False" data-modeOfEntry="tbe" data-suggestive="False"  class="textpro" data-referjson='{"id":207141,"title":"","description":null,"slug":"email","sourcefield":"","source_table":"","table_slug":"logindetails","table_name":"logindetails","component_type":"CharField","related_table_component":[],"db_column":"email","is_db_field":true,"max_length":100,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'  (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)" required>
+          </ion-input>
+        </ion-item>
+        <div class="error" name ="emailer"></div>
+
+        <ion-item  name="mobilenoitem">
+          <ion-input type="number" data-id="mobileno" placeholder="Mobile Number" data-readonly="False" data-projectid="1" data-fieldname="mobileno" data-eformid="Registration view" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" id="mobileno" name="mobileno" readonly="False" data-modeOfEntry="tbe" data-displayorder="4" data-suggestive="False" data-referjson='{"id":207142,"title":"","description":null,"slug":"mobileno","sourcefield":"","source_table":"","table_slug":"logindetails","table_name":"logindetails","component_type":"IntegerField","related_table_component":[],"db_column":"mobileno","is_db_field":true,"max_length":10,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'  class="textpro"  (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)">
+          </ion-input>
+        </ion-item>
+        <div class="error" name="mobilenoer"></div>
+       
+
+        <ion-item  name="pswditem">
+          <ion-input type="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" data-readonly="False" data-required="True" data-id="pswd" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" id="pswd" name="pswd" readonly="False" data-modeOfEntry="tbe" data-suggestive="False" data-referjson='{"id":207143,"title":"","description":null,"slug":"pswd","sourcefield":"","source_table":"","table_slug":"logindetails","table_name":"logindetails","component_type":"CharField","related_table_component":[],"db_column":"pswd","is_db_field":true,"max_length":20,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}' data-displayorder="5"    (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)">
+          </ion-input>
+        </ion-item>
+		    <div class="error" name="pswder"></div>
+        
+        <div id="message" hidden>	  
+          <p class="message">Password must contain captial Letter,Number,Symbol and Eight Characters</p>
+        </div> 
+
+        <ion-item  name="confirmpassworditem">
+          <ion-input type="password" placeholder="Confirm Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" data-readonly="False" data-required="True" data-id="confirmpassword" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" id="confirmpassword" name="confirmpassword" readonly="False" data-modeOfEntry="tbe" data-suggestive="False" data-referjson='{"id":207144,"title":"","description":null,"slug":"confirmpassword","sourcefield":"","source_table":"","table_slug":"logindetails","table_name":"logindetails","component_type":"CharField","related_table_component":[],"db_column":"confirmpassword","is_db_field":true,"max_length":20,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}' data-displayorder="6"    (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)">
+          </ion-input>
+        </ion-item>
+        <div class="error" name="confirmpassworder"></div>
+        
+        <div id="message" hidden>
+          <p>Password must contain captial Letter,Number,Symbol and Eight Characters</p>
+        </div>
+        
+        <button ion-button block outline data-readonly="False" data-label="Save" data-id="created_by" data-required="False" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-modeOfEntry="tbe" data-suggestive="False" id="created_by" data-referjson='{"id":207126,"title":"created by","description":null,"slug":"created_by","sourcefield":"","source_table":"","table_slug":"logindetails","table_name":"logindetails","component_type":"CharField","related_table_component":[],"db_column":"created_by","is_db_field":true,"max_length":100,"custom_enum":null,"text_field":null,"value_field":null,"nullable":true,"component_related_tables":[]}' (click)="checkClick(event)">Register</button>
+        <div>{{this.errormessage}}</div>
+
+        <ion-list>
+			    <button primary (click)="Login()"  class="log"> Already have an account?Log in. </button>
+		    </ion-list>	
+        
+      </ion-list>
+    </ion-card>
+  </form>
+</ion-content>

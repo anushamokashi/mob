@@ -1,0 +1,99 @@
+page-syncmaster {
+  .background{
+    background-color:map-get($colors,primary);
+}
+	.icon-button{
+	background:transparent;
+	box-shadow:none;
+	}
+	.card {
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color:map-get($colors,secondary);
+    border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
+	color:white;
+	}
+	.card-inverse {
+    color: rgba(208, 21, 21, 0);
+}
+ .card-img {
+    border-radius: calc(.25rem - 1px);
+}
+	.s-one{
+	 height:150px;
+	}
+	.s-two{
+	height:120px;
+	}
+	.d-one{
+	height:120px;
+	}
+	.d-two{
+	height:100px;
+	}
+	.icon{
+	font-size: 3.2em;
+	}
+img {
+    vertical-align: middle;
+}
+img {
+    border-style: none;
+}
+ .card-img-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1.25rem;
+}	
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+.top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+.bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	font-size:20px;
+	font-weight:500;
+}	
+}
+

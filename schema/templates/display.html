@@ -1,0 +1,132 @@
+{% load static %}
+ <section class="content">
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <div class="box">
+            <div class="box-header">
+             <div class="col-lg-10 col-xs-8"><h3 class="box-title">DB ConnectionInfo Table</h3></div>
+      <button type="button" style="width:80px;" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addDbModal" data-whatever="" id="addDbprof" class="btn bg-blue">Add New</button>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+   <table id="conntable"  class="table table-bordered table-hover datatable" style="border:1px solid lightblue">
+      <thead>
+         <tr class="bg-green">
+            <th>Title</th>
+            <th>Dbname</th>
+            <th>Password</th>
+            <th>Host</th>
+            <th>Port</th>
+            <th>SID</th>
+            <th>VendorType</th>
+            <th>Edit</th>
+            <th>Delete</th>
+      </thead>
+      </tr>
+      <tr>
+         {%for obj in objs %}
+         <td>
+            {{obj.title}}
+         </td>
+         <td>
+            {{obj.dbname}}
+         </td>
+         <td>
+            {{obj.password}}
+         </td>
+         <td>
+            {{obj.host}}
+         </td>
+         <td>
+            {{obj.port}}
+         </td>
+        <td>
+            {{obj.sid}}
+         </td>
+         <td>
+            {{obj.vendor}}
+         </td>
+         <td>
+
+            <div><button  type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-backdrop="static" data-keyboard="false" value="Edit" data-target="#editDbModal" id="edit_button"  data-transactionid="{{obj.id}}"><i class="glyphicon glyphicon-pencil"></i>
+            </button>     
+         </td>
+         <td>
+                <a href="/schema/deleteconn/{{obj.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" id="delete_button" value="Delete" ><i class="glyphicon glyphicon-trash"></i></button></a>
+         </td>
+      </tr>
+      {% endfor %}
+   </table >
+</div>
+  <!-- /.box-body -->
+</div>
+<!-- /.box -->
+</div>
+<!-- /.col -->
+</div>
+<!-- /.row -->
+</section>
+
+  <div class="modal fade" id="addDbModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="lineModalLabel">Db Connections Info</h3>
+                </div>
+                <div class="modal-body" id="addDbbody">
+                    <!-- content goes here -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   <div class="modal fade" id="editDbModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h3 class="modal-title" id="lineModalLabel">Db Connections Info</h3>
+              </div>
+              <div class="modal-body" id="editDbbody">
+                  <!-- content goes here -->
+              </div>
+          </div>
+      </div>
+
+  </div> 
+
+
+<!-- /.content -->
+ <!-- jQuery 2.2.3 -->
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script  type= 'text/javascript'>
+ $(document).ready(function() {
+      $('a[data-confirm]').click(function(ev) {
+        var href = $(this).attr('href');
+        if (!$('#dataConfirmModal').length) {
+          $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+        } 
+        $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+        $('#dataConfirmOK').attr('href', href);
+        $('#dataConfirmModal').modal({show:true});
+        return false;
+      });
+      });
+ $(document).ready(function() {
+    //$("#example1").DataTable();
+    $('#conntable').DataTable({
+      "paging": true,
+      //"lengthChange": false,
+      //"searching": false,
+      //"ordering": true,
+      //"info": true,
+      //"autoWidth": false
+    });
+  });
+
+</script>

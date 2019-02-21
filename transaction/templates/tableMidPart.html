@@ -1,0 +1,84 @@
+{% load static %}
+
+<table class="table table-bordered table-striped " id="tabHeadcol" style="border:1px solid lightblue">
+                <thead>
+                  <tr class="bg-light-blue">
+                    <th> Title </th>
+                    <th> Table Name </th>
+                    <th> Is Primary </th>
+                    <th> Relation Type </th>
+                    <th> Edit </th>
+                    <th> Delete </th>
+                    <th> Add Fields </th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if table_ser_json_obj %}
+                    {% for tableItem in table_ser_json_obj %}
+                      <tr style="background: blanchedalmond;">
+                        <td>{{ tableItem.title }} </td>
+                        <td>{{ tableItem.tablename }}</td>
+                        <td>{{ tableItem.isprimary }}</td>
+                        <td>{{ tableItem.relationshiptype }}</td>
+                        <td>
+                          <button class="btn bg-olive btn-xs button1"  onclick="edittable({{tableItem.id}})"><i class="glyphicon glyphicon-pencil"></i>
+                          </button>
+                        </td>
+                        <td><a href="/transaction/tabledetaildelete/{{tableItem.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" ><i class="glyphicon glyphicon-trash"></i></button></a></td>
+                        <td>
+                          <button type="button" data-toggle="modal" data-target="#compModal" data-whatever="" class="component_button comcreate" data-transactionid="{{tableItem.id}}">Add FIelds
+                          </button>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th> </th>
+                        <th> Column Name</th>
+                        <th> Datatype </th>
+                        <th> isBbField </th>
+                        <th> Edit </th>
+                        <th> Delete </th>
+                        <th> </th>
+                      </tr>
+
+                      {% if tableItem.field_meta %}
+                        {% for fieldItem in tableItem.field_meta %}
+                          <tr> 
+                            <td></td>
+                            <td>{{ fieldItem.columnname }}</td>
+                            <td>{{ fieldItem.datatype }}</td>
+                            <td>{{ fieldItem.isdbfield }}</td>
+                            {% if fieldItem.is_system_component == False %}
+                              <td>
+                                <button type="button" class="btn bg-olive btn-xs tabcompedit" onclick="editField({{fieldItem.id}})" style="color:green;"><i class="glyphicon glyphicon-pencil"></i>
+                                </button>
+                              </td>
+                            {% elif fieldItem.is_system_component == True %}
+                              <td>
+                                <button type="button" class="btn bg-olive btn-xs disabled tabcompedit" onclick="editField({{fieldItem.id}})" style="color:green;"><i class="glyphicon glyphicon-pencil"></i>
+                                </button>
+                              </td>
+                            {% endif %}
+                            {% if fieldItem.is_system_component == False %}
+                              <td>
+                                <a href="/transaction/tablecomponentdelete/{{fieldItem.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                </a>
+                              </td>
+                            {% elif fieldItem.is_system_component == True %}
+                              <td>
+                                <a href="/transaction/tablecomponentdelete/{{fieldItem.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs disabled"><i class="glyphicon glyphicon-trash"></i></button>
+                                </a>
+                              </td>
+                            {% endif %}
+                            <td> </td>
+                          </tr>
+                        {% endfor %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+
+                <script src="{% static 'mainjs/tablejs/table.js' %}"></script>

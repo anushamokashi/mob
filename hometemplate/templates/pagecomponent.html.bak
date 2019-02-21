@@ -1,0 +1,334 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+{% block sidemenu  %}
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu" data-widget="tree">
+
+
+  <li class="treeview">
+      <a href="#">
+          <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+      </a>
+  </li>
+  <li class="treeview">
+      <a href="/rolesetup/roleindex">
+          <i class="fa fa-cogs"></i> <span>Role Setup</span>
+      </a>
+  </li>
+
+  <li class="treeview">
+    <a href="/transaction/enumlist/">
+        <i class="fa fa-map-o"></i> <span>Enum List</span>
+    </a>
+  </li>
+
+  <li class="treeview">
+    <a href="#">
+    <i class="fa fa-sign-in"></i> 
+    <span>Login</span>
+    <span class="pull-right-container">
+    <i class="fa fa-angle-left pull-right"></i> 
+    </span>
+    </a>
+    <ul class="treeview-menu">
+        <li><a href="/logintemplate/loginindex/"><i class="fa fa-circle-o"></i> Design login Page</a></li>
+        <li><a href="/logintemplate/serverconfig/"><i class="fa fa-circle-o"></i> Server Config</a></li>
+    </ul>
+  </li>
+ 
+  <li class="active">   
+    <a href="/hometemplate/pagecomponent/">
+      <i class="fa fa-sticky-note-o"></i> <span>HomePage</span>
+    </a>
+  </li>
+   
+  <li class="treeview">
+      <a href="{% url 'transindex' %}">
+         <i class="fa fa-file-text"></i> <span>Transaction</span>
+      </a>
+  </li>
+   
+  
+  <li class="treeview">
+      <a href="/reportview/repoviewdetails/">
+          <i class="fa fa-desktop"></i> <span>ReportView</span>
+      </a>
+  </li>
+
+  <li class="treeview">
+    <a href="/syncmaster/configurations/">
+      <i class="fa fa-refresh"></i> <span>Sync Configurations</span>
+    </a>
+  </li>
+    <li class="treeview">
+        <a href="/notification/notificationindex/">
+           <i class="fa fa-bell-o"></i> <span>Notification Configuration</span>
+           
+        </a>
+     </li>
+     <li class="treeview">
+        <a href="/printformat/printformatindex/">
+           <i class="fa fa-print"></i> <span>PrintFormat Configuration</span>
+        </a>
+     </li>
+</ul>
+{% endblock sidemenu %}
+{% block maincontent %}
+
+<section class="content-header">
+   <h1>
+      HomePage Details
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active"> HomePage</li>
+   </ol>
+</section>
+<section class="content">
+   <div class="row">
+      <!-- left column -->
+      <div class="col-md-12">
+         <!-- general form elements -->
+         <div class="box box-primary">
+            <div class="box-header with-border">
+               <h3 class="box-title">HomePage Type</h3>
+               <div class="box-tools pull-right">
+                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                 </button>
+               </div>
+            </div>
+               <div id="menutype_Results">
+               </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <!-- <form role="form" method="POST">
+               {% csrf_token %} -->
+            <div class="box-body">
+               <form id="menu_form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                     <label for="logintype">Menu Type</label>
+                     {{form.menutype}}
+                  </div>
+                  <div class="form-group" id="divcolumn">
+                     <label for="bg">Column</label>
+                     {{form.column}}
+                  </div>
+                  <div class="form-group" id="divsidemenu">
+                     <label for="layput">Sidemenu Type</label>
+                     {{form.sidemenu}}
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer">
+                     <button type="button" class="btn btn-primary" onclick="home_submit()">Submit</button>
+                  </div>
+               </form>
+            </div>
+            <!-- </form> -->
+         </div>
+      </div>
+   </div>
+{% if query %}
+   <div class="row">
+      <!-- left column -->
+      <div class="col-md-12">
+         <!-- general form elements -->
+         <div class="box box-primary">
+            <div class="box-header with-border">
+               <div class="col-lg-10 col-xs-8">
+                  <h3 class="box-title">Menu Type</h3>
+               </div>
+               <button type="button" style="width:80px;" data-toggle="modal" data-target="#menuModal" data-whatever="" class="btn btn-sm bg-blue" onclick="addmenu()">Add Menu</button>
+               <div class="box-tools pull-right">
+                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                 </button>
+               </div>
+            </div>
+             <div id="divErrorMessages"></div>
+               <div id="divResults">
+               </div>
+            <div class="box-body table-responsive">
+               <div id="menu_tableview">
+               <table id="menu_tb" class="table table-bordered table-striped" style="border:1px solid lightblue">
+                  <thead>
+                     <tr class="bg-light-blue">
+                        <th>Title</th>
+                        <th>Iconcls</th>
+                        <th>transactionview</th>
+                        <th>reportview</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Add Page</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for list in menulist %}
+                     <tr>
+                        <td>{{list.title}}</td>
+                        <td>{{list.iconcls}}</td>
+                        <td>{{list.transactionview}}</td>
+                        <td>{{list.reportview}}</td>
+                        <td>
+                           <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" value="Edit" data-target="#editmenuModal" data-transactionid={{list.id}} onclick="edit_menu(event)"><i class="glyphicon glyphicon-pencil"></i>
+                           </button>
+                        </td>
+                        <td>
+                           <a href="/hometemplate/deletemenu/{{list.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></button></a>
+                        </td>
+                        <td>
+                           {% if list.createpage %}
+                           <input type="checkbox" id="generate_page" data-menuid ="{{list.id}}" data-txn ="{{list.transactionview.identifiers}}" data-txn_id ="{{list.transactionview.id}}" data-rep ="{{list.reportview.identifiers}}" data-rep_id ="{{list.reportview.id}}" checked data-toggle="toggle" data-on="Added" data-off="Add" data-onstyle="success" data-offstyle="danger">
+                           {% else %}
+                           <input type="checkbox" id="generate_page" data-menuid ="{{list.id}}" data-txn ="{{list.transactionview.identifiers}}" data-txn_id ="{{list.transactionview.id}}" data-rep ="{{list.reportview.identifiers}}" data-rep_id ="{{list.reportview.id}}" data-toggle="toggle" data-on="Added" data-off="Add" data-onstyle="success" data-offstyle="danger">
+                           {% endif %}
+                        </td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+            </div>
+            <!-- </form> -->
+         </div>
+      </div>
+   </div>
+<div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title" id="lineModalLabel">Add Menu</h3>
+         </div>
+         <div class="modal-body" id="mymodelbody">
+            <!-- content goes here -->
+         </div>
+      </div>
+   </div>
+</div>
+<div class="modal fade" id="editmenuModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title" id="lineModalLabel">Edit Menu</h3>
+         </div>
+         <div class="modal-body" id="mymenubody">
+            <!-- content goes here -->
+         </div>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <!-- left column -->
+   <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary collapsed-box">
+         <div class="box-header with-border">
+            <div class="col-lg-10 col-xs-8">
+               <h3 class="box-title">Root Page In Ionic</h3>
+            </div>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+              </button>
+            </div>
+         </div>
+          <div id="root_divErrorMessages"></div>
+            <div id="root_divResults">
+            </div>
+            <div class="box-body">
+               <form id="root_menu_form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                     <label for="logintype">Root Page</label>
+                     {{root_form.pageoption}}
+                  </div>
+                  <div class="form-group" id="select_root">
+                     <label for="logintype">Select Root Page:</label>
+                     {{root_form.pageValue}}
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer">
+                     <button type="button" class="btn btn-primary" onclick="root_submit(event)" data-homeid="{{menu.id}}">Submit</button>
+                  </div>
+               </form>
+            </div>
+         <!-- </form> -->
+      </div>
+   </div>
+</div>
+{% else %}
+<div></div>
+{% endif %}
+</section>
+<div class="example-modal">
+   <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+      <div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+         <div id="floatingBarsG">
+            <div class="blockG" id="rotateG_01"></div>
+            <div class="blockG" id="rotateG_02"></div>
+            <div class="blockG" id="rotateG_03"></div>
+            <div class="blockG" id="rotateG_04"></div>
+            <div class="blockG" id="rotateG_05"></div>
+            <div class="blockG" id="rotateG_06"></div>
+            <div class="blockG" id="rotateG_07"></div>
+            <div class="blockG" id="rotateG_08"></div>
+         </div>
+         <h3 style="color:white">Please Wait...</h3>
+      </div>
+   </div>
+</div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script type="text/javascript" src="{% static 'mainjs/hometempjs/hometemp.js' %}"></script>
+<script type="text/javascript">
+   $(document).ready(function(){
+      $("#processing-modal").modal('show');
+      setTimeout(function() {
+         $("#processing-modal").modal('hide');
+      }, 300);
+      var lab = $("#id_menutype").val();
+      var root_option = $('#id_pageoption').val();
+      if(lab == 'sidemenu'){
+         $("#divsidemenu").show();
+         $("#divcolumn").hide();
+         $('#divcolumn').val('');
+      }
+      else{
+         $("#divcolumn").show();
+         $("#divsidemenu").hide();
+         $('#divsidemenu').val('');
+      }
+
+      if(root_option != 'default'){
+        $("#select_root").show();
+      }
+      else{
+        $("#select_root").hide();
+      }
+      $("#menu_tb").DataTable({
+         stateSave: true,
+         "ordering": false
+      });
+
+      if(sessionStorage["scroll"] != 0){
+         var scroll = sessionStorage["scroll"];
+         $("html, body").animate({ scrollTop: scroll}, "slow");
+         sessionStorage["scroll"] = 0;
+      }
+   });
+
+    $('a[data-confirm]').click(function(ev) {
+    var href = $(this).attr('href');
+    if (!$('#dataConfirmModal').length) {
+      $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+    }
+    $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+    $('#dataConfirmOK').attr('href', href);
+    $('#dataConfirmModal').modal({show:true});
+    return false;
+   });
+</script>
+{% endblock maincontent %}

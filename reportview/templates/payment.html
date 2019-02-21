@@ -1,0 +1,46 @@
+<div class="modal fade" id="actionbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+
+<div id="sub_action_message" style="color:green;"></div>
+<div id="sub_action_error" style="color:red;"></div>
+<h4 class="modal-title" id="lineModalLabel">Payment Configuration</h4>
+<form method="POST" id="payment_configform">
+
+ {% csrf_token %}
+   <div class="modal-body">
+  		<div class="row">
+
+	   
+	    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+	    <input class="btn btn-success pull-right" type="button" value="submit" onclick="paymentconfig(event)" data-id={{payment_config_id}} />
+	    <br><br>
+         <div class="form-group">
+	    <label>Title*
+	    <input class="form-control" value="{{form.title.value|default_if_none:''}}"  style="width:263%" name="title"></label>
+	    </div>
+
+	   <div class="form-group">
+	    <label>Description
+	    	 <textarea class="form-control"  rows="4" cols="66" name="description">{{form.description.value|default_if_none:''}}</textarea>
+	    </label>
+	    </div>
+	    <div class="form-group">
+	    <label for="recipient-name" class="control-label">Icon cls:
+	    </label>
+	    {{form.iconcls}}
+	    </div>
+	    <div class="form-group">
+                        <label for="message-text" class="control-label">Click Event:</label>
+                        <input type="text" class="form-control" name="click_event" id="click_event" value="{{ form.click_event.value|default_if_none:'' }}" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="control-label">Expression:</label>
+                        <textarea class="form-control"  name="expression">{{form.expression.value|default_if_none:''}}</textarea>
+                      </div>
+      </div>
+   </div>
+
+
+
+</form>

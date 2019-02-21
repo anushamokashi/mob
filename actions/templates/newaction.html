@@ -1,0 +1,33 @@
+<!-- New Action model from html actions.html -->
+{% load static %}
+<div class="modal fade" id="actionmodelbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form id="newform">
+    {% csrf_token %}
+    <div class="col-lg-12"><h3 class="box-title">Add New Actions</h3></div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Title:</label>
+        <input type="text" class="form-control" name="title" id="title" value="{{ form.title.value|default_if_none:'' }}">
+        <p id="validationmsg" style="color:red;font-weight: 20px;"></p>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Icon cls:</label>
+        {{form.iconcls}}
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Expression:</label>
+        <textarea class="form-control" name="expression" id ="expression">{{form.expression.value|default_if_none:''}}</textarea>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control" name="expression_postfix" id="postexp" style="display:none;">{{form.expression_postfix.value|default_if_none:''}}</textarea>
+    </div>
+    <div class="form-group">
+        <label>Ui Control Field:</label>
+        {{form.ui_control_field}} 
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="newaction" data-actiontype="{{action_type}}" data-transactionviewid="{{viewid}}">Save</button>
+    </div>
+</form>

@@ -1,0 +1,21 @@
+
+<form id="notificationEditForm">
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Notification Title:</label>
+        <input type="text" class="form-control" name="title" id="title" required value="{{ form.title.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Description:</label>
+        <textarea class="form-control" name="description">{{ form.description.value|default_if_none:''  }}</textarea>
+    </div>
+    <div>
+        <input type="hidden" class="form-control" name="projectid" required value="{{ form.projectid.value|default_if_none:'' }}">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="sumbit" class="btn btn-success" data-notificationid={{notificationid}} onclick="notificationUpdate(event)">update</button>
+    </div>
+
+</form>
+
+   

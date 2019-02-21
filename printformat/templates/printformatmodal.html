@@ -1,0 +1,91 @@
+{% load static %}
+<div class="modal fade" id="pfModalBody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+<div role="tabpanel">
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#actionTab" aria-controls="actionTab" role="tab" data-toggle="tab">Add Action</a>
+
+		</li>
+		<li role="presentation"><a href="#sqlTab" aria-controls="sqlTab" role="tab" data-toggle="tab">Add SQL</a>
+
+		</li>
+	</ul>
+
+	<form id="printformatform" method="POST" enctype="multipart/form-data">
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="actionTab">
+				{% csrf_token %}
+				<div class="modal-body">
+
+					<div class="form-group">
+						<label for="message-text" class="control-label">Title</label>
+						<input class="form-control" value="{{ rpf_form.title.value|default_if_none:'' }}" name="title">
+					</div>
+
+				
+					<div class="form-group">
+						<label for="message-text" class="control-label">Action Type</label>
+						{{ rpf_form.action_type|default_if_none:'' }}
+					</div>
+				
+					<div class="form-group">
+						<label>Add HTML File</label>
+						<!-- {{rpf_form.JasperFile}}  -->
+						<input type="file" name="htmlfile" required="" id="id_htmlfile" accept=".html"><h4 style="color: indianred">{{ rpf_form.htmlfile.value|default_if_none:'' }}</h4>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="sqlTab">
+				{% csrf_token %}
+				<div class="modal-body">
+					<div id="sqlError">
+					</div>
+					<table class="table table-striped table-bordered" id="sqlTable">
+						<thead class="bg-light-blue">
+							<tr>
+								<th> SQL </th>
+								<th> Type </th>
+								<th> Display Order </th>  
+								<th> Delete </th>  
+							</tr>
+						</thead>
+						<tbody>  
+							{{ formset.management_form }}
+							{% for form in formset %}
+							{{form.id}} 
+								<tr>
+									<td>{{form.sql}}</td>
+									<td>{{form.sql_type}}</td>
+									<td>{{form.do}}</td>
+									{% if formset.can_delete %}
+										<td> {{form.DELETE}}</td>
+									{% else %}
+										<td></td>                                    
+									{% endif %}   
+								</tr>
+							{% endfor %}
+								
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+			<button type="button" class="btn btn-success" onclick="printformatsave(event)"> Save </button>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#sqlTab tbody > tr').formset({
+        prefix: '{{ formset.prefix }}',
+        deleteText:'<i class="fa fa-trash" style="color:red;"></i>',
+        addText:'<i class="fa fa-plus">Add</i>'
+        });
+    })
+</script>
+
+<script src="{% static 'mainjs/printformatjs/printformat.js' %}"></script>

@@ -1,0 +1,414 @@
+{% extends 'tempmain.html' %} {% load static %} {% block sidemenu %}
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="treeview">
+       <a href="#">
+       <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+       <span class="pull-right-container">
+       </span>
+       </a>
+    </li>
+     <li class="treeview">
+       <a href="/rolesetup/roleindex">
+         <i class="fa fa-cogs"></i> <span>Role Setup</span>
+         <span class="pull-right-container">
+         </span>
+       </a>
+     </li >
+     
+      <li class="treeview">
+       <a href="/transaction/enumlist/">
+          <i class="fa fa-map-o"></i> <span>Enum List</span>
+          <span class="pull-right-container">
+             <!--    <i class="fa fa-angle-left pull-right"></i> -->
+          </span>
+       </a>
+    </li>
+    
+    <li class="treeview">
+       <a href="#">
+       <i class="fa fa-sign-in"></i> 
+       <span>Login</span>
+       <span class="pull-right-container">
+       <i class="fa fa-angle-left pull-right"></i> 
+       </span>
+       </a>
+       <ul class="treeview-menu">
+          <li><a href="/logintemplate/loginindex/"><i class="fa fa-circle-o"></i> Design login Page</a></li>
+          <li><a href="/logintemplate/serverconfig/"><i class="fa fa-circle-o"></i> Server Config</a></li>
+       </ul>
+    </li>
+    <li class="treeview">
+       <a href="/hometemplate/pagecomponent/">
+          <i class="fa fa-sticky-note-o"></i> <span>HomePage</span>
+          <span class="pull-right-container">
+             <!--    <i class="fa fa-angle-left pull-right"></i> -->
+          </span>
+       </a>
+    </li>
+     <li class="treeview">
+       <a href="{% url 'transindex' %}">
+          <i class="fa fa-file-text"></i> <span>Transaction</span>
+          <span class="pull-right-container">
+             <!--    <i class="fa fa-angle-left pull-right"></i> -->
+          </span>
+       </a>
+    </li>
+     <li class="active">
+       <a href="/reportview/repoviewdetails/">
+           <i class="fa fa-desktop"></i> <span>ReportView</span>
+       </a>
+     </li>
+     <li class="treeview">
+       <a href="/syncmaster/configurations/">
+          <i class="fa fa-refresh"></i> <span>Sync Configurations</span>
+          <span class="pull-right-container">
+             <!--    <i class="fa fa-angle-left pull-right"></i> -->
+          </span>
+       </a>
+    </li>
+   <li class="treeview">
+     <a href="/notification/notificationindex/">
+        <i class="fa fa-bell-o"></i> <span>Notification Configuration</span>
+     </a>
+  </li>
+    <li class="treeview">
+        <a href="/printformat/printformatindex/">
+        <i class="fa fa-print"></i> <span>PrintFormat Configuration</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/eventconfiguration/mapTxnFields/">
+            <i class="fa fa-calendar"></i> <span>Event Configuration</span>
+        </a>
+    </li>
+</ul>
+{% endblock sidemenu %} {% block maincontent %}
+<section class="content-header">
+    <h1>
+      {{project_title}} ReportView
+   </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="/transaction/transmain/"> <i class="fa fa-dashboard"> </i> Home </a>
+        </li>
+        <li class="active"> ReportView</li>
+    </ol>
+</section>
+<!-- label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+    <!-- small box -->
+</div>
+<div class="box-body">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-lg-10 col-xs-2">
+                            <h3 class="box-title"> ReportView </h3>
+                        </div>
+                        <button type="button" style="width:80px;" data-toggle="modal" data-target="#reportModal" data-whatever="" class="btn bg-blue" onclick="addreport(event)"> Add New </button>
+                        <!--  Model content for transcation add -->
+                        <div class="modal fade" id="reportModal" role="dialog" aria-labelledby="reportModalLabel">
+                            <div class="modal-dialog" style="width:600px;" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"> &times; </span> </button>
+                                        <h4 class="modal-title" id="reportModalLabel"> New Report </h4>
+                                    </div>
+                                    <form method="POST" id="repoform">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12 col-lg-12">
+                                                <div id="report_error" style="color:red;">
+                                                </div>
+                                                    {{ form.non_field_errors }}
+                                                    <div id="loading" style="display:none;">
+                                                        <span id="load_text">loading...</span>
+                                                    </div>
+                                                    <div id="report_add_form_ajax" style="display:none;">
+                                                        <span>Form submit successfully.</span>
+                                                    </div>
+                                                    <div id="form_ajax_error" style="display:none;">
+                                                        <span>Can not submit data due to errors.</span>
+                                                    </div>
+
+                                                    <div>
+                                                        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+                                                        <input class="btn btn-success pull-right" type="submit" value="Submit" onclick="savereport()"></input>
+                                                    </div>
+                                                    <br/>
+                                                    <br/>
+                                                    <div class="tab-v2">
+                                                        <ul class="nav nav-tabs">
+                                                            <li class="active"><a href="#report_des" data-toggle="tab">Report</a></li>
+                                                            <li><a href="#report_header" data-toggle="tab">Header and Footer</a></li>
+                                                            <li><a href="#rowtemplate" data-toggle="tab">RowTemplate</a></li>
+                                                        </ul>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane fade in active" id="report_des">
+                                                                <div class="form-group">
+                                                                    <label>Title</label>
+                                                                    <input class="form-control" style="width:100%" name="title">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Report Type</label>
+                                                                    {{form.report_type}}
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Report Description</label>
+                                                                    <textarea class="form-control" name="report_description" id="report_description" value="">{"comp": [{"type": "text","name": "","id": ""},{"type": "select","name": "","id": ""}],"condition":[]}</textarea>
+
+                                                                </div>
+                                                                <div class="form-group">
+
+                                                                    <label>IS Hidden</label>
+                                                                    <input type="checkbox" name="is_hidden'">
+
+                                                                </div>
+                                                                <div class="form-group">
+
+                                                                    <label>GrandTotal</label>
+                                                                    <input type="checkbox" name="show_grand_total">
+
+                                                                </div>
+                                                                 <div class="form-group">
+                                                                <label>Group by field</label>
+                                                      <select class="form-control select2" style="width:100%" name="groupby_field">
+                                                      </select>
+                                                       </div>
+
+                                                                <div class="form-group">
+                                                                    <div class=row>
+                                                                        <div class="col-md-6">
+                                                                            <label>Row count</label>
+                                                                            <input class="form-control" style="width:100%" name="row_count">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+
+                                                                            <label>Lines per page</label>
+                                                                            <input class="form-control" style="width:100%" name="lines_per_page">
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="tab-pane fade in" id="rowtemplate">
+
+                                                                <div class="form-group">
+                                                                    <label>Template Type</label>
+                                                                    {{form.template_type}}
+
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>InputRowTemplate</label>
+                                                                    <textarea class="form-control" style="width:100%;height=250px" name="rowtemplate" value=""></textarea>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="tab-pane fade in" id="report_header">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Report header line 1</label>
+                                                                        <input class="form-control" style="width:100%" name="report_header_line1"></input>
+                                                                        <label>Report header line 2</label>
+                                                                        <input class="form-control" style="width:100%" name="report_header_line2"></input>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label>Report footer line 1</label>
+                                                                        <input class="form-control" style="width:100%" name="report_footer_line1"></input>
+                                                                        <label>Report footer line 2</label>
+                                                                        <input class="form-control" style="width:100%" name="report_footer_line2"></input>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="tab-pane fade in" id="graphicalreport">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">   
+                                                                            <label>XField</label>                                                                           
+                                                                            <select class="form-control select2" style="width:100%" name="xcoordinates">
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">   
+                                                                            <label>YField</label></label>
+                                                                            <select class="form-control select2" style="width:100%" name="ycoordinates">
+                                                                                </select>
+                                                                            </div>
+                                                                                <div class="form-group">
+                                                                            <input type="checkbox" name="showxyaxis"><label>Show X-Yaxis</label>
+                                                                        </div>
+                                                                            <div class="form-group">                    
+                                                                            <label>GraphType </label>        
+                                                                            {{form.graphtype}}
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    </form>
+                                    </div>
+                                    <div>
+                                        <input type="hidden" class="form-control reportid" name="reportid" value="">
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        {% if instance %}
+                        <table id="reportTable" class="table table-bordered table-striped" style="border:1px solid lightblue">
+                            <thead>
+                                <tr class="bg-light-blue">
+                                    <th>ID</th>
+                                    <th>Report Title</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>Generatepage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for title in instance %}
+                                <tr>
+                                    <td>{{title.id}}</td>
+                                    <td> {{title}} </td>
+                                    <td>
+                                        <a href="/reportview/editReport/{{title.id}}/">
+                                            <button type="button" class="btn bg-olive btn-xs"><i class="glyphicon glyphicon-pencil"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/reportview/delReport/{{title.id}}/" data-confirm="Are you sure you want to delete?">
+                                            <button type="button" class="btn btn-danger btn-xs"> <i class="glyphicon glyphicon-trash"> </i> </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <!--<a href="/reportview/generatepage/{{title.id}}/">-->
+                                        <button type="button" class="btn bg-navy btn-xs" id ="Generatepage" data-id="{{title.id}}"  onclick="generatepage(event)">Generatepage </button>
+                                        <!-- </a> -->
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p> There are no reports available. </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script>
+    $(function() {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+    })
+
+    function addreport(event) {
+        $("#reportModalLabel").text("New Report");
+    };
+
+    function savereport() {
+
+        alert('clicked')
+        var formdata = $("#repoform").serialize();
+        console.log(formdata);
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'reportview:saveReports' %}",
+            data: formdata,
+            success: function(res) {
+                debugger;
+                if (res == "Success") {
+                    alert("Saved Successfully");
+                } else {
+                    alert("Failuer to save");
+                }
+            },
+
+        });
+    };
+
+    $(document).ready(function() {
+        $('a[data-confirm]').on('click', function(e) {
+            e.preventDefault();
+            var href = $(this).attr('href');
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+            $('#dataConfirmOK').attr('href', href);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+        });
+        $( "#report_description" ).blur(function() {
+            var value = $( "#report_description" ).val();
+            try{
+              JSON.parse(value);
+            }
+            catch(err){
+                 $("#report_error").empty();
+                       $("#report_error").fadeTo(2000, 300).append('<p>JSON given in Report Description is not valid.</p>').slideUp(300, function() {
+                           $("#report_error").slideUp(300);
+                       });
+            }
+
+        });  
+    });
+
+    function generatepage(event) {
+       debugger;
+        var id = event.currentTarget.dataset['id'];
+        $.ajax({
+            type: 'GET',
+            url: "/reportview/generatepage/" + id + "/",          
+            success: function(res)  {
+            //$("#processing-modal").modal('hide');
+            
+              setTimeout(function() {
+              if (res == "success"){
+                  popupmessage();
+               }
+            
+            return false;
+           },600);
+         },
+            error:function(res){
+
+                alert("error");
+            }
+
+        });
+
+    }
+     function popupmessage(msg){
+    if (!$('#ConfirmModal').length) {
+                $('body').append('<div id="ConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="ConfirmLabel" style="color: cadetblue;">Information</h3></div><div class="modal-body"><p>Report Page Generated Successfully</p></div><div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button></div></div></div></div>');
+            }
+            $('#ConfirmModal').find('.modal-body').text(msg);
+            $('#ConfirmModal').modal({
+                show: true
+            });
+
+   }
+
+</script>
+{% endblock %}

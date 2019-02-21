@@ -1,0 +1,164 @@
+from django import forms
+from .models import SyncTableDetails,SyncColumnDetails
+from django.core.exceptions import ValidationError
+from project.models import Project,Projectwiseusersetup
+from schema.models import Db_connections_info,Db_profile
+import MySQLdb
+import sqlite3
+from django.conf import settings
+
+ACTION_TYPE_CHOICES=(
+	('cancel','Cancel'),
+	('delete','Delete'),
+	('new','New'),
+	('save','Save'),
+	('search','Search')
+	)
+
+
+class SyncTableDetailsForm(forms.ModelForm):
+	starget =""
+	ttarget =""
+	sourcetable = forms.ChoiceField(choices = () ,widget=forms.Select(attrs={'class': 'form-control select2','style':'width:100%'}))
+	targettable = forms.ChoiceField(choices = () ,widget=forms.Select(attrs={'class': 'form-control select2','style':'width:100%'}))
+	class Meta:
+		model = SyncTableDetails
+		fields = '__all__'
+		exclude = ['projectid','db_status']
+
+	def __init__(self, *args, **kwargs):
+		self.projectid = kwargs.pop('pid')
+		self.userid = kwargs.pop('userid')
+		super(SyncTableDetailsForm, self).__init__(*args, **kwargs)
+		starget = mysqldatabase(self.projectid,self.userid)
+		ttarget = sqlitedatabase(self.projectid)
+		self.fields['sourcetable'].choices = starget
+		self.fields['targettable'].choices = ttarget
+
+
+class SyncColumnDetailsForm(forms.ModelForm):
+	sfield =""
+	sourcefield = forms.ChoiceField(choices = () ,widget=forms.Select(attrs={'class': 'form-control select2','style':'width:100%'}))
+	targetfield = forms.ChoiceField(choices = () ,widget=forms.Select(attrs={'class': 'form-control select2','style':'width:100%'}))
+
+	class Meta:
+		model = SyncColumnDetails
+		fields ='__all__'
+		exclude = ['syncTable','db_status','projectid']
+
+	def __init__(self,*args,**kwargs):
+		self.tmapid = kwargs.pop('tmapid')
+		self.userid = kwargs.pop('userid')
+		super(SyncColumnDetailsForm, self).__init__(*args, **kwargs)
+		sfield = mysqlfield(self.tmapid,self.userid)
+		tfield = sqlitefield(self.tmapid,self.userid)
+		self.fields['sourcefield'].choices = sfield
+		self.fields['targetfield'].choices = tfield
+		
+
+def mysqldatabase(projectid,userid):
+	mylist =[]
+	mytuple = ()
+	try:
+		projconf = Projectwiseusersetup.objects.get(userid_id = userid,project_id_id = projectid)
+		appdb = Db_profile.objects.get(id = projconf.db_profileid_id)
+		dbschema = Db_connections_info.objects.get(id = appdb.appdb_id)
+		db = MySQLdb.connect(dbschema.host,dbschema.username,dbschema.password,dbschema.dbname )
+		cursor = db.cursor()
+		cursor.execute("show tables")
+		data = cursor.fetchall()
+		db.close()
+		for (table_name,) in data:
+			mylist.append((table_name))
+
+		tuples = [ mytuple + (''.join(l),''.join(l)) for l in mylist]		
+		return tuple(tuples)
+	except Exception as e:
+		print e
+		pass
+	else:
+		raise forms.ValidationError("Database Connection Error")
+
+def sqlitedatabase(projectid):
+	mylist = []
+	mytuple = ()
+	try:
+		filePath = settings.MEDIA_ROOT
+		project = Project.objects.get(id = projectid )
+		ptitle = project.title
+		path = filePath+'static/ionicmeta/'+ptitle+'/db/'+ptitle+'.db'
+		conn = sqlite3.connect(filePath+'static/ionicmeta/'+ptitle+'/db/'+ptitle+'.db')
+		c = conn.cursor()
+		c.execute('SELECT name FROM sqlite_master WHERE type="table"')
+		data =  c.fetchall()
+		c.close()
+		for (table_name,) in data:
+			mylist.append((table_name))
+
+		tuples = [ mytuple + (''.join(l),''.join(l)) for l in mylist]
+		return tuple(tuples)
+	except Exception as e:
+		print e
+		pass
+	else:
+		raise forms.ValidationError("Sqlite Database Connection Error")
+
+def mysqlfield(tbid,userid):
+	mylist =[]
+	mytuple = ()
+	try:
+		tbdetails = SyncTableDetails.objects.get(id = tbid)
+		tablename = tbdetails.sourcetable
+		projconf = Projectwiseusersetup.objects.get(userid_id = userid,project_id_id = tbdetails.projectid_id)
+		appdb = Db_profile.objects.get(id = projconf.db_profileid_id)
+		dbschema = Db_connections_info.objects.get(id = appdb.appdb_id)
+		db = MySQLdb.connect(dbschema.host,dbschema.username,dbschema.password,dbschema.dbname )
+		cursor = db.cursor()
+		cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '"+tablename+"';")
+		data = cursor.fetchall()
+		print data
+		db.close()
+		for (table_name,) in data:
+			mylist.append((table_name))
+
+		tuples = [ mytuple + (''.join(l),''.join(l)) for l in mylist]		
+		return tuple(tuples)
+	except Exception as e:
+		print e
+		pass
+	else:
+		raise forms.ValidationError("Database Connection Error")
+
+def sqlitefield(tbid,userid):
+	mylist = []
+	mytuple = ()
+	try:
+		filePath = settings.MEDIA_ROOT
+		tbdetails = SyncTableDetails.objects.get(id = tbid)
+		tablename = tbdetails.targettable
+		project = Project.objects.get(id = tbdetails.projectid_id )
+		ptitle = project.title
+		path = filePath+'static/ionicmeta/'+ptitle+'/db/'+ptitle+'.db'
+		conn = sqlite3.connect(filePath+'static/ionicmeta/'+ptitle+'/db/'+ptitle+'.db')
+		c = conn.cursor()
+		c.execute('select * from '+tablename)
+		colnames = c.description
+		for row in colnames:
+			mylist.append(row[0])
+		data =  c.fetchall()
+		c.close()
+	
+		tuples = [ mytuple + (''.join(l),''.join(l)) for l in mylist]
+		return tuple(tuples)
+	except Exception as e:
+		print e
+		pass
+	else:
+		raise forms.ValidationError("Sqlite Database Connection Error")
+
+
+
+
+
+
+			

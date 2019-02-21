@@ -1,0 +1,3 @@
+FireSQL ( {basecur}, {Currency},{},{S},{} )
+TempBaseCur := SqlGet ( {basecur}, {maincurr} )
+SetValue ({maincurrency}, 1, TempBaseCur)

@@ -1,0 +1,64 @@
+{% load static %}
+<!-- transaction view table -->
+ <div align="right" style="margin:0 0 10px 0;"><button type="button" data-toggle="modal" data-target="#CompModal" data-whatever="" class="btn bg-blue selectedit">Add New</button></div>
+  <table class="table table-bordered table-striped " id="tabcol" style="border:1px solid lightblue">
+        <thead>
+          <tr class="bg-light-blue">
+            <th>Container Name</th>
+            <th>Container Type</th>
+            <th>Parent</th>
+            <th>Display Order</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Add Component</th>
+          </tr>
+        </thead>
+          <tbody>
+                  {% for table_obj in tablegroup_serializer %}
+                  <tr style="background: lightyellow;">
+                    <td>{{ table_obj.title }}</td>
+                    <td>{{table_obj.containertype}}</td>
+                    <td>{{ table_obj.parent }}</td>
+                    <td>{{table_obj.displayorder}}</td>
+                    <td>
+                     <button class="btn bg-olive btn-xs button1"  onclick="editcontainer({{table_obj.id}})"><i class="glyphicon glyphicon-pencil"></i>
+                      </button>
+                    </td>
+                    <td><a href="/transactionview/deletecontainer/{{table_obj.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" onclick="deletecomp()" ><i class="glyphicon glyphicon-trash"></i></button></a></td>
+                    <td>
+                      <button type="button" data-toggle="modal" data-target="#compModal" data-whatever="" class="component_button" data-transactionid="{{table_obj.id}}" data-component="{{componet_ser_json}}" data-dbtable="{{ table_obj.dbtable }}" onclick="addComponent(event);">Add Component</button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Slug</th>
+                    <th>Display order</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>Component Type</th>
+                  </tr>
+
+
+                  {% for table_comp_obj in table_obj.component_meta %}
+                  <tr> 
+                    <td></td>
+                    <td>{{ table_comp_obj.title }}</td>
+                    <td>{{ table_comp_obj.identifiers }}</td>
+                    <td>{{ table_comp_obj.displayorder }}</td>
+                    <td>
+                    <button type="button" class="btn bg-olive btn-xs" data-transactionid="{{table_comp_obj.id}}" data-parentpt ="{{parentproject}}" onclick="editcomponent({{table_comp_obj.id}})"><i class="glyphicon glyphicon-pencil" ></i>
+                    </button>
+                  </td>
+                  <td>
+                    <a href="/transactionview/deletecomponent/{{table_comp_obj.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" onclick="deletecomp()" ><i class="glyphicon glyphicon-trash"></i></button>
+                    </a></td>
+                    <td>{{ table_comp_obj.componenttype }}</td>
+                  </tr>
+                  {% endfor %}
+
+                  {% endfor %}
+          </tbody>
+  </table>
+

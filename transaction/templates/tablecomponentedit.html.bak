@@ -1,0 +1,108 @@
+{% load static %}
+  <div class="col-lg-8 col-xs-2"><h3 class="box-title mixcolor">Properties </h3></div>
+       <form method="POST" id="fieldForm">
+               {% csrf_token %} 
+            <button type="button" style="width:80px;" class="btn bg-green updatecomponent"
+             id="updateField" data-fieldId="{{tabcompid}}">Save</button>
+            <div class="box-body"> 
+
+                 <!--table for component properites -->
+                 <table class="table table-bordered mixcolor"  style="border:1px solid white;">
+                  <thead>
+                    <tr>
+                      <th style="width:50%">Items</th>
+                      <th>Properties</th>
+                    </tr>
+                  </thead>
+                  <tbody>  
+                     <tr>
+                       <td>Title</td>
+                       <td>{{form.title}}</td>
+                     </tr>
+                     <tr>
+                       <td>Field Name</td>
+                       <td>{{form.columnname}}</td>
+                     </tr>
+                     <tr>
+                       <td>Data Type:</td>
+                       <td>{{ form.datatype }}</td>
+                     </tr>
+                     <tr>
+                       <td>Max Length:</td>
+                       <td>{{form.maxlength}}</td>
+                     </tr>
+
+                      <tr>
+                       <td>No of Decimal Digits:</td>
+                       <td> {{ form.no_of_decimal_digits }} </td>
+                     </tr>
+
+                     <tr>
+                       <td>Is DBfield:</td>
+                       <td><label class="switch">
+                       {{form.isdbfield}}
+                       <div class="slider round">
+                       </div></label></td>
+                     <tr>
+
+                     <tr>
+                       <td>Is Null:</td>
+                       <td><label class="switch">
+                      {{form.isnull}}
+                       <div class="slider round">
+                       </div></label></td>
+                     </tr>
+
+                     <tr>
+                       <td>Enum</td>
+                       <td>{{form.enum}}</td>
+                     </tr>
+
+                     <tr>
+                       <td>DB Type</td>
+                       <td>{{form.db_type}}</td>
+                     </tr>
+
+                    </tbody>
+                   </table>
+                 </div>
+               </form>
+     <script src="{% static 'mainjs/tablejs/table.js' %}"></script>  
+
+
+
+
+
+
+<!-- Update model from html tablecomponentedit.html 
+<div class="modal fade" id="tabcompeditbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form method="POST" action="/transaction/tablecomponentedit/{{tabcompid}}">
+    {% csrf_token %} 
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Title:</label>
+        <input type="text" class="form-control" name="title" value="{{ form.title.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Table Name:</label>
+        <input type="text" class="form-control" name="columnname" value="{{ form.columnname.value|default_if_none:'' }}">
+    </div>  
+    <div class="form-group">
+        <label for="message-text" class="control-label">Data Type:</label>
+        <input type="text" class="form-control" name="datatype" value="{{ form.datatype.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Is DBfield:</label>
+        {{form.isdbfield}}
+    </div>  
+    <div class="form-group">
+        <label for="message-text" class="control-label">Is Null:</label>
+        {{form.isnull}}
+    </div>  
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="sumbit" class="btn btn-success">Save</button>
+    </div>
+</form> -->

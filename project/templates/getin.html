@@ -1,0 +1,330 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block toolbar %}
+<li>
+    <a href="#" data-toggle="control-sidebar">{{ptitle}}</a>
+  </li>
+  <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Switch Project
+            <ul class="dropdown-menu">
+                <!-- inner menu: contains the actual data -->
+                 <li class="dropdown-item" style="height:45px;padding: 10px;text-align: center;">
+                <h4>Avaliable Projects</h4>
+              </li>
+                {% if projectselect %}
+                {% for selection in projectselect %}
+                  <li class="header">
+                    <a href="/project/getin/{{selection.id}}">
+                      <h4>
+                        <img src="{% static 'maincss/img/folder.png' %}" class="img-circle" alt="User Image" />
+                           &nbsp;  &nbsp;&nbsp;
+                           {{selection.title}}
+                      </h4>
+                    </a>
+                  </li>
+                  {% endfor %}
+                  {% endif %}
+                </ul></a>
+              </li>
+{% endblock toolbar %}
+{% block adminmenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+          <li class="treeview">
+          <a href="/usersetup/userindex/">
+            <i class="fa fa-user-plus"></i> <span>User Setup</span>
+            <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+            </span>
+          </a>
+        <li class="active treeview">
+          <a href="/project/projectindex/">
+            <i class="fa fa-folder"></i>
+            <span>Project Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="/schema/config/">
+            <i class="fa fa-database"></i> <span>DB Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li >
+        <li class="treeview" id ="createIoniclb">
+          <a href ="/project/ionicProject/{{currentProject}}" id="createIonic" name="createIonic" data-projectid = {{currentProject}}>
+            <i class="fa fa-android"></i> <span>Ionic Project Create</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        </li>
+        </ul>
+<!-- /.sidebar -->
+{% endblock adminmenu %}
+{% block contentmain %}
+<section class="content-header">
+   <h1>
+      Project Configuration
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/home/main/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Project Configuration</li>
+   </ol>
+</section>
+<section class="content" >
+   <div class="row">
+      <div class="col-md-12">
+         <div class="box box-primary">
+            <div class="box-header with-border">
+               <h3 class="box-title">Edit the following Informations</h3>
+            </div>
+            <div id="errorDiv2" style="color:red;font-size:20px"> </div>
+            <div id="errorDiv1" style="color:green;font-size:20px"> </div>
+            <form action="" method="POST" >
+                {% csrf_token %}
+                <div class="box-body">
+                   <!-- Assinging Project and databse to User -->
+                    <div class="form-group">
+                        <label for="pname"> Project Name </label>
+                        <input type="text" readonly class="form-control" id="pname" name="title" value="{{ form.title.value|default_if_none:'' }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="user">Select User</label> 
+                         <select  required id="userlist" >
+                            <option value="----"> --------- </option>
+                            {% if users %}
+                                {% for user in users %}
+                                    <option value="{{user.id}}">
+                                        {{user.email}} 
+                                    </option>
+                                {% endfor %}
+                            {% endif %}
+                        </select> 
+                        
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="db"> Select DataBase </label> 
+                        {{ tform.db_profileid }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="defaultproject">Is Default Project</label>
+                        <label class="switch">
+                            {{tform.setasdefaultproject}}
+                            <div class="slider round">
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="box-footer">
+                        <!--  <button type="submit" class="btn btn-default">Cancel</button> -->
+                        <button type="button" id="abc"  value="add" class="btn btn-success">Submit</button>
+                    </div>
+                </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</section>
+<section class="content">
+   <div class="row">
+      <div class="col-xs-12">
+         <div class="box">
+            <div class="box-header">
+               <div class="col-lg-10 col-xs-2">
+                  <h3 class="box-title">Projectwise User Setup</h3>
+               </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                <div class="col-sm-12">
+               <table id="conntable"  class="table table-bordered table-hover datatable" style="border:1px solid lightblue">
+                  <thead>
+                     <tr class="bg-green">
+                        <th> id </th>
+                        <th> Project Id  </th>
+                        <th> User Id </th>
+                        <th> DB Profile </th>
+                        <th> asDefault </th>
+                        <th> Edit </th>
+                        <th> Remove </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for obj in objs %}
+                     <tr>
+                        <td class="id"> {{obj.id}} </td>
+                        <td class="projectDbId">{{obj.project_id}}</td>
+                        <td class="UserDbId">{{obj.userid}}</td>
+                        <td class="profId">{{obj.db_profileid}} </td>
+                        <td>{{obj.setasdefaultproject}} </td>
+                        <td> <button type="button" class="btn bg-olive btn-xs bbb" data-toggle="modal" data-backdrop="static" data-keyboard="false" value="Edit" data-target="aaModal" id="edit_button" data-transactionid={{obj.id}}><i class="glyphicon glyphicon-pencil"></i></button>
+                        </td>
+                        <td class="removeid"> <a href="/project/deleteUserInDB/{{obj.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" id="delete_button1" value="Delete" ><i class="glyphicon glyphicon-trash"></i></button></i>
+                           </button> </a> 
+                        </td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+             </div>
+           </div>
+            </div>
+            <!-- /.box-body -->
+         </div>
+         <!-- /.box -->
+      </div>
+      <!-- /.col -->
+   </div>
+   <!-- /.row -->
+</section>
+<div class="modal fade" id="aaModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title" id="lineModalLabel">db_profile_info</h3>
+         </div>
+         <div class="modal-body" id="mymodalbody">
+            <!-- content goes here -->
+         </div>
+      </div>
+   </div>
+</div>
+<!-- jQuery 2.2.3 -->
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"> </script>
+
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+<script type ='text/javascript'>
+   $('#abc').on('click',function(e){
+   	debugger;
+   	var a = "False";
+   	if($( "#id_setasdefaultproject").is(":checked")){
+   		a = "True";
+   	}
+   	else{
+   		a = "False";
+   	}
+   	var userid = $('#userlist').find(":selected").val()
+   	var dbid = $('#id_db_profileid').find(":selected").val()
+   	var pid = $('#pname').val() 
+   	
+   	var sample = {
+   		pname : pid,
+   		u_id : userid,
+   		db_id : dbid,
+   		chkbox : a,
+   	};
+   	
+   	$.ajax({
+   		type : 'post',
+   		url : '/project/setUserInDB/',
+   		data : sample,
+   		//dataType: 'json',				 
+   		success : function (data) {
+   			debugger;
+   			if(data.split(":-:")[1]=="0"){
+   				$("#errorDiv1").text(data.split(":-:")[0]);
+   				setTimeout(function(){
+   					location.reload();	
+   				},3000);
+   			}
+   			else{
+   				$("#errorDiv2").text(data.split(":-:")[0]);
+   				setTimeout(function(){
+   					location.reload();	
+   				},3000);
+   					
+   			}
+   		},
+   		failure : function (data) {
+   			debugger;
+   			console.log(data)
+   		}
+   	});
+   });
+   
+$(document).on('click', '.bbb',function(e) {   
+// $('').click(function(e){
+    debugger;
+    var transactionid = e.currentTarget.attributes['data-transactionid'].value
+    var dpcon= '/project/editUserInDB/'+transactionid;
+    var model = null;
+    $("#aaModal").on("shown.bs.modal",function() { 
+        debugger;
+        setTimeout(function() {
+            if (model == null) {    
+                model = $.ajax(dpcon)
+                    .done(function(data) {
+                        $("#mymodalbody").html(data);
+                    })
+                    .fail(function() {
+                        alert("error");
+                    });
+            }
+        },500);  
+            
+        
+    }); 
+
+    $('#aaModal').on('hidden.bs.modal', function(e) {
+        console.log("Modal hidden");
+        $('#mymodalbody').modal('hide');
+        $(this).data('modal', null);
+        $("#mymodalbody").html("");
+    });
+    $("#aaModal").modal('show'); 
+    
+
+});
+   
+    $(document).ready(function() {
+        $('a[data-confirm]').click(function(ev) {
+            debugger;
+            var href = $(this).attr('href');
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+            $('#dataConfirmOK').attr('href', href);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+        });
+    });
+
+   $(document).ready(function() {
+      debugger;
+      var event = document.getElementsByName('createIonic');
+      projectid = event[0].dataset['projectid']
+      $.ajax({
+         type : 'get',
+         url : '/project/alreadyIonic/'+projectid,
+         //data : sample,
+         //dataType: 'json',            
+         success : function (data) {
+            if (data == "exist" || data =="Platform exist"){
+               $("#createIonic").unbind("click");
+               $("#createIoniclb").css('background','white');
+               $("#createIoniclb").css('border','1px solid green');
+               $('#createIonic').css('color','green');
+            }
+         }
+      });
+
+   });
+</script>
+{% endblock contentmain %}

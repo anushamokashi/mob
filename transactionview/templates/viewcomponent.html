@@ -1,0 +1,694 @@
+{% extends 'tempmain.html' %} 
+{% load static %} 
+
+{% block navbarRight %}
+<div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="#" data-toggle="control-sidebar">{{project_title}}</a>
+        </li>
+        
+        <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Switch Project
+            <ul class="dropdown-menu">
+                <!-- inner menu: contains the actual data -->
+                <li class="dropdown-item" style="height:45px;padding: 10px;text-align: center;">
+                    <h4>Avaliable Projects</h4>
+                </li>
+                {% if projectselect %}
+                    {% for selection in projectselect %}
+                        <li class="header">
+                            <a href="/transaction/switchproject/{{selection.project_id_id}}">
+                                <h4>
+                                    <img src="{% static 'maincss/img/folder.png' %}" class="img-circle" alt="User Image" />
+                                    &nbsp;  &nbsp;&nbsp;{{selection.project_id.title}}
+                                </h4>
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </li>
+            
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="{% static 'maincss/images/user.png' %}" style="background: white;width:20px;height:20px;" class="img-circle" alt="User Image">
+                <span class="hidden-xs">{{element.userid}}</span>
+            </a>
+            <ul class="dropdown-menu">
+                <!-- User image -->
+                <li class="user-header">
+                    <img src="{% static 'maincss/images/user.png' %}" style="background: white" class="img-circle" alt="User Image">
+
+                    <p>
+                        {{element.userid}}
+                    </p>
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                    <div class="pull-right">
+                        <a href="{% url 'signout' %}" class="btn btn-default btn-flat" style="background: none;border: none;"><button type="button" class="btn btn-block btn-danger">Sign Out</button></a>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        
+        <!-- Control Sidebar Toggle Button -->
+        <li class="dropdown user user-menu">
+            <a data-viewid ={{viewid}} onclick="saveSqlInServerDb(event)"><i class="fa fa-gears"></i></a>
+        </li>
+    </ul>
+</div>
+{% endblock navbarRight %}
+
+{% block sidemenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu">
+    
+    <li class="treeview">
+        <a href="/transactionview/transview/{{transaction_id}}/{{project_id}}">
+            <i class="fa fa-arrow-circle-left"></i> <span>Back</span>
+        </a>
+    </li>
+    
+    <li class="active treeview">
+        <a href="/transactionview/viewcomponent/{{view.id}}">
+            <i class="fa  fa-file-text"></i> <span>View</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/actions/addactions/{{view.id}}">
+            <i class="fa fa-get-pocket"></i> <span>Action</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/transactionview/txncss/{{view.id}}">
+            <i class="fa fa-css3"></i> <span>Css Utilites</span>
+        </a>
+    </li>
+    {% if view.createpage %}
+    <li class="bg-green-active" id="createIoniclb">
+        <a onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="view">
+            <i class="fa fa-product-hunt"></i> <span>Generate Page</span>
+        </a>
+    </li>
+     {% else %}
+    <li class="bg-blue" id="createIoniclb">
+        <a onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="view">
+            <i class="fa fa-product-hunt"></i> <span>Generate Page</span>
+        </a>
+    </li>
+    {% endif %}
+</ul>
+<!-- /.sidebar -->
+{% endblock sidemenu %} {% block maincontent %}
+<section>
+    <div id="divErrorMessages"></div>
+    <div id="divResults">
+    </div>
+</section>
+<section class="content-header" id="reload">
+    <h1>
+   {{viewtitle}}
+  </h1>
+    <ol class="breadcrumb">
+        <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{% url 'transindex' %}"><i class="fa fa-file-text"></i> Transaction</a></li>
+        <li><a href="/transactionview/transview/{{transaction_id}}/{{project_id}}"><i class="fa fa-file-text"></i> Transaction View</a></li>
+        <li class="active"> {{view.title}}</li>
+    </ol>
+</section>
+
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+    <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+    <section>
+        <div class="row">
+            <div class="col-lg-12 col-xs-12" id="containerdiv">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                            <h3 class="box-title">Containers </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+
+                        <!--  Model content for transcation add -->
+                        <div class="modal fade" id="CompModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="exampleModalLabel">New Container </h4>
+                                    </div>
+
+                                    <form id="cont_add">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">Title:</label>
+                                                <input type="text" class="form-control" id="title" name="title" required>
+                                                <div id="titleer"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">Caption:</label>
+                                                <input type="text" class="form-control" id="caption" name="caption">
+                                                <div id="captioner"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Container Type:</label>
+                                                {{form.containertype}}
+                                                <div id="id_containertypeer"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Input Type:</label>
+                                                {{form.inputtype}}
+                                                <div id="id_inputtypeer"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">Parent:</label>
+                                                {{form.parent}}
+                                                <div id="id_parenter"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">DB Table:</label>
+                                                {{form.dbtable}}
+                                                <div id="id_dbtableer"></div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">Display Order:</label>
+                                                <input type="text" class="form-control" id="displayorder" name="displayorder">
+                                                <div id="displayorderer"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-success" onclick="container_add(event)" data-viewid={{view.id}}>Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive" id="viewtable">
+                        <!-- transaction view table -->
+                         <div align="right" style="margin:0 0 10px 0;"><button type="button" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#CompModal" data-whatever="" class="btn bg-blue selectedit">Add New</button></div>
+                        <table class="table table-bordered table-striped" id="tabcol" style="border:1px solid lightblue">
+                            <thead>
+                                <tr class="bg-light-blue">
+                                    <th>Container Name</th>
+                                    <th>Container Type</th>
+                                    <th>Parent</th>
+                                    <th>Display Order</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>Add Component</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for table_obj in tablegroup_serializer %}
+                                <tr style="background: lightyellow;">
+                                    <td>{{ table_obj.title }}</td>
+                                    <td>{{table_obj.containertype}}</td>
+                                    <td>{{ table_obj.parent }}</td>
+                                    <td>{{table_obj.displayorder}}</td>
+                                    <td>
+                                        <button class="btn bg-olive btn-xs button1" onclick="editcontainer({{table_obj.id}})"><i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="/transactionview/deletecontainer/{{table_obj.id}}" data-confirm="Are you sure you want to delete?">
+                                            <button type="button" class="btn btn-danger btn-xs" onclick="deletecomp()"><i class="glyphicon glyphicon-trash"></i></button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button type="button" data-toggle="modal" data-target="#compModal" data-backdrop="static" data-keyboard="false" data-whatever="" class="component_button" data-transactionid="{{table_obj.id}}" data-component="{{componet_ser_json}}" data-dbtable="{{ table_obj.dbtable }}" onclick="addComponent(event)">Add Component</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th></th>
+                                    <th>Title</th>
+                                    <th>Slug</th>
+                                    <th>Display Order</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>Component Type</th>
+                                    
+                                </tr>
+
+                                {% for table_comp_obj in table_obj.component_meta %}
+                                <tr>
+                                    <td></td>
+                                    <td>{{ table_comp_obj.title }}</td>
+                                    <td>{{ table_comp_obj.identifiers}}</td>
+                                    <td>{{ table_comp_obj.displayorder }}</td>
+                                    <td>
+                                        <button type="button" class="btn bg-olive btn-xs" data-transactionid="{{table_comp_obj.id}}" data-parentpt="{{parentproject}}" onclick="editcomponent({{table_comp_obj.id}})"><i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="/transactionview/deletecomponent/{{table_comp_obj.id}}" data-confirm="Are you sure you want to delete?">
+                                            <button type="button" class="btn btn-danger btn-xs" onclick="deletecomp()"><i class="glyphicon glyphicon-trash"></i></button>
+                                        </a>
+                                    </td>
+                                    <td>{{ table_comp_obj.componenttype }}</td>
+                                </tr>
+                                {% endfor %} {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-4" id="divbody">
+                <div id="compprop1">
+                    <div id="tablebody1">
+                        <!--table for component properites -->
+                    </div>
+                </div>
+
+                <div id="compprop2">
+                    <div id="tablebody">
+                        <!--table for container properites -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="box box-default collapsed-box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Eupdate</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive">
+            <div id="eupdateResults"></div>
+            <div id="eupdateError">
+            </div>
+            <div align="right" style="margin:0 0 10px 0;"><button type="button" data-toggle="modal" data-target="#EupdateModal" data-whatever="" class="btn bg-blue" data-viewid ={{view.id}} onclick="eupdateAdd(event)">Add New</button></div>
+            <div id="eupdatetbbody">
+            <table class="table table-bordered table-striped" id="eupdatetb">
+              <thead>
+                <tr class="bg-light-blue">
+                  <th>Title</th>
+                  <th>Update Type</th>
+                  <th>Action Type</th>
+                  <th>Target Transactionview</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody> 
+                {% if eupdatedetails %}
+                {% for eupdate in eupdatedetails %}
+                <tr>
+                  <td>{{eupdate.title}}</td>
+                  <td>{{eupdate.updatetype}}</td>
+                  <td>{{eupdate.action_type}}</td>
+                  <td>{{eupdate.targettxview}}</td>
+                  <td>
+                    <button type="button" class="btn bg-olive btn-xs edit" data-toggle="modal" data-backdrop="static" data-keyboard="false" value="Edit" data-target="#eupdateEditModal" data-eupdateid={{eupdate.id}} onclick="eupdateEdit(event)" ><i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-xs" onclick ="eupdatedelete(event)" data-eupdateid={{eupdate.id}} ><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+               </tr>  
+               {% endfor %}               
+             {% endif %}
+              </tbody>
+           </table>
+       </div>
+    </div>
+    </section>
+
+    <section>
+        <div class="box box-default collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Epost</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+
+            <div class="box-body table-responsive">
+                <div id="epostResults"></div>
+                <div id="epostError"></div>
+                <div align="right" style="margin:0 0 10px 0;">
+                    <button type="button" data-toggle="modal"  data-backdrop="static" data-keyboard="false" data-target="#EpostModal" data-whatever="" class="btn bg-blue" data-viewid ={{view.id}} onclick="epostAddModal(event)">Add New</button>
+                </div>
+                <div id="eposttbbody">
+                    <table class="table table-bordered table-striped" id="eposttb">
+                        <thead>
+                            <tr class="bg-light-blue">
+                                <th>Title</th>
+                                <th>Target Transaction View</th>
+                                <th>is Active</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            {% if epostdetails %}
+                                {% for epost in epostdetails %}
+                                    <tr>
+                                        <td>{{epost.title}}</td>
+                                        <td>{{epost.target_tx_view}}</td>
+                                        <td>{{epost.is_active}}</td>
+                                        <td>
+                                            <button type="button" class="btn bg-olive btn-xs edit" data-toggle="modal" value="Edit" data-target="#EpostEditModal"  data-backdrop="static" data-keyboard="false" data-epostid={{epost.id}} data-viewid ={{view.id}} onclick="epostEdit(event)" ><i class="glyphicon glyphicon-pencil"></i></button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-xs" onclick ="epostdelete(event)" data-epostid={{epost.id}} ><i class="glyphicon glyphicon-trash"></i></button>
+                                        </td>
+                                    </tr>  
+                                {% endfor %}               
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section> 
+    <section>
+        <div class="box box-default collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Fire SQL Configuration</h3>
+    
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+    
+            <div class="box-body table-responsive">
+                <div id="epostResults"></div>
+                <div id="epostError"></div>
+                <div align="right" style="margin:0 0 10px 0;">
+                    <button type="button" data-toggle="modal"  data-backdrop="static" data-keyboard="false" data-target="#FireSQLModal" data-whatever="" class="btn bg-blue" data-viewid ={{view.id}} onclick="firesqlAddModal(event)">Add New</button>
+                </div>
+                <div id="firesqlbody">
+                    <table class="table table-bordered table-striped" id="firesqltable">
+                        <thead>
+                            <tr class="bg-light-blue">
+                                <th>Title</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if firesqlObj %}
+                                {% for firesql in firesqlObj %}
+                                    <tr>
+                                        <td>{{firesql.title}}</td>
+                                        <td>
+                                            <button type="button" class="btn bg-olive btn-xs edit" data-toggle="modal" value="Edit" data-target="#FireSqlEditModal"  data-backdrop="static" data-keyboard="false" data-firesqlid={{firesql.id}} data-viewid ={{view.id}} onclick="FiewSqlEdit(event)" ><i class="glyphicon glyphicon-pencil"></i></button>
+                                        </td>
+                                        <td>
+                                            <a href="/transactionview/deletefiresql/{{firesql.id}}" data-confirm="Are you sure you want to delete?">
+                                                <button type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                            </a>
+                                        </td>
+                                      
+                                    </tr>  
+                                {% endfor %}               
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section> 
+</div>
+
+
+
+<!-- /.row -->
+
+<!-- Update transactionviewcontent -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title" id="lineModalLabel">Update Transaction view</h3>
+            </div>
+            <div class="modal-body" id="viewmodelbody">
+                <!-- content goes here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table component model form  -->
+<div class="modal fade" id="compModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title" id="lineModalLabel">Add Components</h3>
+            </div>
+            <div class="modal-body" id="compbody">
+                <!-- content goes here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Eupdate Add model form  -->
+<div class="modal fade" id="EupdateModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title" id="lineModalLabel">Add Eupdate</h3>
+            </div>
+            <div class="modal-body" id="eupdateaddbody">
+                <!-- content goes here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SQL Modal -->
+<div class="modal fade" id="sqlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="sqlCloseModal">x</button>
+        <h4 class="modal-title" id="sqlModalLabel">Component SQL </h4>
+      </div>
+      <div id="sqlError"></div>
+      <div id="sqlResult"></div>
+      <div class="modal-body" id="sqlModalBody">
+      </div>
+        <div class="modal-footer">
+            <div class = "row">
+                <div class="col-md-6" style ="text-align: left">
+                    <button type="button" class="btn btn-danger" onclick="deleteSQL(event)" >Delete</button>
+                </div>
+                <div class="col-md-6" style ="text-align: right">
+                    <button type="button" class="btn btn-primary" onclick="saveSQL(event)">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> 
+</div> 
+
+<!-- Eupdate Edit model form  -->
+<div class="modal fade" id="eupdateEditModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title" id="lineModalLabel">Edit Eupdate</h3>
+            </div>
+            <div class="modal-body" id="eupdateeditbody">
+                <!-- content goes here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Epost add model form  -->
+<div class="modal fade" id="EpostModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">New Epost</h4>
+            </div>
+            <div class="modal-body" id="epostaddbody" style="overflow-y: auto;">
+                <!-- content goes here -->
+            </div>
+            <div class="modal-footer">
+                <div id="saveresult"></div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary save" onclick="epostSave(event)" data-viewid ={{view.id}}>Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Epost Edit model form  -->
+<div class="modal fade" id="EpostEditModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit Epost</h4>
+            </div>
+            <div class="modal-body" id="epostEditbody" style="overflow-y: auto;">
+                <!-- content goes here -->
+            </div>
+            <div class="modal-footer">
+                <div id="updateresult"></div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary save" onclick="epostUpdate(event)" data-viewid ={{view.id}}>Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fire SQL Add model form  -->
+<div class="modal fade" id="FireSQLModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog " style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Sql</h4>
+            </div>
+            <div id="firesqladdresult">
+
+            </div>
+            <div id="firesqladderror">
+
+            </div>
+            <div class="modal-body" id="FireSQLModalbody" style="overflow-y: auto;">
+                <!-- content goes here -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="FireSqlEditModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog " style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Sql</h4>
+            </div>
+            <div id="firesqleditresult">
+
+            </div>
+            <div id="firesqlediterror">
+
+            </div>
+            <div class="modal-body" id="FireSqlEditModalbody" style="overflow-y: auto;">
+                <!-- content goes here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+ <div class="example-modal" >
+        <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+     
+<div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+ <div id="floatingBarsG">
+    <div class="blockG" id="rotateG_01"></div>
+    <div class="blockG" id="rotateG_02"></div>
+    <div class="blockG" id="rotateG_03"></div>
+    <div class="blockG" id="rotateG_04"></div>
+    <div class="blockG" id="rotateG_05"></div>
+    <div class="blockG" id="rotateG_06"></div>
+    <div class="blockG" id="rotateG_07"></div>
+    <div class="blockG" id="rotateG_08"></div>
+</div>
+  <h3 style="color:white">Please Wait...</h3>
+</div>
+</div>
+</div>
+
+<!-- /.box-body -->
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script>
+    $(function() {
+        $("#tabcol").DataTable({
+            "ordering": false,
+            stateSave: true
+
+        });
+        $("#eupdatetb").DataTable({
+            "ordering": false,
+            stateSave: true
+        });
+        $("#eposttb").DataTable({
+            "ordering": false,
+             stateSave: true
+
+        });
+        $("#firesqltable").DataTable({
+            "ordering": false,
+             stateSave: true
+
+        });
+        
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass   : 'iradio_flat-green'
+        });
+        
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $("#processing-modal").modal('show');
+        $("#compprop2").hide();
+        $("#compprop1").hide();
+        $("#divbody").hide();
+        setTimeout(function() {
+          $("#processing-modal").modal('hide');  
+        },300);
+
+        $('#CompModal').on('hidden.bs.modal', function () {
+            $('#cont_add')[0].reset();
+
+        });
+
+        $('a[data-confirm]').click(function(ev) {
+            var href = $(this).attr('href');
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+            $('#dataConfirmOK').attr('href', href);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+        });
+    });
+</script>
+
+<script src="{% static 'mainjs/viewjs/view.js' %}"></script>
+
+{% endblock maincontent %}

@@ -1,0 +1,38 @@
+<div class="modal fade" id="actionbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+<!-- <h3 class="box-title"> Add Actions </h3> -->
+<div>
+<form id="actionForm"  method="POST" action ="/reportview/add_action_report/{{report_id}}/" >
+
+  {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                {{ form.non_field_errors }}
+               <div>
+                    <!-- <div>
+                        <input type="radio" id="select_all">
+                    </div> -->
+                    <div id="form_id">{{form.report_action}}</div>
+                </div>
+                <input type="hidden" name= "order" value="0" />
+               
+            </div>
+        </div>
+
+
+<!--<input type="hidden" id="id_Action_Type" value="{{typeid.id}}">-->
+ <input class="btn btn-success pull-right" type="submit" value="Submit" style="margin-left: 5px;">
+
+ <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+ <br><br>
+</form>
+</div>
+
+ <script>
+  $(function () {
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass   : 'iradio_flat-green'
+    })
+  });
+  </script>

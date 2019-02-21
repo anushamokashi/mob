@@ -1,0 +1,37 @@
+<table class="table table-bordered table-striped" id="eupdatetb">
+              <thead>
+                <tr class="bg-light-blue">
+                  <th>Title</th>
+                  <th>Update Type</th>
+                  <th>Action Type</th>
+                  <th>Target Transactionview</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              {% if eupdatedetails %}
+              <tbody> 
+                {% for eupdate in eupdatedetails %}
+                <tr>
+                  <td>{{eupdate.title}}</td>
+                  <td>{{eupdate.updatetype}}</td>
+                  <td>{{eupdate.action_type}}</td>
+                  <td>{{eupdate.targettxview}}</td>
+                  <td>
+                    <button type="button" class="btn bg-olive btn-xs edit" data-toggle="modal" value="Edit" data-target="#eupdateEditModal" data-eupdateid={{eupdate.id}} onclick="eupdateEdit(event)" ><i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-danger btn-xs" onclick ="eupdatedelete(event)" data-eupdateid={{eupdate.id}} ><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+               </tr>  
+               {% endfor %}               
+             </tbody>
+             {% endif %}
+           </table>
+
+<script>
+  $(function () {
+    $("#eupdatetb").DataTable();
+  });
+  </script>

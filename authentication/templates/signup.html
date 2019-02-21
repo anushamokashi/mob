@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Auvit | Registration Page</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+ <link rel="stylesheet" type="text/css" href="{% static 'maincss/bower_components/bootstrap/dist/css/bootstrap.min.css' %}" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" type="text/css" href="{% static 'maincss/bower_components/font-awesome/css/font-awesome.min.css' %}" />
+   <!-- Ionicons -->
+  <link rel="stylesheet" type="text/css" href="{% static 'maincss/bower_components/Ionicons/css/ionicons.min.css' %}" />
+  <!-- Theme style -->
+  <link rel="stylesheet" type="text/css" href="{% static 'maincss/dist/css/AdminLTE.min.css' %}" />
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" type="text/css" href="{% static 'maincss/dist/css/skins/_all-skins.min.css' %}" />
+
+  <link rel="stylesheet" type="text/css" href="{% static 'maincss/custom/custom.css' %}" />
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="background_register" style="background:#2C3E50;">
+{% if messages %}
+    <div>
+        {% for message in messages %}
+        {% if 'success' in message.tags %}
+        <div class="alert alert-success alert-dismissible">
+        <span>{{ message }}</span>
+        <p class="lead">Please Make Login <a href="{% url 'login' %}">here</a>.</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div class="alert alert-danger alert-dismissible">
+        <span>{{ message }}</span>
+        <p class="lead">Please give correct details</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        </div>
+        {% endif %}
+<div class="register-box">
+  <div class="register-logo">
+    <a href="../../index2.html"><b style="color:#e63e07;">Auvit</b></a>
+  </div>   
+  <div class="register-box-body">
+    <p class="login-box-msg">Register a new membership</p>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="First Name" value="{{ form.username.value|default_if_none:'' }}"  name="first_name" maxlength="{{ form.username.field.max_length }}">
+        {% for error in form.username.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="Last Name" value="{{ form.username.value|default_if_none:'' }}" name="last_name" maxlength="{{ form.username.field.max_length }}">
+        {% for error in form.username.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" placeholder="Email" name="email" id="mail">
+        <div id="validationmsg" style="font-weight:20px;color:red;"></div>
+        {% for error in form.email.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="Password" name="password" id="password">
+        {% for error in form.password.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="Retype password" id="repassword">
+        {% for error in form.confirm_password.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name = "company" placeholder="Company Name">
+        {% for error in form.confirm_password.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div class="form-group has-feedback">
+        <input type="number" class="form-control" name = "mobile_number" placeholder="Mobile Number">
+      </div>
+      <!-- <div class="form-group has-feedback">
+        <input type="text" class="form-control" name = "adminuserid" placeholder="Admin Userid">
+      </div> -->
+      <div class="form-group has-feedback">
+        <input type="hidden" class="form-control" name = "is_admin" placeholder="Mobile Number" value="true">
+        {% for error in form.confirm_password.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+
+          <button type="submit" class="btn btn-primary btn-block btn-flat" onclick="return Validate()">Register</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+
+   
+  </div>
+  <!-- /.form-box -->
+</div>
+<!-- Alert -->
+<script src="{% static 'maincss/alert/bootbox.min.js' %}"></script>
+<!-- /.register-box -->
+<script type="text/javascript">
+    function Validate() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("repassword").value;
+        if (password != confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<!-- jQuery 2.2.3 -->
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- iCheck -->
+<script src="/static/maincss/plugins/iCheck/icheck.min.js"></script>
+<script src="{% static 'mainjs/usersetupjs/usersetup.js' %}"></script>
+
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
+</body>
+</html>

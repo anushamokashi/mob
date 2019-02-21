@@ -1,0 +1,30 @@
+<div class="modal fade" id="actionbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+
+
+<h4 class="modal-title" id="lineModalLabel">Add PDF</h4>
+<form method="POST" id="pdfform">
+
+ {% csrf_token %}
+   <div class="modal-body">
+  		<div class="row">
+
+	   
+	    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+	    <input class="btn btn-success pull-right" type="submit" value="Submit" onclick="pdfsave(event)" data-id={{pdformat}} />
+	    <br><br>
+
+	    <label>Title*
+	    <input class="form-control" value="{{form.title.value|default_if_none:''}}"  style="width:263%" name="title"></label><br><br>
+
+	   
+	    <label>Description
+	    	 <textarea class="form-control"  rows="4" cols="66" name="description">{{form.description.value|default_if_none:''}}</textarea>
+	    </label>
+      </div>
+   </div>
+
+
+
+</form>

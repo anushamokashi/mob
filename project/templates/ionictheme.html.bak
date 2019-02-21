@@ -1,0 +1,468 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block toolbar %}
+<li>
+    <a href="#" data-toggle="control-sidebar">{{ptitle}}</a>
+  </li>
+  <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Switch Project
+            <ul class="dropdown-menu">
+                <!-- inner menu: contains the actual data -->
+                <li class="dropdown-item" style="height:45px;padding: 10px;text-align: center;">
+                <h4>Avaliable Projects</h4>
+              </li>
+                {% if projectselect %}
+                {% for selection in projectselect %}
+                  <li class="header">
+                    <a href="/project/theming/{{selection.id}}">
+                      <h4>
+                        <img src="{% static 'maincss/img/folder.png' %}" class="img-circle" alt="User Image" />
+                           &nbsp;  &nbsp;&nbsp;{{selection.title}}
+                      </h4>
+                    </a>
+                  </li>
+                  {% endfor %}
+                  {% endif %}
+                </ul></a>
+              </li>
+{% endblock toolbar %}
+{% block adminmenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+          <li class="treeview">
+          <a href="/usersetup/userindex/">
+            <i class="fa fa-user-plus"></i> <span>User Setup</span>
+            <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+            </span>
+          </a>
+        <li class="treeview">
+          <a href="/project/projectindex/">
+            <i class="fa fa-folder"></i>
+            <span>Project Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="/schema/config/">
+            <i class="fa fa-database"></i> <span>DB Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+       <li class="treeview" id ="createIoniclb">
+          <a href="/project/ionicProject/{{currentProject}}">
+            <i class="fa fa-android"></i> <span>Ionic Project Create</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview" id ="createIoniclb">
+          <a href="/project/ionicBuild/{{currentProject}}">
+            <i class="fa fa-building-o"></i> <span>Ionic Build</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="active treeview" id ="createIoniclb">
+          <a href="/project/theming/{{currentProject}}">
+            <i class="fa fa-css3"></i> <span>Ionic Theming</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        </li>
+        </ul>
+<!-- /.sidebar -->
+{% endblock adminmenu %}
+{% block contentmain %}
+<section>
+    <div id="divErrorMessages"></div>
+    <div id="divResults">
+    </div>
+</section>
+<section class="content-header">
+   <h1>
+      Ionic Project Configuration
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/home/main/"><i class="fa fa-dashboard"></i> Home</a></li>
+       <li><a href="/project/projectindex/"><i class="fa fa-folder"></i> Project</a></li>
+      <li class="active">Ionic Theming</li>
+   </ol>
+</section>
+<section class="content">
+  <div class="col-md-12">
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ionic Theme Setup</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id ="body">
+              <div class="form-group">
+                <label>Primary color:</label>
+
+                <div class="input-group my-colorpicker2">
+                  <input type="text" class="form-control" value={{primary}} id="primary" name="primary">
+
+                  <div class="input-group-addon">
+                    <i></i>
+                  </div>
+                </div>
+              </div>
+               <div class="form-group">
+                <label>Secondary color:</label>
+
+                <div class="input-group my-colorpicker2">
+                  <input type="text" class="form-control" value={{secondary}} id="secondary" name="secondary">
+
+                  <div class="input-group-addon">
+                    <i></i>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <button type="button" id="ionictheme"  value="add" class="btn bg-olive btn-flat" data-projectid ={{currentProject}}>Add</button>
+                 <button type="button" id="ionictheme" style="margin:0 0 0 10px;"  value="reset" class="btn bg-olive btn-flat" data-projectid ={{currentProject}}>Reset</button>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <div class="col-md-12">
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Icon and Splash Screen Setup</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id ="body">
+              <form method="POST" id ="images" action="/project/ionicsplash/{{currentProject}}" enctype="multipart/form-data">
+                 {% csrf_token %} 
+              <div class="form-group">
+                <label>Splash Image:</label>
+
+                <div class="form-group">
+                  <label for="exampleInputFile">File input</label>
+                  <input type="file" name="splashimg" id="splashimg" value="{{ form.splashimg.value|default_if_none:'' }}">
+
+                  <p class="help-block">Please Upload image with size of 2732 x 2732 pixcels for correct set up in png format.</p>
+                </div>
+              </div>
+               <div class="form-group">
+                <label>Icon Image:</label>
+
+                <div class="form-group">
+                  <label for="exampleInputFile">File input</label>
+                  <input type="file" name ="iconimg" id="iconimg" value="{{ form.iconimg.value|default_if_none:'' }}">
+
+                  <p class="help-block">Please Upload image with size of 2732 x 2732 pixcels for correct set up in png format.</p>
+                </div>
+                <div>
+                  <div id="splasherror" style="color:red;"></div>
+                  {% if messages %}
+                  {% for message in messages %}
+                  <div id="alert">
+                  <span style="color:green">{{ message }}</span>
+                  </div>
+                  {% endfor %}
+                  {% endif %}
+                  </div>
+              <div class="box-footer no-border">
+              <div ><button type="submit" id="splashupload"  value="add" class="btn bg-olive btn-flat" data-projectid ={{currentProject}}>upload</button>
+                 <button type="button" id="resources" class="btn bg-olive btn-flat" style="margin:0 0 0 10px;" data-projectid ={{currentProject}}>Ionic Resources</button></div>
+              <!-- /.row -->
+            </div>
+                </div>
+              </div>
+            </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <div class="col-md-12">
+            <div class="box box-success">
+              <div class="box-header with-border">
+                <h3 class="box-title">Fonts For Mobile App</h3>
+
+                <div class="box-tools pull-right">
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.box-tools -->
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body" id ="body">
+                <form method="POST" id ="images" action="/project/fontfile/{{currentProject}}" enctype="multipart/form-data">
+                   {% csrf_token %}
+                 <div class="form-group">
+                   <label for="pname">Font Name</label>
+                   <input type="text" class="form-control" id="fontname" name="fontname" value="{{ font_name}}">
+                 </div>
+                <div class="form-group">
+                  <label>Font File:</label>
+
+                  <div class="form-group">
+                    <label for="exampleInputFile">File input</label>
+                    <input type="file" name="fontfile" id="fontfile" value="{{font_file}}">
+                    {% if font_file %}
+                    <p style="color:blue">{{font_file}}</p>
+                    {% endif %}
+                    <p class="help-block">Please Upload Only .woff2 font file.</p>
+                  </div>
+                </div>
+                <div id="fonterror" style="color:red;"></div>
+                {% if messages %}
+                {% for message in messages %}
+                <div id="font_alert">
+                <span style="color:green">{{ message }}</span>
+                </div>
+                {% endfor %}
+                {% endif %}
+                </div>
+
+                <div class="box-footer no-border">
+                <div ><button type="submit" id="fontfile_add"  value="add" class="btn bg-olive btn-flat" data-projectid ={{currentProject}}>Add</button>
+                   <button type="button" id="fontfile_reset" class="btn bg-olive btn-flat" style="margin:0 0 0 10px;" data-projectid ="{{currentProject}}" onclick="font_reset(event)">Reset</button></div>
+                <!-- /.row -->
+              </div>
+
+                </div>
+              </form>
+              </div>
+              <!-- /.box-body -->
+            </div>
+        </div>
+      </section>
+
+ <div class="example-modal" >
+        <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+     
+<div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+  <div class="cssload-container-general">
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_1"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_2"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_3"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_4"> </div></div>
+  </div>
+  <h3 style="color:white">Please Wait...</h3>
+</div>
+             </div>
+      </div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"> </script>
+
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+<script type ='text/javascript'>
+   $(document).on('click', '#ionictheme',function(event){
+      debugger;
+      projectid = event.currentTarget.dataset['projectid'];
+      var formdata = $("#comptform").serialize();
+      if (event.currentTarget.value == "add"){
+      prm = document.getElementById("primary").value;
+      sec = document.getElementById("secondary").value;
+      message = "Saved";
+    }else if(event.currentTarget.value == "reset"){
+      prm = "#488aff";
+      sec = "#32db64";
+      message = "Reseted";
+    }
+         $.ajax({
+         type : 'POST',
+         url : '/project/theming/'+projectid,
+         data : {prm:prm,sec:sec},
+                    
+         success : function (data) {
+           $('#viewtable').html("");
+             $('#viewtable').html(data);
+             var datatable = $('#tabcol').dataTable({
+                 "ordering": false,
+             });
+             $('#tabcol').DataTable();
+             $("#divResults").empty();
+
+             $("#divResults").fadeTo(2000, 300).append("<h4>Alert!</h4>"+message+" Successfully.").addClass("alert alert-success alert-dismissible").slideUp(300, function() {
+                 $("#divResults").slideUp(300);
+                 location.reload(400);
+             });
+
+         },
+         failure : function (data) {
+            debugger;
+            console.log(data)
+            $("#divResults").empty();
+             $("#divResults").fadeTo(2000, 300).append("<h4>Alert!</h4>Save Failed.").addClass("alert alert-danger alert-dismissible").slideUp(300, function() {
+                 $("#divResults").slideUp(300);
+             });
+         }
+      });
+   });
+
+   $(document).ready(function() {
+      debugger; 
+      $(".my-colorpicker2").colorpicker();
+       setTimeout(function() {
+            $('#alert').fadeOut('slow');
+        }, 2000); // <-- time in milliseconds, 1000 =  1 sec
+
+   });
+</script>
+<script type="text/javascript">
+$(function () {
+     $("#splashimg").change(function() {
+      debugger;
+        //Get reference of FileUpload.
+        var fileUpload = $("#splashimg")[0];
+        validation(fileUpload);
+    });
+       $("#iconimg").change(function() {
+      debugger;
+        //Get reference of FileUpload.
+        var fileUpload = $("#iconimg")[0];
+        validation(fileUpload);
+    });
+    $("#fontfile").change(function() {
+   debugger;
+     //Get reference of FileUpload.
+     var fileUpload = $("#fontfile")[0];
+     file_validation(fileUpload);
+ });
+});
+
+function file_validation(fileUpload){
+  var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.woff2)$");
+  if (regex.test(fileUpload.value.toLowerCase())) {
+    $("#fontfile_add").removeClass();
+    $("#fontfile_add").addClass("btn bg-olive btn-flat")
+    return true;
+  }else{
+    $("#fonterror").empty();
+     $("#fonterror").fadeTo(2000, 300).append('<p>Font File Uploaded is not valid one.</p>').slideUp(300, function() {
+         $("#divResults").slideUp(300);
+     });
+     $("#fontfile_add").addClass("btn bg-olive btn-flat disabled")
+    return false;
+
+  }
+
+}
+
+function validation(fileUpload){
+   //Check whether the file is valid Image.
+        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.png)$");
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            //Check whether HTML5 is supported.
+            if (typeof (fileUpload.files) != "undefined") {
+                //Initiate the FileReader object.
+                var reader = new FileReader();
+                //Read the contents of Image File.
+                reader.readAsDataURL(fileUpload.files[0]);
+                reader.onload = function (e) {
+                    //Initiate the JavaScript Image object.
+                    var image = new Image();
+                    //Set the Base64 string return from FileReader as source.
+                    image.src = e.target.result;
+                    image.onload = function () {
+                        //Determine the Height and Width.
+                        var height = this.height;
+                        var width = this.width;
+                        if (height == 2732 || width == 2732) {
+                            $("#splashupload").show();
+                            $("#resources").show();
+                            return false;
+                        }else{
+                       $("#splasherror").empty();
+                       $("#splasherror").fadeTo(2000, 300).append('<p>Image not have 2732 pixcels.</p>').slideUp(300, function() {
+                           $("#divResults").slideUp(300);
+                       });
+                       $("#splashupload").hide();
+                       $("#resources").hide();
+                       
+                        }
+                        return true;
+                    };
+                }
+            } else {
+                alert("This browser does not support HTML5.");
+                return false;
+            }
+        } else {
+            $("#splasherror").empty();
+             $("#splasherror").fadeTo(2000, 300).append('<p>Image Uploaded is not valid one.</p>').slideUp(300, function() {
+                 $("#divResults").slideUp(300);
+             });
+             $("#splashupload").addClass("btn bg-olive btn-flat disabled")
+            return false;
+        }
+}
+
+$(document).on('click', '#resources',function(event){
+  projectid = event.currentTarget.dataset['projectid'];
+  $("#processing-modal").modal('show');
+  debugger;
+   $.ajax({
+         type : 'POST',
+         url : '/project/generatesplash/'+projectid,
+         data : "projectid",
+                    
+         success : function (data) {
+         setTimeout(function() {
+              $("#processing-modal").modal('hide');
+              //document.getElementsByName(spanid)[0].style['color'] = "brown"
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Information</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text(data);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+          },300); 
+         },
+         failure : function (data) {
+          console.log(data);
+         }
+       });
+});
+
+function font_reset(event){
+  projectid = event.currentTarget.dataset['projectid'];
+  $("#processing-modal").modal('show');
+  debugger;
+   $.ajax({
+         type : 'POST',
+         url : '/project/fontfile_delete/'+projectid,
+         data : "projectid",
+
+         success : function (data) {
+           $("#processing-modal").modal('hide');
+             location.reload();
+         },
+         error : function (data) {
+          console.log(data);
+          $("#processing-modal").modal('hide');
+        }
+      });
+};
+</script>
+{% endblock contentmain %}

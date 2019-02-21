@@ -1,0 +1,11 @@
+<ion-header></ion-header><ion-content class="background"><div><div style="background-image: url('images/bg-01.jpg');"><div class="wrap-login100"><form class="login100-form validate-form"><span class="login100-form-logo"><img src="assets/imgs/logo.png" style="width:50%" /></span><span class="login100-form-title p-b-34 p-t-27">Log in</span><div class="wrap-input100 validate-input" data-validate = "Enter username"><ion-row><ion-icon name="person" class="icon-login"></ion-icon><input class="input100" type="text"id="login_username_id" [(ngModel)]="Username" name="username" placeholder="Username"><span class="focus-input100"></span></ion-row></div>
+	               <div class="wrap-input100 validate-input" data-validate="Enter password"><ion-row>
+                     <ion-icon name="lock" class="icon-login"></ion-icon>
+						<input class="input100" type="password" id="login_password_id" [(ngModel)]="Password" name="pass" placeholder="Password">
+						<span class="focus-input100"></span></ion-row>
+					</div><div class="container-login100-form-btn">
+						<button class="login100-form-btn" id="login_login_id" data-sql="SELECT ri.userid AS 'muserid',ri.firstname AS 'first_name', ri.phonenumberind AS 'mobile_number', ri.emailidind AS 'email_id', ri.enabled  AS 'is_active', 'User' AS role, ri.projectid, ri.imei_no, si.mservice_url FROM register_info ri,system_info si WHERE ri.node_id = si.nodeid AND phonenumberind = :USERNAME AND passwordind = :PASSWORD" data-sqlparams="USERNAME,PASSWORD" data-logintype="form" 
+  	(click)="customLogin($event)">
+							Login
+						</button>
+					</div><div class="text-center1"><a class="txt1" href="#">Have You Not Registered Yet?</a></div><div class="container-login100-form-btn"><button class="login100-form-btn bg" id="reigterbt" (click)="register($event)">Register</button></div><div class="text-center p-t-90"><a class="txt1" href="#">Forgot Password?</a></div></form></div></div></div></ion-content>

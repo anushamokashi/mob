@@ -1,0 +1,232 @@
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Storage } from '@ionic/storage';
+import { SingletonProvider } from '../../providers/singleton/singleton';
+import { LoginserviceProvider } from '../../providers/loginservice/loginservice';
+import 'rxjs/add/operator/map';
+declare var Expression:any;
+/*
+  Generated class for the ExpressionProvider provider.
+
+  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+  for more info on providers and Angular DI.
+*/
+@Injectable()
+export class ExpressionProvider {
+  stValues:any;
+  constructor(public http: Http,public storage: Storage,public myservice: LoginserviceProvider,public singleton: SingletonProvider) {
+    console.log('Hello ExpressionProvider Provider');
+  }
+
+	async hiddenElementexp(components,UserDetails,preset_value,type,thisCallbk,isAllHidden){
+
+        let datasetForHiddenComp : any;
+        let responseOfSql : any;
+        if(components.length>0){
+            let component = components[0]
+            let nextElement = document.getElementsByName(component);
+            datasetForHiddenComp = document.getElementById(component);
+            //SQL and Exp
+            if (datasetForHiddenComp.dataset.sql == ""){
+
+            }
+            else{
+                //call service for sql
+                var sql = datasetForHiddenComp.dataset.sql;
+                let mapValue = {};
+                let finalSql = "";
+                let paramStr = "";
+
+                var found = [],          // an array to collect the strings that are found
+                    rxp = /\:(\w+)/g,
+                    str = sql,
+                    curMatch;
+
+                while( curMatch = rxp.exec( str ) ) {
+                    found.push( curMatch[1] );
+                }
+                console.log(found);
+
+                //Creating JSON Object
+                if(found.length>0){
+                    for(let k=0;k<found.length;k++){
+                        // mapValue[found[k]] = preset_value[found[k]]
+                        paramStr += "&"+found[k]+"="+preset_value[found[k]];
+                        
+                    }
+
+                }
+                
+                let data  = {
+                    fieldType : "textfield",
+                    eFormId : datasetForHiddenComp.dataset.eformid,
+                    fieldName : datasetForHiddenComp.dataset.fieldname,
+                    type : type,
+                    projectId : this.singleton.PID,
+                    username : UserDetails["USERNAME"],
+                    MapValue : paramStr,
+                
+                };
+                console.log(data); 
+
+                this.myservice.hiddenSqlService(data).subscribe(loginData => {
+                    responseOfSql = loginData.text();
+                    console.log(responseOfSql);
+
+                    if (responseOfSql){
+                        document.getElementById(component).getElementsByTagName("input")[0].value = responseOfSql;
+                        console.log(document.getElementById(component).getElementsByTagName("input")[0].value);
+                        preset_value[component] = responseOfSql;
+                        components.splice(0,1);
+                        if(components.length > 0){
+                            this.hiddenElementexp(components,UserDetails,preset_value,type,thisCallbk,isAllHidden);
+                        }
+                        else{
+                            if(type=="report" && isAllHidden == true){
+                                thisCallbk.getreport();
+                            }
+                            
+                        }
+
+                    }
+                });
+
+                
+            }
+            if (datasetForHiddenComp.dataset.expression != ""){
+                this.evaluateExp("",nextElement,UserDetails,preset_value);
+                components.splice(0,1);
+                if(components.length > 0){
+                    this.hiddenElementexp(components,UserDetails,preset_value,type,thisCallbk,isAllHidden);
+                }
+                else{
+                    if(type=="report"){
+                        thisCallbk.getreport();
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+
+	evaluateExp(event,document,stValues,preset_value){
+		//let ptexpression;
+        //this.requiredValue = "";
+        let id = "";
+		let modeofEntry="";
+		let onChangevalue ="";
+		//let  expressionValue ="";
+        //let expProceed;
+        let GetVal;
+        //console.log(event);
+        //console.log("focusIn");
+        //let expression =event.currentTarget.dataset["expression"];
+        let expression = document[0].dataset["expression"];
+        let suggestive = document[0].dataset["suggestive"];
+        let eformid =  document[0].dataset["eformid"];
+        id = document[0].dataset["id"];
+		modeofEntry = document[0].dataset["modeofentry"];
+		stValues['preset_value'] = preset_value;
+        //id = event.currentTarget.dataset["id"];
+        //let value = Expression(expression);
+        if (expression) {
+			if (suggestive =="False" || document != undefined || event._text =="" || modeofEntry =='tbc'){	
+            let ExprObj = new Expression("");
+            ExprObj.Expression(expression, stValues, eformid, "");
+            GetVal = ExprObj.Evaluate();
+			 if(GetVal == 'AUTOGENERATE'){
+				 let prefix = id.substring(0, 3).toUpperCase();
+				 let uniqueId = new Date().valueOf().toString();
+				 GetVal = prefix+uniqueId;
+			 }
+            console.log(GetVal);	
+				//fieldValue = document.getElementsByName(id);
+            //this.requiredValue = this.myexpression.evaluateExpression(ptexpression,event);
+			if (document[0].tagName == "ION-INPUT" || document[0].tagName =="ION-TEXTAREA")
+			{
+				preset_value[id] = GetVal;
+				if(event){
+				event._value = GetVal;
+				event['_native']['nativeElement']['value'] = GetVal;
+				
+			   event['_native']["nativeElement"].onblur = function() {
+                {
+					onChangevalue = preset_value[id];
+					
+				    if(modeofEntry == 'tbe' && suggestive =="False"){
+					preset_value[id] ='';	
+					preset_value[id] = onChangevalue ;
+					}
+					else if(modeofEntry == 'tbc')
+					{
+					//let tbcValue = document.getElementsByName(id);
+					if(onChangevalue == ""){	
+					preset_value[id] ="";	
+                    preset_value[id] = GetVal;	
+					}
+					else if(onChangevalue)
+					 {
+					preset_value[id] ="";	
+                    preset_value[id] = GetVal;	
+					}
+					}
+            }
+        } 	
+				}
+			}
+			else if(document[0].tagName =="ION-DATETIME")
+			{
+				//event._picker._ts = 1507552371000;
+				if (event.displayFormat =="HH:mm"){
+				var time = new Date(GetVal).toLocaleTimeString('en-GB', { hour: "numeric", 
+                                             minute: "numeric"});
+				event._text = time;
+				event._value["hour"] = GetVal.getHours();
+				event._value["minute"] = GetVal.getMinutes();
+				event._picker.data.columns[0].selectedIndex = GetVal.getHours();
+				event._picker.data.columns[1].selectedIndex = GetVal.getMinutes();
+				}
+				else if(event.displayFormat =="MM/DD/YYYY"){
+					preset_value[id] = GetVal;
+				}
+				else{
+					preset_value[id] = GetVal;
+				}
+				//document.getElementsByName(id)[0].onblur = function() {
+          
+				//alert("hi");
+           // }
+				
+				//document.getElementsByName('empjoindate')[0].onchange = function(){
+				//alert("hi");
+				//};
+			}
+				
+            //fieldValue[1].value = GetVal;
+			
+        }
+        }
+   
+	}
+
+    evaluateEventexp(elementEvent,stValues,eformid){
+        if(this.singleton.ismultitenant == "True"){
+			stValues["RESTURL"] = this.singleton.dynamicresturl;
+		}
+		else if(this.singleton.ismultitenant == "False"){
+			stValues["RESTURL"] = this.singleton.resturl;
+
+		}
+        
+        stValues["PROJECTID"] = this.singleton.PID;
+        stValues["ISMULTITENANT"] = this.singleton.ismultitenant;
+        let ExprObj = new Expression("");
+        ExprObj.Expression(elementEvent, stValues, eformid, "");
+        let GetVal = ExprObj.Evaluate();
+        console.log(GetVal)
+        return GetVal ;	  
+
+    }
+	
+}

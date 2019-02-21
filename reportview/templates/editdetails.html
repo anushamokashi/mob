@@ -1,0 +1,209 @@
+<div class="modal fade" id="editbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<form method="POST" id="editsave">
+    {% csrf_token %}
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+             <div id="report_error" style="color:red;">
+             </div>
+                {{ form.non_field_errors }}
+                <div id="loading" style="display:none;">
+                    <span id="load_text">loading...</span>
+                </div>
+                <div id="report_add_form_ajax" style="display:none;">
+                    <span>Form submit successfully.</span>
+                </div>
+                <div id="form_ajax_error" style="display:none;">
+                    <span>Can not submit data due to errors.</span>
+                </div>
+                <input type="hidden" value="{{edit.id}}" id="reportEditId" name="">
+                <div>
+                    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+                    <input class="btn btn-success pull-right" type="button" value="Submit" onclick="updateReport()"></input>
+                </div>
+                <br/>
+                <br/>
+                <div class="tab-v2">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#report_des" data-toggle="tab">Report</a></li>
+                        <li><a href="#report_header" data-toggle="tab">Header and Footer</a></li>
+                        <li><a href="#rowtemplate" data-toggle="tab">RowTemplate</a></li>
+                        <li><a href="#graphicalreport" data-toggle="tab">GraphicalReport</a></li>
+                        <!--<li><a href="#rpt_dashboard" data-toggle="tab" aria-expanded="true">Report Dash Board</a></li>-->
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="report_des">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input class="form-control" style="width:100%" name="title" value="{{edit.title}}">
+
+                            </div>
+                            <div class="form-group">
+                                <label>Report Slug:</label>
+                                <input class="form-control" style="width:100%" value="{{edit.identifiers}}" readonly="true">
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>ReportType</label>
+
+                                {{form.report_type}}
+                            </div>
+                            <div class="form-group">
+                            <label>Report Description</label>
+                            <textarea class="form-control" name="report_description" id="report_description"value="">{{reportdescription}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Is Hidden</label>
+                                <input type="checkbox" name="is_hidden" value="{{edit.is_hidden}}">
+                            </div>
+                            <div class="form-group">
+
+                            <label>GrandTotal
+                            <input type="checkbox" name="show_grand_total"  {% if form.show_grand_total.value %}checked{% endif %}></label>
+                        </div>
+                            <div class="form-group">
+                            <label>Dont repeat refrence field</label>
+                     <select class="form-control select2" style="width:100%" name="dont_repeat_reference_field"  >
+                      <option selected="selected" value="" >{{edit.dont_repeat_reference_field}}</option>
+                    {% for comp in comp_list %}
+                    <option id="{{comp.id }}" value="{{comp.id}}" data-desc="{{comp.description}}" >{{ comp.title}}</option>
+                    {% endfor %}
+                     </select>
+                     </div>
+                            <div class="form-group">
+                                <div class=row>
+                                  <div class="col-md-6">
+                                    <label>Row count</label>
+                                    <input class="form-control" style="width:100%" name="row_count" value="{{edit.row_count}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Lines per page</label>
+                                    <input class="form-control" style="width:100%" name="lines_per_page" value="{{edit.lines_per_page}}">
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                        <div class="tab-pane fade in" id="rowtemplate">
+                            <div class="form-group">
+                                <label>Template Type</label>
+                                {{form.template_type}}
+                            </div>
+                            <div class="form-group">
+                                <label>InputRowTemplate</label>
+                                <textarea class="form-control" style="width:100%;height=250px" name="rowtemplate">{{rowtemplate}}</textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade in" id="report_header">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Report header line 1</label>
+                                    <input class="form-control" style="width:100%" name="report_header_line1" value="{{edit.report_header_line1}}">
+                                    <label>Report header line 2</label>
+                                    <input class="form-control" style="width:100%" name="report_header_line2" value="{{edit.report_header_line2}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Report footer line 1</label>
+                                    <input class="form-control" style="width:100%" name="report_footer_line1" value="{{edit.report_footer_line1}}">
+                                    <label>Report footer line 2</label>
+                                    <input class="form-control" style="width:100%" name="report_footer_line2" value="{{edit.report_footer_line2}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade in" id="graphicalreport">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">   
+                                        <label>XField</label>                                                                           
+                                        <select class="form-control select2" style="width:100%" name="xcoordinates">
+                                                <option selected="selected" value="" >{{edit.xcoordinates}}</option>
+                                                {% for comp in comp_list %}
+                                                <option id="{{comp.id }}" value="{{comp.id}}" data-desc="{{comp.description}}" >{{ comp.title}}</option>
+                                                {% endfor %}
+                                                 </select>
+                                        </div>
+                                        <div class="form-group">   
+                                        <label>YField</label></label>
+                                        <select class="form-control select2" style="width:100%" name="ycoordinates">
+                                                <option selected="selected" value="" >{{edit.ycoordinates}}</option>
+                                                {% for comp in comp_list %}
+                                                <option id="{{comp.id }}" value="{{comp.id}}" data-desc="{{comp.description}}" >{{ comp.title}}</option>
+                                                {% endfor %}
+                                                 </select>
+                                        </div>
+                                            <div class="form-group">
+                                        <label>Show X-Yaxis
+                                        <input type="checkbox" name="showxyaxis"  {% if form.showxyaxis.value %}checked{% endif %}></label>
+                                    </div>
+                                        <div class="form-group">                    
+                                        <label>GraphType </label>        
+                                        {{form.graphtype}}
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                    </div>
+                </div>
+            </div>
+</form>
+<script type="text/javascript">
+    function updateReport(id) {
+       debugger;
+        var id = $('#reportEditId').val()
+            /*var url='/reportview/updateReport/'+id;*/
+        var formdata = $("#editsave").serialize();
+        console.log(formdata);
+        $.ajax({
+            type: 'POST',
+            url: "/reportview/updateReport/" + id + "/",
+            data: formdata,
+            success: function(res)  {
+            //$("#processing-modal").modal('hide');
+            
+              setTimeout(function() {
+              if (res == "success"){
+                popupmessage();
+                
+               }
+               window.location.href = '/reportview/editReport/'+id;
+            return false;
+           },600);
+             
+         },
+            error:function(res){
+
+                alert("error");
+            }
+
+        });
+
+    }
+        function popupmessage(msg){
+    if (!$('#ConfirmModal').length) {
+                $('body').append('<div id="ConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="ConfirmLabel" style="color: cadetblue;">Information</h3></div><div class="modal-body"><p>UpdateReport Successfully</p></div><div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button></div></div></div></div>');
+            }
+            $('#ConfirmModal').find('.modal-body').text(msg);
+            $('#ConfirmModal').modal({
+                show: true
+            });
+
+   }
+  $(document).ready(function() {
+    $( "#report_description" ).blur(function() {
+            var value = $( "#report_description" ).val();
+            try{
+              JSON.parse(value);
+            }
+            catch(err){
+                 $("#report_error").empty();
+                       $("#report_error").fadeTo(2000, 300).append('<p>JSON given in Report Description is not valid.</p>').slideUp(300, function() {
+                           $("#report_error").slideUp(300);
+                       });
+            }
+
+        });  
+});
+</script>

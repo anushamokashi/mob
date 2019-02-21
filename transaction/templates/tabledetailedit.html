@@ -1,0 +1,56 @@
+      
+{% load static %}
+  <div class="col-lg-8 col-xs-2"><h3 class="box-title mixcolor">Properties </h3></div>
+      <form method="POST" id="tableEditForm">
+        {% csrf_token %} 
+        <button type="button" style="width:80px;" class="btn bg-green" id="updateTables" data-tabid="{{tableeditid}}" onclick="updateTable({{tableeditid}})">Save</button>
+        <div class="box-body" id="reload"> 
+
+                  <!--table for container properites --> 
+          <table class="table table-bordered mixcolor"  style="border:1px solid white;">
+                  <thead>
+                    <tr>
+                      <th style="width:50%">Items</th>
+                      <th>Properties</th>
+                    </tr>
+                  </thead>
+                  <tbody>  
+                    <tr>
+                        <td>Title</td>
+                        <td>{{form.title}}</td>
+                    </tr>
+                    <tr>
+                        <td>Table Name</td>
+                        <td> <input type="text" class="form-control" required="" id="id_tablename" name="tablename" value="{{ form.tablename.value|default_if_none:'' }}" maxlength="100"></td>
+                        <!-- <td>{{form.tablename}} </td> -->
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td> <textarea class="form-control" rows="3" required="" name="description" id="id_description"> {{ form.description.value|default_if_none:'' }} </textarea> </td>
+                    </tr>
+                    <tr>
+                        <td>Relationship Type</td>
+                        <td>{{form.relationshiptype}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>DB Type</td>
+                        <td>{{form.db_type}}</td>
+                    </tr>
+
+                    <tr style="display: none;">
+                        <td>Transaction Id</td>
+                        <td>{{form.transactionid}}</td>
+                    </tr>
+                    
+                    <tr style="display: none;">
+                        <td>Project Id</td>
+                        <td>{{form.projectid}}</td>
+                    </tr>
+                   </tbody>
+              </table>
+          </div> 
+       </form>             
+
+  
+  <script src="{% static 'mainjs/tablejs/table.js' %}"></script>

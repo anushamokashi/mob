@@ -1,0 +1,466 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+
+{% block navbarRight %}
+
+<div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+        
+        <li>
+            <a href="#" data-toggle="control-sidebar">{{project_title}}</a>
+        </li>
+        
+        <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Switch Project
+                <ul class="dropdown-menu">
+                
+                    <li class="dropdown-item" style="height:45px;padding: 10px;text-align: center;">
+                        <h4>Avaliable Projects</h4>
+                    </li>
+                    {% if projectselect %}
+                    {% for selection in projectselect %}
+                        <li class="header">
+                            <a href="/transaction/switchproject/{{selection.project_id_id}}">
+                                <h4>
+                                    <img src="{% static 'maincss/img/folder.png' %}" class="img-circle" alt="User Image" />
+                                    &nbsp;  &nbsp;&nbsp;{{selection.project_id.title}}
+                                </h4>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+            </a>
+        </li>
+            
+             
+          <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="{% static 'maincss/images/user.png' %}" style="background: white;width:20px;height:20px;" class="img-circle" alt="User Image">
+              <span class="hidden-xs">{{element.userid}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+                <li class="user-header">
+                    <img src="{% static 'maincss/images/user.png' %}" style="background: white" class="img-circle" alt="User Image">
+
+                    <p>
+                    {{element.userid}}
+                    </p>
+                </li>
+              <!-- Menu Footer-->
+                <li class="user-footer">
+                    <div class="pull-right">
+                    <a href="{% url 'signout' %}" class="btn btn-default btn-flat" style="background: none;border: none;"><button type="button" class="btn btn-block btn-danger">Sign Out</button></a>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        
+        <!-- Control Sidebar Toggle Button -->
+          
+          
+        <li class="dropdown user user-menu">
+            
+            <a onclick="updateDb(event)"><i class="fa fa-gears" ></i></a> 
+         
+        </li>
+
+    </ul>
+</div>
+{% endblock navbarRight %}
+
+{% block sidemenu  %}
+      
+     
+    <ul class="sidebar-menu tree" data-widget="tree">
+
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="treeview">
+            <a href="/rolesetup/roleindex">
+                <i class="fa fa-cogs"></i> <span>Role Setup</span>
+            </a>
+        </li >
+
+         <li class="treeview">
+            <a href="/transaction/enumlist/">
+                <i class="fa fa-map-o"></i> 
+                <span>Enum List</span>   
+            </a>
+        </li>
+
+        <li class="treeview active menu-open">
+            <a href="#">
+                <i class="fa fa-pencil-square-o"></i> 
+                <span>Login</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i> 
+                </span>
+            </a>
+    
+            <ul class="treeview-menu">
+                <li><a href="/logintemplate/loginindex/"><i class="fa fa-circle-o"></i> Design login Page</a></li>
+                <li class="active"><a href="/logintemplate/serverconfig/"><i class="fa fa-circle-o"></i> Server Config</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a id ="createLoginpg" data-pid ="{{pid.id}}" name ="createLoginpg">
+                <i class="fa fa-android"></i> 
+                <span>Login Page Generate</span>
+            </a>
+        </li>
+
+        
+        <li class="treeview">
+            <a href="/hometemplate/pagecomponent/">
+                <i class="fa fa-sticky-note-o"></i> 
+                <span>HomePage</span>
+            </a>
+        </li>
+          
+        <li class="treeview">
+            <a href="/transindex/">
+                <i class="fa fa-file-text"></i>
+                <span>Transaction</span>
+           </a>
+        </li>
+      
+        <li class="treeview">
+            <a href="/reportview/repoviewdetails/">
+                <i class="fa fa-desktop"></i> <span>ReportView</span>
+            </a>
+        </li>
+
+       
+
+        <li class="treeview">
+            <a href="/syncmaster/configurations/">
+                <i class="fa fa-refresh"></i> <span>Sync Configurations</span>
+            </a>
+        </li>
+        
+
+        <li class="treeview">
+                <a href="/notification/notificationindex/">
+                   <i class="fa fa-bell-o"></i> <span>Notification Configuration</span>
+                </a>
+             </li>
+    
+    </ul>
+
+{% endblock sidemenu %}
+{% block maincontent %}
+ 
+<!-- Content Header (Page header) -->
+<div id="divErrorMessages"></div>
+<div id="divResults"></div>
+
+<section class="content-header">
+     <h1> Users </h1> 
+    <ol class="breadcrumb">
+        <li> <a href="/transaction/transmain/"> <i class="fa fa-dashboard"> </i> Home </a> </li>
+        <li class="active">Server Config</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+               <div class="col-lg-10 col-xs-8">
+                  <h3 class="box-title">Users</h3>
+               </div>
+                    <button type="button" style="width:80px;" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#userModal" data-whatever="" id="addUserModal" class="btn bg-blue">Add New</button>
+                </div>
+                 <!-- /.box-header -->
+            <div class="box-body table-responsive">
+                    <table id="usertable"  class="table table-bordered table-striped" style="border:1px solid lightblue">
+                   
+                        {% if userObj %}
+                            <thead>
+                                <tr class="bg-light-blue">
+                                    <th>First Name</th>
+                                    <th>Email Id</th>
+                                    <th>Role</th>
+                                    <th>Is Active</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                    
+                            
+                            <tbody>
+                                {% for obj in userObj %}
+                                    <tr>
+                                        <td>
+                                            {{obj.first_name}}
+                                        </td>
+                                        <td>
+                                            {{obj.email_id}}
+                                        </td>
+                                        <td>
+                                            {{obj.role}}
+                                        </td>
+                                        <td>
+                                            {{obj.is_active}}
+                                        </td>
+                                        <td>
+                                            <button  type="button" class="btn bg-olive btn-xs"  data-toggle="modal" data-backdrop="static" data-keyboard="false" value="Edit" id="userEdit" data-target="#userEditModal" data-userid="{{obj.id}}"><i class="glyphicon glyphicon-pencil"></i>
+                                            </button>    
+                                        </td>
+                                        <td>
+                                            <a href="/logintemplate/deleteuser/{{obj.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" id="delete_button1" value="Delete" ><i class="glyphicon glyphicon-trash"></i></button></a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            
+                        {% else %}
+                            <p> No users Available</p>
+                        {% endif %}
+                
+                    </table >
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<div class="box-body">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    
+                    <div class="box-header">
+                  <div class="col-lg-10 col-xs-8">
+                            <h3 class="box-title">General Info</h3>
+                        </div>
+                        <button type="button" style="width:80px;" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#infoModal" data-whatever="" class="btn bg-blue">Add New</button>
+                         
+                        <!-- Model content for transcation add -->
+                        <div class="modal fade" id="infoModal" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="exampleModalLabel">New Info</h4>
+                                    </div>
+                                    <section>
+                                        <div id="divErrorInfo"></div>
+                                        <div id="divResultInfo"></div>                      
+                                    </section>
+
+                                    <form id="infoForm" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">Key:</label>
+                                                {{infoform.key}}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">Value:</label>
+                                                {{infoform.value}}
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="sumbit" class="btn btn-success" id="addinfo">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        {% if infoObj %}
+                            <table id="infotable" class="table table-bordered table-striped" style="border:1px solid lightblue">
+                                <thead>
+                                    <tr class="bg-light-blue">
+                                        <th>Key</th>
+                                        <th>Value</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    {% for item in infoObj %}
+                                        <tr>
+                                            <td>{{item.key}}</td>
+                                            <td>{{item.value}}</td>
+                                            <td>
+                                                <button type="button" class="btn bg-olive btn-xs" data-toggle="modal"  value="Edit" data-target="#infoEditModal" data-backdrop="static" data-keyboard="false" id="editInfoModal" data-infoid={{item.id}}><i class="glyphicon glyphicon-pencil"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <a href="/logintemplate/deleteinfo/{{item.id}}" data-confirm="Are you sure you want to delete?">
+                                                    <button type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                
+                            </table>
+                        {% else %}
+                            <p> There are no general Info</p>
+                        {% endif %}
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>
+
+																			  
+
+<div class="modal fade" id="userModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="lineModalLabel">Add Users</h3>
+            </div>
+             <section>
+                <div id="divErrorUser"></div>
+                <div id="divResultUser"></div>                      
+            </section>
+            <div class="modal-body" id="userModelbody">
+                <!-- content goes here -->
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userEditModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="lineModalLabel">Edit users</h3>
+            </div>
+             <section>
+                <div id="divErrorEditUser"></div>
+                <div id="divResultEditUser"></div>                      
+            </section>
+            <div class="modal-body" id="userEditModelbody">
+                <!-- content goes here -->
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="infoEditModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="lineModalLabel">Edit Info</h3>
+            </div>
+             <section>
+                <div id="divErrorEditInfo"></div>
+                <div id="divResultEditInfo"></div>                      
+            </section>
+            <div class="modal-body" id="infoEditModelbody">
+                <!-- content goes here -->
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="example-modal">
+    <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+
+        <div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+            <div id="floatingBarsG">
+                <div class="blockG" id="rotateG_01"></div>
+                <div class="blockG" id="rotateG_02"></div>
+                <div class="blockG" id="rotateG_03"></div>
+                <div class="blockG" id="rotateG_04"></div>
+                <div class="blockG" id="rotateG_05"></div>
+                <div class="blockG" id="rotateG_06"></div>
+                <div class="blockG" id="rotateG_07"></div>
+                <div class="blockG" id="rotateG_08"></div>
+            </div>
+            <h3 style="color:white">Please Wait...</h3>
+        </div>
+    </div>
+</div>
+ {% block script  %}
+<!-- Jquery -->
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'mainjs/logintemplatejs/logintemplate.js' %}"></script>
+{% endblock script  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $("#processing-modal").modal('show');
+        setTimeout(function() {
+            $("#processing-modal").modal('hide');
+        }, 300);
+        
+        $('a[data-confirm]').click(function(ev) {
+            var href = $(this).attr('href');
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+            $('#dataConfirmOK').attr('href', href);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+        });
+        $("#conntable").DataTable({});
+    });
+
+    $.ajaxPrefilter(function( options, original_Options, jqXHR ) {
+        options.async = true;
+    });
+</script>
+
+<script>
+$(document).ready(function() {
+    $(function() {
+        $("#usertable").DataTable({});
+       
+    });
+});
+$(document).ready(function() {    
+    $(function() {
+        $("#infotable").DataTable({});
+    });
+});
+</script>
+{% endblock %}

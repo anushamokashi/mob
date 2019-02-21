@@ -1,0 +1,35 @@
+<table class="table table-bordered table-striped" id="eposttb">
+    <thead>
+        <tr class="bg-light-blue">
+            <th>Title</th>
+            <th>Target Transaction View</th>
+            <th>is Active</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody> 
+        {% if epostdetails %}
+            {% for epost in epostdetails %}
+                <tr>
+                    <td>{{epost.title}}</td>
+                    <td>{{epost.target_tx_view}}</td>
+                    <td>{{epost.is_active}}</td>
+                    <td>
+                        <button type="button" class="btn bg-olive btn-xs edit" data-toggle="modal" value="Edit" data-target="#EpostEditModal"  data-backdrop="static" data-keyboard="false" data-epostid={{epost.id}} data-viewid ={{viewid}} onclick="epostEdit(event)" ><i class="glyphicon glyphicon-pencil"></i></button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-xs" onclick ="epostdelete(event)" data-epostid={{epost.id}} ><i class="glyphicon glyphicon-trash"></i></button>
+                    </td>
+                </tr>  
+            {% endfor %}               
+        {% endif %}
+    </tbody>
+
+<script>
+  $(function () {
+    $("#eposttb").DataTable({
+        stateSave: true
+    });
+  });
+  </script>

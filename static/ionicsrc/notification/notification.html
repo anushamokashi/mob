@@ -1,0 +1,50 @@
+<!--
+  Generated template for the NotificationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header >
+	<ion-toolbar color="primary">
+		<ion-navbar>
+			<ion-row>
+				<ion-col col-10>
+					<ion-title>notification</ion-title></ion-col>
+			</ion-row>
+		</ion-navbar>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-card *ngFor="let msg of this.msgArray">
+		<!-- <ion-row style="align-items=center">
+			<ion-col>
+				<h2>{{msg.pricelist}}</h2>
+			</ion-col>
+		</ion-row> -->
+		
+		<ion-row style="align-items=center">
+			<ion-col>
+				<p style="color:grey;">{{msg.message}}</p>
+			</ion-col>
+		</ion-row>	
+		
+		<!-- <ion-row style="align-items=center">
+			<ion-col>
+				<p style="color:grey;">You can place order only till {{msg.valid_to}}</p>
+			</ion-col>
+		</ion-row> -->
+
+		<ng-container *ngIf="msg['json'] != null">
+			<ion-row>
+				<ion-col col-6 *ngFor="let button of msg['json']['buttons']">
+					<button ion-button clear (click)="buttonClick($event)" attr.data-basicid={{msg.basicid}} attr.data-fromdate={{msg.valid_from}} attr.data-todate={{msg.valid_to}} attr.data-msg={{msg.message}} attr.data-notificationbasicid={{msg.notification_statusid}} attr.data-congfiguredNotification={{button.ntf}} attr.data-configuredstage={{button.st}} >{{button.button_name}}</button>
+				</ion-col>
+			</ion-row>
+		</ng-container>
+		
+
+	</ion-card>
+
+</ion-content>
+

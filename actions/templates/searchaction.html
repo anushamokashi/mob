@@ -1,0 +1,96 @@
+<!-- Save Action from html actions.html -->
+{% load static %}
+<div class="modal fade" id="actionmodelbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form id="searchform">
+    {% csrf_token %}
+    <div class="col-lg-12 col-xs-2">
+        <h3 class="box-title">Add Search Actions</h3></div>
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" class="form-control" name="title" id="txname" value="{{ form.title.value|default_if_none:'' }}">
+        <p id="validationmsg" style="color:red;font-weight: 20px;"></p>
+    </div>
+    <div class="form-group">
+        <label for="Icon-cls">Icon cls:</label>
+        {{form.iconcls}}
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Sql:</label>
+        <textarea class="form-control" name="sql" id="search_sql">{{form.sql.value|default_if_none:''}}</textarea>
+        <div style="color:grey"><p>Hint:Please Don't Give Alias name for Table Unique Id and Search Field In sql.</p></div>
+        <div id="searchsql_error" style="color:red"></div>
+        <input type="hidden" class="form-control" name="param_fields" id="param_fields" value="{{ form.param_fields.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="sort_type" class="control-label">Sort Type:</label>
+        {{form.sort_type}}
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Search Field:</label>
+        <input type="text" class="form-control" name="search_field" id="search_field" value="{{ form.search_field.value|default_if_none:'' }}">
+        <div id="searchfield_error" style="color:red"></div>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Sort Field:</label>
+        <input type="text" class="form-control" name="sort_field" id="sort_field" value="{{ form.sort_field.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Chunk Size:</label>
+        <input type="number" class="form-control" name="chunk_size" id="chunk_size" value="{{ form.chunk_size.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Page Size:</label>
+        <input type="number" class="form-control" name="page_size" id="page_size" value="{{ form.page_size.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Copy Tx View:</label>
+        {{form.copy_tx_view}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="searchaction" data-actiontype="{{action_type}}" data-transactionviewid="{{viewid}}">Save</button>
+    </div>
+</form>
+<script>
+$("#search_sql").blur(function(){
+    var sql = $("#search_sql").val();
+    if(sql !=""){
+     $.ajax({
+        type: 'POST',
+        url: "/actions/searchsqlvalidate/",
+        data: {'sql':sql},
+        //dataType: 'json',
+        success: function(data) {
+            $('#searchsql_error').empty();
+            $('#param_fields').val(data);
+
+        },
+        error: function(data) {
+            $('#searchsql_error').empty();
+            if(data.responseText){
+            $('#searchsql_error').append("<p>"+data.responseText+"</p>");
+        }
+        else{
+            $('#searchsql_error').append("<p>"+data+"</p>");
+        }
+        }
+    });
+ }
+});;
+$("#search_field").blur(function(){
+  debugger;
+  $('#searchfield_error').empty();
+  var search_field = $("#search_field").val();
+  var params = JSON.parse($('#param_fields').val());
+  const filter = params.filter((item) => {
+							 return (item == search_field);
+					});
+  if(filter.length != 1){
+      $('#searchfield_error').append("<p>Given Search Field is not Present In Above Seacrch Sql.Please Add It.</p>");
+  }
+
+
+});
+</script>

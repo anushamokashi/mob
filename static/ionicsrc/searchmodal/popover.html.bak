@@ -1,0 +1,4 @@
+ <ion-list no-lines style="margin:5px">
+      <button ion-item (click)="view()">View</button>
+      <button ion-item (click)="modify()">Modify</button>
+</ion-list>

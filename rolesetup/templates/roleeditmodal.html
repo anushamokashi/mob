@@ -1,0 +1,29 @@
+ 
+{% load static %}
+<div class="modal fade" id="roleEditModalBody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+            
+
+<form id="roleeditform" >
+{% csrf_token %}
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="role-name" class="control-label">Role Title:</label>
+            <input type="text" class="form-control" name="rolename" id="rolename" value="{{ roleform.rolename.value|default_if_none:'' }}" required>
+            
+        </div>
+        <div class="form-group">
+            <label for="message-text" class="control-label">Role Description:</label>
+            <textarea class="form-control" name="description">{{roleform.description.value|default_if_none:''}}</textarea>
+        </div>
+        <div>
+            <input type="hidden" class="form-control" name="projectid" value="{{ roleform.projectid.value|default_if_none:'' }}" required>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" data-roleid={{roleid}} id="EditRole">Save</button>
+        </div>
+    </div>
+</form>
+        

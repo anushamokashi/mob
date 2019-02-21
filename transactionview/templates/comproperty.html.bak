@@ -1,0 +1,91 @@
+  {% load static %}
+       <form method="POST" id="comptform">
+               {% csrf_token %} 
+            <button type="button" style="width:80px;" class="btn bg-green updatecomponent"
+             data-container="{{containerid}}">Save</button>
+            <div class="box-body"> 
+
+                 <!--table for component properites -->
+                 <table class="table table-bordered mixcolor"  style="border:1px solid white;">
+                  <thead>
+                    <tr>
+                      <th style="width:50%">Items</th>
+                      <th>Properties</th>
+                    </tr>
+                  </thead>
+                  <tbody>  
+                     <tr>
+                       <td>Title</td>
+                       <td><input type="text" class="form-control" name="title" value="{{ form.title.value|default_if_none:'' }}"></td>
+                     </tr>
+                     <tr>
+                       <td>Caption</td>
+                       <td><input type="text" class="form-control" name="caption"
+                       value="{{ form.caption.value|default_if_none:'' }}"></td>
+                     </tr>
+                     <tr>
+                       <td>Widget Type</td>
+                       <td>{{form.widgettype}}</td>
+                     </tr>
+                     <tr>
+                       <td>Mode of entry</td>
+                       <td>{{form.modeOfEntry}}</td>
+                     </tr>
+
+                     <tr>
+                       <td>Is ReadOnly</td>
+                       <td><label class="switch">
+                       {{form.is_readonly}}
+                       <div class="slider round">
+                       </div></label></td>
+                     <tr>
+
+                     <tr>
+                       <td>Is Suggestive</td>
+                       <td><label class="switch">
+                       {{form.suggestive}}
+                       <div class="slider round">
+                       </div></label></td>
+                     <tr>
+                       <td>Is Hidden</td>
+                       <td><label class="switch"> 
+                       {{form.is_hidden}}
+                       <div class="slider round">
+                       </div></label></td>
+                     </tr>
+                     <tr>
+                       <td>Is Required</td>
+                       <td><label class="switch"> 
+                       {{form.is_required}} 
+                       <div class="slider round">
+                       </div></label></td>
+                     </tr>
+                     <tr>
+                       <td>Allow Duplicate</td>
+                        
+                       <td> <label class="switch">{{form.allow_duplicate}} <div class="slider round"></div></label></td>
+                        
+                     </tr>
+                     <tr>
+                       <td>Display Order</td>
+                       <td><input type="text" class="form-control" name="displayorder" value="{{ form.displayorder.value|default_if_none:'' }}"></td>
+                     </tr>
+                     <tr>
+                       <td>Expression</td>
+                       <td><input type="text" class="form-control" onfocusout="postexp()" id="expression" name="expression" value="{{ form.expression.value|default_if_none:'' }}">
+                     </td></tr> 
+                     <tr>
+                       <td>Validate Expression</td>
+                       <td><input type="text" class="form-control" name="validateexp" value="{{ form.validateexp.value|default_if_none:'' }}"></td>
+                     </tr>
+                      <tr>
+                        <td>Sql</td>
+                        <td>
+                          <textarea class="form-control" onfocus="sqlModalFun(event)" readonly tabindex="-1" id="sql" rows="3" placeholder="Sql ..." name="sql" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#sqlModal" data-whatever="">{{form.sql.value|default_if_none:''}}</textarea>
+                        </td>
+                     </tr>
+                    </tbody>
+                   </table>
+                 </div>
+               </form>
+     <script src="{% static 'mainjs/viewjs/view.js' %}"></script> 

@@ -1,0 +1,118 @@
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { Http,Headers } from '@angular/http';
+import { HomePage } from '../home/home';
+import { SingletonProvider } from '../../providers/singleton/singleton';
+import { Item_avaliable_txnPage } from '../item_avaliable_txn/item_avaliable_txn';
+
+/**
+ * Generated class for the PopoverPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@Component({
+  selector: 'page-popover',
+  templateUrl: 'popover.html',
+})
+export class PopoverPage {
+	jsonUrl:any;
+	txservice:any;
+	recordId:any;
+	pid:any;
+	parent_tableid:any;
+	UserDetails:any;
+	pagenav:any;
+	optionsJson:any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,public http: Http,public singleton: SingletonProvider) {
+	  this.txservice = navParams.get('txservice');
+	  this.jsonUrl = navParams.get('jsonUrl');
+	  this.recordId = navParams.get('recordId');
+	  this.UserDetails = navParams.get('userDetails');
+	  this.pagenav = navParams.get('pagenav')
+	  this.optionsJson = navParams.get('selectoptions');
+	  this.pid = this.singleton.PID;
+	  console.log(this.jsonUrl);
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad PopoverPage');
+  }
+
+	view(){
+		this.http.get(this.jsonUrl).map(res => res.json()).subscribe(data => {
+			console.log(data);
+			let parent_table = data[0]['tran_meta'][0]["prm_meta"][0]['tb'];
+			let tx_id = data[0]['idt'];
+			console.log(this.pagenav);
+			 const page_filter = this.pagenav['pages'].filter((item) => {
+							 return (item['id'] == tx_id);
+						 });
+			this.parent_tableid = parent_table+'id';
+			let json ={};
+			let table_list =[];
+			let cont_meta = data[0]['cont_meta'];
+			
+			for(let k= 0;k<cont_meta.length;k++){
+				let children  = cont_meta[k]['children'];
+				this.field_json(table_list,cont_meta[k]);
+				
+				if(children.length >0){
+					for(let j=0;j<children.length;j++){
+						this.field_json(table_list,children[j]);
+						if(children[j]['children'].length >0){
+							for(let l=0;l<children[j]['children'].length;l++){
+							this.field_json(table_list,children[j]['children'][l]);
+							}
+						
+						}
+					}
+				}
+			}
+			console.log(table_list);
+			json['table_list'] = table_list;
+			json['recordId'] = this.recordId;
+			json['parent_id'] = this.parent_tableid;
+			json['pid'] = this.pid;
+			this.txservice.getSearchrecord(json).subscribe(response => {
+				console.log(response);
+				console.log(this.pagenav);
+				let dataSet = response._body;
+				console.log(this.pagenav);
+				this.UserDetails['dataSet'] = dataSet;
+				this.UserDetails['editMode'] = true;
+				this.UserDetails['optionJson'] = this.optionsJson;
+				this.navCtrl.push(page_filter[0]['component'],{userdetails:this.UserDetails});
+			
+			});
+			
+		});
+	
+	}
+	
+	field_json(table_list,cont_meta){
+		let table = {};
+		let fields =[];
+		table['tablename'] = cont_meta['db'];
+		let component = cont_meta['comp_meta'];
+		for(let i =0;i<component.length;i++){
+			if(component[i]['cjson'] != ""){
+			let field = this.fields_get(component[i]);
+			fields.push(field);
+			}
+		}
+		table['fields'] = fields;
+		table_list.push(table);
+	}
+	
+	fields_get(component){
+		let cjson = JSON.parse(component['cjson']);
+		let field_slug = cjson['field_slug'];
+		return field_slug
+	}
+	
+	
+
+}

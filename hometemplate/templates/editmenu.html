@@ -1,0 +1,55 @@
+{% load static %}
+<div class="modal fade" id="mymenubody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<form id="contform">
+   {% csrf_token %} 
+   <div class="form-group">
+      <label for="logintype">Title</label>
+      <input type="text" class="form-control" name="title" value="{{ form.title.value|default_if_none:'' }}" id="id_title">
+   </div>
+   <div class="form-group" >  
+      <label for="bg">Decscription</label>
+      <input type="text" class="form-control" name="description" value="{{ form.description.value|default_if_none:'' }}">         
+   </div>
+   <div class="form-group" >
+      <label for="layput">Iconcls</label>
+      {{form.iconcls}}
+   </div>
+<div class="form-group">
+        <label>Report or Transaction</label>
+        {{form.typeofview}}
+
+    </div>
+    <div class="form-group" id="trview">
+        <label for="bg">TransactionView </label>
+        {{form.transactionview}}
+
+    </div>
+    <div class="form-group" id="review">
+        <label for="layput">ReportView</label>
+         {{form.reportview}}
+    </div>
+   <!-- /.box-body -->
+   <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-success" id="editmenuproperty" data-menuid={{menu_id}}>Save</button>
+   </div>
+</form>
+<script type="text/javascript" src="{% static 'mainjs/hometempjs/hometemp.js' %}"></script>
+<script type="text/javascript">
+
+    $('#id_typeofview').focusout(function() {
+        debugger;
+        var lab = $("#id_typeofview").val();
+        if (lab == 'transactionview') {
+            $("#review").hide();
+            $("#trview").show();
+            $('#id_review').val('');
+        } else if (lab == 'reportview') {
+            $("#review").show();
+            $("#trview").hide();
+            $('#id_trview').val('');
+        } else {
+            alert("please select functions");
+        }
+    });
+</script>

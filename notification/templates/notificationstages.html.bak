@@ -1,0 +1,192 @@
+{% extends 'tempmain.html' %} 
+{% load static %} 
+{% block sidemenu %}
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="treeview">
+        <a href="/notification/notificationindex/">
+            <i class="fa fa-arrow-circle-left"></i>
+            <span>Back</span>
+        </a>
+    </li>
+</ul>
+{% endblock sidemenu %} 
+
+{% block maincontent %}
+<section class="content-header">
+   <h1>
+      {{notification.title}} Stages
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active"> Notification Configuration</li>
+   </ol>
+</section>
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+   <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-lg-10 col-xs-2">
+                            <h3 class="box-title">Notification Stages</h3>
+                        </div>
+                        <button type="button" style="width:80px;" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#stageAddModal" data-whatever="" class="btn bg-blue selectedit" data-notificationid={{notificationid}} onclick="stageAddModal(event)">Add New</button>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        {% if notificationStages %}
+                            <table id="example1" class="table table-bordered table-striped" style="border:1px solid lightblue">
+                                <thead>
+                                    <tr class="bg-light-blue">
+                                    <th>Stage Name</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for notificationstage in notificationStages %}
+                                    <tr>
+                                    <td>{{notificationstage.stage_name}}</td>
+                                    <td>
+                                        <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" value="Edit" data-backdrop="static" data-keyboard="false" data-target="#stageEditModal" id="stage_edit" data-notificationstageid="{{notificationstage.id}}"  onclick="stageEditModal(event)"><i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="/notification/deletestage/{{notificationstage.id}}" data-confirm="Are you sure you want to delete?">
+                                        <button type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                        </a>
+                                    </td>
+                                   
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p> There are no stages for this notification</p>
+                        {% endif %}
+                    </div>
+                     <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>
+   <!-- /.content -->
+
+
+<div class="modal fade" id="stageAddModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">New Stage</h4>
+            </div>
+            <section>
+                <div id="StageError"></div>
+                <div id="StageResult"></div>
+            </section>
+            <div class="modal-body" id="stageAddModalBody" style="overflow-y: auto;">
+                <!-- content goes here -->
+            </div>
+            <div class="modal-footer">
+                <div id="saveresult"></div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary save" onclick="stageSave(event)" data-notificationid ={{notificationid}}>Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="stageEditModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit Stage</h4>
+            </div>
+            <section>
+                <div id="StageEditError"></div>
+                <div id="StageEditResult"></div>
+            </section>
+            <div class="modal-body" id="stageEditModalBody" style="overflow-y: auto;">
+                <!-- content goes here -->
+            </div>
+            <div class="modal-footer">
+                <div id="saveresult"></div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary save" onclick="stageUpdate(event)" data-notificationstageid ={{notificationstageid}}>Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="example-modal" >
+   <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+      <div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+         <div id="floatingBarsG">
+            <div class="blockG" id="rotateG_01"></div>
+            <div class="blockG" id="rotateG_02"></div>
+            <div class="blockG" id="rotateG_03"></div>
+            <div class="blockG" id="rotateG_04"></div>
+            <div class="blockG" id="rotateG_05"></div>
+            <div class="blockG" id="rotateG_06"></div>
+            <div class="blockG" id="rotateG_07"></div>
+            <div class="blockG" id="rotateG_08"></div>
+         </div>
+         <h3 style="color:white">Please Wait...</h3>
+      </div>
+   </div>
+</div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script>
+   $(document).ready(function() {
+       $("#processing-modal").modal('show');
+       setTimeout(function() {
+         $("#processing-modal").modal('hide');  
+       },1000);
+       $('a[data-confirm]').click(function(ev) {
+           var href = $(this).attr('href');
+           if (!$('#dataConfirmModal').length) {
+               $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+           }
+           $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+           $('#dataConfirmOK').attr('href', href);
+           $('#dataConfirmModal').modal({
+               show: true
+           });
+           return false;
+       });
+   });
+</script>
+   
+   
+<script>
+   $(function() {
+       $("#example1").DataTable();
+   });
+</script>
+
+<script>
+   $(function () {
+     //Initialize Select2 Elements
+     $('.select2').select2()
+   
+   })
+</script>
+<script src="{% static 'mainjs/notificationjs/notification.js' %}"></script> 
+{% endblock maincontent %}

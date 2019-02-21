@@ -1,0 +1,183 @@
+<ion-header>
+   <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+      <ion-title>Survey</ion-title>
+   </ion-navbar>
+   <ion-fab top right>
+      <button ion-fab mini style="margin:0px;" >
+         <ion-icon name="star"></ion-icon>
+      </button>
+      <ion-fab-list side="bottom" style="margin:44px -8px">
+         <button ion-fab (click)="new()" data-exp="" data-pos="">
+            <ion-icon md="md-document"></ion-icon>
+         </button>
+         <button ion-fab form="form_id" (click)="save()" data-exp="" data-pos="">
+            <ion-icon md="md-done-all" ></ion-icon>
+         </button>
+		<button ion-fab form="form_id" (click)="offlineSync()" data-exp="" data-pos="">
+			<ion-icon md="md-cloud-upload"></ion-icon>
+		</button> 
+		<button ion-fab form="form_id" (click)="logout()" data-exp="" data-pos="">
+			<ion-icon md="md-close-circle"></ion-icon>
+		</button>  
+      </ion-fab-list>
+   </ion-fab>
+</ion-header>
+<ion-content padding>
+   <form id="myForm" name="myForm">
+      <ion-card data-event='{"onexit": {"productpur": ["setProperty({purclocation},{VISIBLE},{T})", "setProperty({futurepur},{VISIBLE},{T})"], "shopping": ["setProperty({brandusage},{VISIBLE},{T})", "setProperty({brandexp},{VISIBLE},{T})", "setProperty({samplerec},{VISIBLE},{T})"], "samplerec": ["setProperty({sampleexp},{VISIBLE},{T})", "setProperty({samplefeat},{VISIBLE},{T})", "setProperty({sampletrail},{VISIBLE},{T})", "setProperty({productpur},{VISIBLE},{T})"]}}'>
+         <ion-item  name="pnameitem">
+            <ion-label color="primary" stacked >Your Name please?</ion-label>
+            <ion-input type="text" placeholder="Your Name please?" data-readonly="False" data-required="True" data-allowduplicate="False" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-id="pname" id="pname" name="pname"  (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)" data-referjson='{"id":205545,"title":"name","description":null,"slug":"pname","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"pname","is_db_field":true,"max_length":255,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}' data-modeOfEntry="tbe" data-suggestive="True" class="textpro" required></ion-input>
+         </ion-item>
+         <ion-item name="ageitem" >
+            <ion-label color="primary" stacked>Please Select Your Age ?</ion-label>
+            <ion-select (ionBlur)="checkBlur($event)" placeholder="Please Select Your Age ?" data-readonly="False" data-label="Please Select Your Age ?" data-id="age" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="age" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="age" name="age" data-displayorder="2" data-referjson='{"id":205546,"title":"age","description":null,"slug":"age","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"IntegerField","related_table_component":[],"db_column":"age","is_db_field":true,"max_length":10,"custom_enum":{"id":1720,"title":"Age","description":"","slug":"age","project":79,"key_values":[{"id":14983,"custom_enum":1720,"key":"Above 40","value":"Above 40"},{"id":14979,"custom_enum":1720,"key":"Below 18","value":"Below 18"},{"id":14982,"custom_enum":1720,"key":"31-40","value":"31-40"},{"id":14981,"custom_enum":1720,"key":"23-30","value":"23-30"},{"id":14980,"custom_enum":1720,"key":"18-22","value":"18-22"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+               <ion-option value="Above 40">Above 40 </ion-option>
+               <ion-option value="Below 18">Below 18 </ion-option>
+               <ion-option value="31-40">31-40 </ion-option>
+               <ion-option value="23-30">23-30 </ion-option>
+               <ion-option value="18-22">18-22 </ion-option>
+            </ion-select>
+         </ion-item>
+         <ion-list radio-group [(ngModel)]="gender" id="gender" name="gender">						
+         <ion-item >
+            <ion-label color="primary">Please Select Gender</ion-label>
+         </ion-item>
+         <ion-item>
+            <ion-label color="primary">Male </ion-label>
+            <ion-radio value="Male" data-readonly="False" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-id="gender" readonly="False"  data-modeOfEntry="tbe" data-suggestive="True" disabled="False"  (ionSelect)="checkChange($event)" ></ion-radio>
+         </ion-item>
+         <ion-item>
+            <ion-label color="primary">Female </ion-label>
+            <ion-radio value="Female" data-readonly="False" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-id="gender" readonly="False"  data-modeOfEntry="tbe" data-suggestive="True" disabled="False"  (ionSelect)="checkChange($event)" ></ion-radio>
+         </ion-item>
+         </ion-list>
+         <ion-item name="incomeitem" >
+            <ion-label color="primary" stacked>Annual Income</ion-label>
+            <ion-select (ionBlur)="checkBlur($event)" placeholder="Annual Income" data-readonly="False" data-label="Annual Income" data-id="income" data-required="False" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="income" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="income" name="income" data-displayorder="4" data-referjson='{"id":205551,"title":"income","description":null,"slug":"income","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"IntegerField","related_table_component":[],"db_column":"income","is_db_field":true,"max_length":255,"custom_enum":{"id":1721,"title":"Income","description":"","slug":"income","project":79,"key_values":[{"id":14990,"custom_enum":1721,"key":"Above 2lakhs","value":"Above 2lakhs"},{"id":14984,"custom_enum":1721,"key":"Below 10k","value":"Below 10k"},{"id":14989,"custom_enum":1721,"key":"1-2lakhs","value":"1-2lakhs"},{"id":14988,"custom_enum":1721,"key":"61k-90k","value":"61k-90k"},{"id":14987,"custom_enum":1721,"key":"41k-60k","value":"41k-60k"},{"id":14986,"custom_enum":1721,"key":"21k-40k","value":"21k-40k"},{"id":14985,"custom_enum":1721,"key":"11-20k","value":"11-20k"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+               <ion-option value="Above 2lakhs">Above 2lakhs </ion-option>
+               <ion-option value="Below 10k">Below 10k </ion-option>
+               <ion-option value="1-2lakhs">1-2lakhs </ion-option>
+               <ion-option value="61k-90k">61k-90k </ion-option>
+               <ion-option value="41k-60k">41k-60k </ion-option>
+               <ion-option value="21k-40k">21k-40k </ion-option>
+               <ion-option value="11-20k">11-20k </ion-option>
+            </ion-select>
+         </ion-item>
+         <ion-item name="stateitem" >
+            <ion-label color="primary" stacked>Please Select State</ion-label>
+            <ion-select (ionBlur)="checkBlur($event)" placeholder="Please Select State" data-readonly="False" data-label="Please Select State" data-id="state" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="state" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="state" name="state" data-displayorder="5" data-referjson='{"id":205547,"title":"state","description":null,"slug":"state","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"state","is_db_field":true,"max_length":100,"custom_enum":{"id":1726,"title":"State","description":"","slug":"state","project":79,"key_values":[{"id":15004,"custom_enum":1726,"key":"Karnataka","value":"Karnataka"},{"id":15003,"custom_enum":1726,"key":"Kerala","value":"Kerala"},{"id":15002,"custom_enum":1726,"key":"TamilNadu","value":"TamilNadu"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+               <ion-option value="Karnataka">Karnataka </ion-option>
+               <ion-option value="Kerala">Kerala </ion-option>
+               <ion-option value="TamilNadu">TamilNadu </ion-option>
+			   <ion-option value="Andhra">Andhra Pradesh </ion-option>	 
+            </ion-select>
+         </ion-item>
+         <ion-item name="cityitem" >
+            <ion-label color="primary" stacked>Please Select city</ion-label>
+            <ion-select  placeholder="Please Select city" (ionBlur)="checkBlur($event)" data-readonly="False" data-label="Please Select city" data-id="city" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="city" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="city" name="city" data-displayorder="6" data-referjson='{"id":205548,"title":"city","description":null,"slug":"city","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"city","is_db_field":true,"max_length":0,"custom_enum":null,"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+            <ion-option value="Karnataka">Bengaluru</ion-option>
+               <ion-option value="Kerala">Chennai</ion-option>
+               <ion-option value="TamilNadu">Cochin</ion-option>
+			   <ion-option value="Hyderabad">Hyderabad</ion-option>	 
+            </ion-select> 
+         </ion-item>
+         <ion-item  name="pincodeitem">
+            <ion-label color="primary" stacked>Type Your Pincode</ion-label>
+            <ion-input type="number" placeholder="Type Your Pincode" data-readonly="False" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-modeOfEntry="tbe" data-suggestive="True" data-id="pincode" id="pincode" name="pincode"  class="textpro" (ionFocus)="onFocus($event)" (ionBlur)="checkBlur($event)"></ion-input>
+         </ion-item>
+         <ion-item name="vehicleitem" >
+            <ion-label color="primary" stacked>Do You Own Vechile ?</ion-label>
+            <ion-select (ionBlur)="checkBlur($event)" placeholder="Do You Own Vechile ?" data-readonly="False" data-label="Do You Own Vechile ?" data-id="vehicle" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="vehicle" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="vehicle" name="vehicle" data-displayorder="8" data-referjson='{"id":205552,"title":"vehicle","description":null,"slug":"vehicle","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"IntegerField","related_table_component":[],"db_column":"vehicle","is_db_field":true,"max_length":255,"custom_enum":{"id":1722,"title":"Vehicle","description":"","slug":"vehicle","project":79,"key_values":[{"id":14994,"custom_enum":1722,"key":"None","value":"None"},{"id":14993,"custom_enum":1722,"key":"Both","value":"Both"},{"id":14992,"custom_enum":1722,"key":"4wheeler","value":"4wheeler"},{"id":14991,"custom_enum":1722,"key":"2wheeler","value":"2wheeler"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+               <ion-option value="None">None </ion-option>
+               <ion-option value="Both">Both </ion-option>
+               <ion-option value="4wheeler">4wheeler </ion-option>
+               <ion-option value="2wheeler">2wheeler </ion-option>
+            </ion-select>
+         </ion-item>
+         <ion-item name="shoppingitem" >
+            <ion-label color="primary" stacked>Where do you Shop?</ion-label>
+            <ion-select (ionBlur)="checkBlur($event)" placeholder="Where do you Shop?" data-readonly="False" data-label="Where do you Shop?" data-id="shopping" data-required="True" data-allowduplicate="True" data-hidden="False" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="shopping" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="shopping" name="shopping" data-displayorder="9" data-referjson='{"id":205553,"title":"shopping","description":null,"slug":"shopping","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"shopping","is_db_field":true,"max_length":255,"custom_enum":{"id":1723,"title":"Shopping","description":"","slug":"shopping","project":79,"key_values":[{"id":14997,"custom_enum":1723,"key":"Online","value":"Online"},{"id":14996,"custom_enum":1723,"key":"Grocery Shop","value":"Grocery Shop"},{"id":14995,"custom_enum":1723,"key":"SM","value":"SM"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+               <ion-option value="Online">Online </ion-option>
+               <ion-option value="Grocery Shop">Grocery Shop </ion-option>
+               <ion-option value="SM">SM </ion-option>
+            </ion-select>
+         </ion-item>
+         <ion-list data-event='""'>
+            <ion-item name="brandusageitem" hidden>
+               <ion-label color="primary" stacked>Have your Tried Brand X?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="Have your Tried Brand X?" data-readonly="False" data-label="Have your Tried Brand X?" data-id="brandusage" data-required="False" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="brandusage" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="brandusage" name="brandusage" data-displayorder="1" data-referjson='{"id":205554,"title":"brand usage","description":null,"slug":"brandusage","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"brandusage","is_db_field":true,"max_length":255,"custom_enum":{"id":1784,"title":"brandusage","description":"","slug":"brandusage","project":79,"key_values":[{"id":15171,"custom_enum":1784,"key":"No","value":"No"},{"id":15170,"custom_enum":1784,"key":"Yes","value":"Yes"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="No">No </ion-option>
+                  <ion-option value="Yes">Yes </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="brandexpitem" hidden>
+               <ion-label color="primary" stacked>what You Like in Brand X ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="what You Like in Brand X ?" data-readonly="False" data-label="what You Like in Brand X ?" data-id="brandexp" data-required="False" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="brandexp" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="brandexp" name="brandexp" data-displayorder="2" data-referjson='{"id":205555,"title":"brand experience","description":null,"slug":"brandexp","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"brandexp","is_db_field":true,"max_length":255,"custom_enum":{"id":1785,"title":"brandexp","description":"","slug":"brandexp","project":79,"key_values":[{"id":15176,"custom_enum":1785,"key":"Texture","value":"Texture"},{"id":15175,"custom_enum":1785,"key":"Price","value":"Price"},{"id":15174,"custom_enum":1785,"key":"Package","value":"Package"},{"id":15173,"custom_enum":1785,"key":"color","value":"color"},{"id":15172,"custom_enum":1785,"key":"Taste","value":"Taste"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="Texture">Texture </ion-option>
+                  <ion-option value="Price">Price </ion-option>
+                  <ion-option value="Package">Package </ion-option>
+                  <ion-option value="color">color </ion-option>
+                  <ion-option value="Taste">Taste </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="samplerecitem" hidden>
+               <ion-label color="primary" stacked>Do You Want to Try Brand X ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="Do You Want to Try Brand X ?" data-readonly="False" data-label="Do You Want to Try Brand X ?" data-id="samplerec" data-required="True" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="samplerec" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="samplerec" name="samplerec" data-displayorder="3" data-referjson='{"id":205556,"title":"sample recieved","description":null,"slug":"samplerec","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"samplerec","is_db_field":true,"max_length":255,"custom_enum":{"id":1786,"title":"samplerec","description":"","slug":"samplerec","project":79,"key_values":[{"id":15178,"custom_enum":1786,"key":"No","value":"No"},{"id":15177,"custom_enum":1786,"key":"Yes","value":"Yes"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="No">No </ion-option>
+                  <ion-option value="Yes">Yes </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="sampletrailitem" hidden>
+               <ion-label color="primary" stacked>Do You Try Brand X Sample ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="Do You Try Brand X ?" data-readonly="False" data-label="Do You Try Brand X ?" data-id="sampletrail" data-required="False" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="sampletrail" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="sampletrail" name="sampletrail" data-displayorder="4" data-referjson='{"id":205557,"title":"sample trail","description":null,"slug":"sampletrail","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"sampletrail","is_db_field":true,"max_length":255,"custom_enum":{"id":1784,"title":"brandusage","description":"","slug":"brandusage","project":79,"key_values":[{"id":15171,"custom_enum":1784,"key":"No","value":"No"},{"id":15170,"custom_enum":1784,"key":"Yes","value":"Yes"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="No">No </ion-option>
+                  <ion-option value="Yes">Yes </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="sampleexpitem" hidden>
+               <ion-label color="primary" stacked>Did You Like The Sample ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="Did You Like The Sample ?" data-readonly="False" data-label="Did You Like The Sample ?" data-id="sampleexp" data-required="True" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="sampleexp" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="sampleexp" name="sampleexp" data-displayorder="5" data-referjson='{"id":205558,"title":"sample expreience","description":null,"slug":"sampleexp","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"sampleexp","is_db_field":true,"max_length":255,"custom_enum":{"id":1784,"title":"brandusage","description":"","slug":"brandusage","project":79,"key_values":[{"id":15171,"custom_enum":1784,"key":"No","value":"No"},{"id":15170,"custom_enum":1784,"key":"Yes","value":"Yes"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="No">No </ion-option>
+                  <ion-option value="Yes">Yes </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="samplefeatitem" hidden>
+               <ion-label color="primary" stacked>What Do You Like in Sample ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="What Do You Like in Sample ?" data-readonly="False" data-label="What Do You Like in Sample ?" data-id="samplefeat" data-required="False" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="samplefeat" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="samplefeat" name="samplefeat" data-displayorder="6" data-referjson='{"id":205559,"title":"sample features","description":null,"slug":"samplefeat","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"samplefeat","is_db_field":true,"max_length":255,"custom_enum":{"id":1785,"title":"brandexp","description":"","slug":"brandexp","project":79,"key_values":[{"id":15176,"custom_enum":1785,"key":"Texture","value":"Texture"},{"id":15175,"custom_enum":1785,"key":"Price","value":"Price"},{"id":15174,"custom_enum":1785,"key":"Package","value":"Package"},{"id":15173,"custom_enum":1785,"key":"color","value":"color"},{"id":15172,"custom_enum":1785,"key":"Taste","value":"Taste"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="Texture">Texture </ion-option>
+                  <ion-option value="Price">Price </ion-option>
+                  <ion-option value="Package">Package </ion-option>
+                  <ion-option value="color">color </ion-option>
+                  <ion-option value="Taste">Taste </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="productpuritem" hidden>
+               <ion-label color="primary" stacked>Have You Purchased Product after Trying Sample ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="Have You Purchased Product after Trying Sample ?" data-readonly="False" data-label="Have You Purchased Product after Trying Sample ?" data-id="productpur" data-required="False" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="productpur" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="productpur" name="productpur" data-displayorder="7" data-referjson='{"id":205560,"title":"product purchased","description":null,"slug":"productpur","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"productpur","is_db_field":true,"max_length":255,"custom_enum":{"id":1784,"title":"brandusage","description":"","slug":"brandusage","project":79,"key_values":[{"id":15171,"custom_enum":1784,"key":"No","value":"No"},{"id":15170,"custom_enum":1784,"key":"Yes","value":"Yes"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="No">No </ion-option>
+                  <ion-option value="Yes">Yes </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="purclocationitem" hidden>
+               <ion-label color="primary" stacked>From Where You Purchased Product ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="From Where You Purchased Product ?" data-readonly="False" data-label="From Where You Purchased Product ?" data-id="purclocation" data-required="False" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="purclocation" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="purclocation" name="purclocation" data-displayorder="8" data-referjson='{"id":205561,"title":"purclocation","description":null,"slug":"purclocation","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"purclocation","is_db_field":true,"max_length":255,"custom_enum":{"id":1787,"title":"purclocation","description":"","slug":"purclocation","project":79,"key_values":[{"id":15181,"custom_enum":1787,"key":"Online","value":"Online"},{"id":15180,"custom_enum":1787,"key":"Grocery","value":"Grocery"},{"id":15179,"custom_enum":1787,"key":"Super Market","value":"Super Market"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="Online">Online </ion-option>
+                  <ion-option value="Grocery">Grocery </ion-option>
+                  <ion-option value="Super Market">Super Market </ion-option>
+               </ion-select>
+            </ion-item>
+            <ion-item name="futurepuritem" hidden>
+               <ion-label color="primary" stacked>Will You Buy Product In Future ?</ion-label>
+               <ion-select (ionBlur)="checkBlur($event)" placeholder="Will You Buy Product In Future ?" data-readonly="False" data-label="Will You Buy Product In Future ?" data-id="futurepur" data-required="False" data-allowduplicate="True" data-hidden="True" data-sql="" data-expression="" data-validateexp="" data-projectid="3" data-widgettype="select" data-fieldname="futurepur" data-eformid="Survey" data-modeOfEntry="tbe" data-suggestive="True"  id="futurepur" name="futurepur" data-displayorder="9" data-referjson='{"id":205562,"title":"futurepur","description":null,"slug":"futurepur","sourcefield":"","source_table":"","table_slug":"mobilesurvey","table_name":"msurvey","component_type":"CharField","related_table_component":[],"db_column":"futurepur","is_db_field":true,"max_length":255,"custom_enum":{"id":1784,"title":"brandusage","description":"","slug":"brandusage","project":79,"key_values":[{"id":15171,"custom_enum":1784,"key":"No","value":"No"},{"id":15170,"custom_enum":1784,"key":"Yes","value":"Yes"}]},"text_field":"","value_field":"","nullable":true,"component_related_tables":[]}'>
+                  <ion-option value="No">No </ion-option>
+                  <ion-option value="Yes">Yes </ion-option>
+               </ion-select>
+            </ion-item>
+         </ion-list>
+      </ion-card>
+   </form>
+</ion-content>

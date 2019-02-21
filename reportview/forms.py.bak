@@ -1,0 +1,302 @@
+from django.forms import ModelForm
+
+from django.forms import formset_factory
+from django import forms
+from .models import Report,ReportParamField,ReportField,Query,ReportGrouping,Query,ReportAction,ReportPrintFormatAction,ReportPDF,ReportCSV,ReportHTML,ReportSubmit,ReportEpostMap
+from transactionview.models import Transactionview,Component
+    
+from rest_framework import  viewsets
+
+from django.forms import fields, models, formsets, widgets
+
+from django.db.models import Q
+from django.forms.widgets import HiddenInput
+import re
+
+class CleanUniqueField:
+    
+    def __init__(self, form, name, value):
+       
+        self.form = form
+        self.name = name
+        self.value = value
+
+    def validate(self):
+        
+
+        queryset = self.form._meta.model.objects
+        if self.form.instance.pk:
+            queryset = queryset.exclude(pk=self.form.instance.pk)
+
+        try:
+            queryset.get(**{self.name: self.value})
+        except self.form._meta.model.DoesNotExist:
+            pass
+            
+        else:
+            print "asf"
+            raise forms.ValidationError(
+                u'The %s is already exists.' % self.name)
+
+    
+
+
+class ReportForm(ModelForm):
+    class Meta:
+        model = Report
+        fields='__all__'
+        # fields = ['title', \
+        #     'description', \
+        #     'project', \
+        #     'report_header_line1', \
+        #     'report_header_line2', \
+        #     'report_header_line3', \
+        #     'report_footer_line1', \
+        #     'report_footer_line2', \
+        #     'report_footer_line3', \
+        #     'is_dashboard_report', \
+        #     'row_count',\
+        #     'queryset_filter',\
+        #     'is_hidden',\
+        #     'groupby_field',\
+        #     'report_type',\
+        #     'lines_per_page','filter_expression',\
+        #     'dont_repeat_reference_field','show_grand_total','enable_header','is_fly_report','parent_report_of_fly_report','is_graphical_report',      
+        #     'x_field','y_field','groupby_field','sumby_field','sum_on_value','view_type','min_field',\
+        #     'max_field','graph_type','fill_color','stroke_color','show_xy_axis',\
+        #     'is_box_report','icon','box_title','box_template','has_detail_view','detail_view_report','box_type','graphical_rpt_groupby_field'
+            
+        #     ]
+        exclude=['project','identifiers']
+
+    # def __init__(self,  *args, **kwargs):
+    #     self.project_slug = kwargs.pop('project_slug')
+    #     super(ReportForm, self).__init__(*args, **kwargs)        
+        
+    #     if self.instance.pk:
+    #         self.fields['graphical_rpt_groupby_field'].queryset = ReportField.objects.filter(report__id=self.instance.pk).order_by('title')
+    #         self.fields['groupby_field'].queryset = ReportField.objects.filter(report__id=self.instance.pk).order_by('title')
+    #         self.fields['dont_repeat_reference_field'].queryset = ReportField.objects.filter(report__id=self.instance.pk).order_by('title')
+    #         self.fields['max_field'].queryset = ReportField.objects.filter(report__id=self.instance.pk).order_by('title')
+    #         self.fields['min_field'].queryset = ReportField.objects.filter(report__id=self.instance.pk).order_by('title')
+    #         self.fields['sumby_field'].queryset = ReportField.objects.filter(report__id=self.instance.pk).order_by('title')
+    #     else:
+    #         self.fields['graphical_rpt_groupby_field'].queryset = ReportField.objects.none()
+    #         self.fields['groupby_field'].queryset = ReportField.objects.none()
+    #         self.fields['dont_repeat_reference_field'].queryset = ReportField.objects.none()     
+    #         self.fields['max_field'].queryset = ReportField.objects.none()
+    #         self.fields['min_field'].queryset = ReportField.objects.none() 
+    #         self.fields['sumby_field'].queryset = ReportField.objects.none() 
+    #     self.fields['parent_report_of_fly_report'].queryset = Report.objects.filter(project__slug = self.project_slug,is_fly_report ='True')
+    #     self.fields['detail_view_report'].queryset = Report.objects.filter(project__slug = self.project_slug)
+    # def clean_title(self):
+
+    #     title = self.cleaned_data.get('title')
+        
+
+    #     queryset = self._meta.model.objects
+    #     if self.instance.pk:
+    #         queryset = queryset.exclude(pk=self.instance.pk)
+
+    #     try:
+    #         print "comming"
+    #         queryset.get(title__iexact = title, project__slug=self.project_slug)
+    #     except self._meta.model.DoesNotExist:
+    #         pass           
+    #     else:
+    #         raise forms.ValidationError(
+    #             u'The %s is already exists.' % title)
+
+       
+    #     return title
+
+
+class ReportParamFieldForm(ModelForm):
+    class Meta:
+         model =ReportParamField
+         fields = '__all__'
+         # ['title', 
+         #          'slug',
+         #    'caption',
+         #    'description', 
+         #    'query', 
+         #    'display_order', 
+         #    'is_hidden', 
+         #    'no_of_decimal_digits', 
+         #    'allow_multiselect', 
+         #    'data_type', 
+         #    #'component_type', 
+         #    #'widget_type', 
+         #    #'related_table_component',
+         #    'value_field',
+         #    'display_field',
+         #    'resource_identifier',
+         #    'allow_empty', ]           
+         exclude = ['report'] 
+         
+    def __init__(self,  *args, **kwargs):
+        #self.report_id = kwargs.pop('report_id')
+        #user = kwargs.pop('user')
+        super(ReportParamFieldForm, self).__init__(*args, **kwargs)
+        #report=Report.objects.get(id=self.report_id)
+        self.fields['display_order'].required =False
+        
+
+class ReportFieldForm(ModelForm):
+    class Meta:
+        model = ReportField        
+        fields = ('__all__')
+        # ['report','title','slug','description','query','report_field','report_field_type','data_type','no_of_decimal_digits','show_running_total','show_total','is_hidden','apply_comma','dont_repeat','column_alignment','dont_show_zero','display_order',\
+        #           'template','resource_identifier','pivot_column_type','width','height','is_bold_font','color']
+        exclude = ['report']
+        
+    def __init__(self,  *args, **kwargs):
+        #self.report_id = kwargs.pop('report_id')
+        super(ReportFieldForm, self).__init__(*args, **kwargs)
+        self.fields['display_order'].required =False
+        #self.fields['caption'].required =False
+
+
+class QueryForm(ModelForm):
+    class Meta:
+        model=Query
+        fields = ['title', 'description','report','is_main_query','join_type','sql']
+        exclude = ['report','slug']
+
+
+class ReportGroupingForm(ModelForm):
+    class Meta:
+        model = ReportGrouping
+        fields ="__all__"
+        # ['report','groupby_field','caption_field','header_caption_template','footer_caption_template','display_order']
+        exclude = ['report']   
+        
+    #def __init__(self,  *args, **kwargs):
+        #self.report_id = kwargs.pop('report_id')
+        #super(ReportGroupingForm, self).__init__(*args, **kwargs)
+        #report_field_qs = ReportField.objects.filter(report__id=self.report_id).order_by('title')
+       
+        # self.fields['groupby_field'].queryset = report_field_qs
+        # self.fields['caption_field'].queryset = report_field_qs
+    
+    # def clean_groupby_field(self):
+
+    #     groupby_field = self.cleaned_data.get('groupby_field')
+    #     project=Report.objects.get(pk=self.report_id).project.slug
+        
+    #     if groupby_field:
+    #         queryset = self._meta.model.objects
+    #         if self.instance.pk:
+    #             queryset = queryset.exclude(pk=self.instance.pk)
+    
+    #         try:            
+    #             queryset.get(groupby_field = groupby_field, report__id=self.report_id,report__project__slug=project)
+    #         except self._meta.model.DoesNotExist:
+    #             pass
+               
+    #         else:
+    #             raise forms.ValidationError(
+    #                 u'The %s is already exists.' % groupby_field)
+    
+           
+    #         return groupby_field
+                         
+    # def clean_caption_field(self):
+
+    #     caption_field = self.cleaned_data.get('caption_field')
+    #     project=Report.objects.get(pk=self.report_id).project.id
+
+    #     if caption_field:
+    #         queryset = self._meta.model.objects
+    #         if self.instance.pk:
+    #             queryset = queryset.exclude(pk=self.instance.pk)
+    
+    #         try:            
+    #             queryset.get(caption_field = caption_field, report__id=self.report_id,report__project__slug=project)
+    #         except self._meta.model.DoesNotExist:
+    #             pass
+               
+    #         else:
+    #             raise forms.ValidationError(
+    #                 u'The %s is already exists.' % caption_field)
+           
+    #         return caption_field
+
+ACTION_TYPE_CHOICES=(
+        ('print_format','Print_Format'),
+        ('pdf','pdf'),
+        ('csv','csv'),
+        ('html','html'),
+        ('submit','Submit')
+)
+
+class ReportActionForm(forms.ModelForm):
+    class Meta:
+        model=ReportAction
+        fields="__all__"
+        exclude = ['action_type','report','title','description']
+
+    report_action = forms.MultipleChoiceField(choices=ACTION_TYPE_CHOICES, widget=forms.CheckboxSelectMultiple(attrs={'class': 'flat-red'}))
+
+
+        
+class ReportPrintFormatActionForm(ModelForm):
+    class Meta:
+        model= ReportPrintFormatAction 
+        fields=['title','report_type','report_params','expression','expression_postfix','description']
+        exclude=['report_action','report','project']     
+    
+    def __init__(self,  *args, **kwargs):
+        super(ReportPrintFormatActionForm, self).__init__(*args, **kwargs)
+        self.fields['expression_postfix'].widget =HiddenInput()
+
+
+
+class ReportPDFForm(ModelForm):
+    class Meta:
+        model=ReportPDF
+        fields="__all__"
+
+
+
+class ReportCSVForm(ModelForm):
+    class Meta:
+        model=ReportCSV
+        fields="__all__"
+
+
+
+class ReportHTMLForm(ModelForm):
+    class Meta:
+        model=ReportHTML
+        fields="__all__"                   
+    
+class ReportSubmitForm(ModelForm):
+    class Meta:
+        model=ReportSubmit
+        fields="__all__"
+        exclude = ['report','report_action']
+
+    def __init__(self, *args, **kwargs):
+        self.pid = kwargs.pop('pid')
+        super(ReportSubmitForm, self).__init__(*args, **kwargs)
+        view_list = Transactionview.objects.filter(projectid_id = self.pid)
+        self.fields['epost_target'].queryset = view_list
+
+class ReportEpostMapForm(ModelForm):
+    class Meta:
+        model = ReportEpostMap
+        fields = '__all__'
+        exclude = ['reportsubmit']
+
+    def __init__(self, *args, **kwargs):
+        self.reportid = kwargs.pop('reportid')
+        self.tx = kwargs.pop('tx')
+        super(ReportEpostMapForm, self).__init__(*args, **kwargs)
+        view_list = ReportField.objects.filter(report_id = self.reportid)
+        self.fields['source_ui_field'].queryset = view_list
+        #print("%s txview" %(self.tx))
+        if self.tx:
+            self.fields['target_ui_field'].queryset = Component.objects.filter(transactionviewid_id = self.tx)
+        else:
+            self.fields['target_ui_field'].queryset = Component.objects.none()

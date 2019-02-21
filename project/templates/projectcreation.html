@@ -1,0 +1,160 @@
+<!-- Create New Project -->
+
+
+{% extends 'main.html' %}
+{% load static %}
+{% block adminmenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+          <li class="treeview">
+          <a href="/usersetup/userindex/">
+            <i class="fa fa-user-plus"></i> <span>User Setup</span>
+            <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+            </span>
+          </a>
+        <li class="active treeview">
+          <a href="/project/projectindex/">
+            <i class="fa fa-folder"></i>
+            <span>Project Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="/schema/config/">
+            <i class="fa fa-database"></i> <span>DB Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        </li>
+        </ul>
+<!-- /.sidebar -->
+{% endblock adminmenu %}
+{% block contentmain %}
+<!-- Content Header (Page header) -->
+
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Please give following Informations</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" method="POST">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="pname">Project Name</label>
+                            <input type="text" class="form-control" id="pname" placeholder="Title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="desc">Description</label>
+                            <textarea class="form-control" id="desc" rows="3" placeholder="Description ..." name="description" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pname">Project Type</label>
+                                    {{form.ptype}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pname"> Application Type</label>
+                                    {{form.application_type}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pname"> Do you wish to have table and columns names appended by underscore?</label>
+                            
+                            <label class="switch">
+                                {{form.table_append_by_underscore}}
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="pname"> Is it MultiTenant Project?</label>
+                            <label class="switch">
+                                {{form.ismultitenant}}
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="pname"> Do you need verify IMEI number while login?</label>
+                            <label class="switch">
+                                {{form.imei_based_login}}
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                        <!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <!--  <button type="submit" class="btn btn-default">Cancel</button> -->
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+
+<!-- jQuery 2.2.3 -->
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+    
+              $select = $('#projectselect');
+                //request the JSON data and parse into the select element
+                debugger;
+                $.ajax({
+                  type :'GET',
+                  url: 'http://119.81.83.210:85/project_data/',
+                  withCredentials: true,
+                  dataType:'JSON',
+                  success:function(data){
+                    //clear the current content of the select
+                    console.log(eval(data));
+                      //var obj = $.parseJSON(data);
+                      console.log(data[0].title)
+                      $select.html('');
+                      $select.append('<option value="none"> None </option>');
+                        //iterate over the data and append a select option
+                      for (var i in data){
+                     
+                        $select.append('<option value=' + data[i].title+ '>' + data[i].title + '</option>');
+                        console.log(data[i].title);
+                    }
+                    $('#projectselect').val("----");
+                  },
+                  error:function(e,a){
+                    //if there is an error append a 'none available' option
+                    $select.html('<option id="-1">none available</option>');
+                  }
+              });
+     });
+    </script>
+
+  <script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+  })
+</script>  
+    {% endblock %}
+

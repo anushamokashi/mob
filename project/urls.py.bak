@@ -1,0 +1,36 @@
+from django.conf.urls import url
+from .views import projectindex,projectcreation,pdelete,pedit,getin,setUserInDB,editUserInDB,saveUserInDB,deleteUserInDB,createIonic,ionicProject,alreadyIonic,ionicPlatform,ionicPlugin,ionicService,ionicBuild,ionicPages,ionicapk,apkdownload,theming,ionicsplash,generatesplash,dbtosql,ionicNotify,resetapp,ionicSMSSave,emailConfig,googleAPISetup,fontfile,fontfile_delete
+
+urlpatterns = [
+    url(r'^projectindex/$', projectindex, name='projectindex'),
+    url(r'^projectcreation/$', projectcreation, name='projectcreation'),
+    url(r'^pdelete/(?P<projectid>.*)$', pdelete, name='pdelete'),
+    url(r'^pedit/(?P<projectid>.*)$', pedit, name='pedit'),
+    url(r'^getin/(?P<projectid>.*)$', getin, name='getin'),
+    url(r'^setUserInDB/$', setUserInDB, name='setUserInDB'),
+    url(r'^editUserInDB/(?P<transactionid>\d+)$', editUserInDB, name='editUserInDB'),
+    url(r'^saveUserInDB/$', saveUserInDB, name='saveUserInDB'),
+    url(r'^deleteUserInDB/(?P<projectwiseusersetupid>\d+)$', deleteUserInDB, name='deleteUserInDB'),
+    url(r'^createIonic/(?P<projectid>.*)$', createIonic, name='createIonic'),
+    url(r'^ionicProject/(?P<projectid>.*)$', ionicProject, name='ionicProject'),
+    url(r'^alreadyIonic/(?P<projectid>.*)$', alreadyIonic, name='alreadyIonic'),
+    url(r'^ionicPlatform/(?P<projectid>.*)$', ionicPlatform, name='ionicPlatform'),
+    url(r'^ionicPlugin/(?P<projectid>.*)$', ionicPlugin, name='ionicPlugin'),
+    url(r'^ionicService/(?P<projectid>.*)$', ionicService, name='ionicService'),
+    url(r'^ionicNotify/(?P<projectid>.*)$', ionicNotify, name='ionicNotify'),
+    url(r'^ionicSMSSave/(?P<projectid>.*)$', ionicSMSSave, name='ionicSMSSave'),
+    url(r'^emailConfig/(?P<projectid>.*)$', emailConfig, name='emailConfig'),
+    url(r'^ionicBuild/(?P<projectid>.*)$', ionicBuild, name='ionicBuild'),
+    url(r'^ionicPages/(?P<projectid>.*)$', ionicPages, name='ionicPages'),
+    url(r'^ionicapk/(?P<projectid>.*)$', ionicapk, name='ionicapk'),
+    url(r'^apkdownload/(?P<projectid>.*)$', apkdownload, name='apkdownload'),
+    url(r'^theming/(?P<projectid>.*)$', theming, name='theming'),
+    url(r'^ionicsplash/(?P<projectid>.*)$', ionicsplash, name='ionicsplash'),
+    url(r'^fontfile/(?P<projectid>.*)$', fontfile, name='fontfile'),
+    url(r'^fontfile_delete/(?P<projectid>.*)$', fontfile_delete, name='fontfile_delete'),
+    url(r'^generatesplash/(?P<projectid>.*)$', generatesplash, name='generatesplash'),
+    url(r'^dbtosql/$', dbtosql, name='dbtosql'),
+    url(r'^resetApp/(?P<projectid>.*)$', resetapp, name='resetapp'),
+    url(r'^googleAPISetup/(?P<projectid>.*)$', googleAPISetup, name='googleAPISetup'),
+    
+]

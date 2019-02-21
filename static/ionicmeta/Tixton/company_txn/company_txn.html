@@ -1,0 +1,12 @@
+<ion-content ><ion-row><ion-col col-2></ion-col><ion-col col-8><ion-title class="no_header_title"><div class="title_color_primary">company</div></ion-title></ion-col><ion-col col-2><button ion-button icon-end clear class="icon_logout" (click)="logout()"><ion-icon name="exit"></ion-icon></button></ion-col></ion-row><form id="myForm" name="myForm" data-eformid="company_txn"><ion-list class="card_list_padding"><ion-list  radio-group class="radio-group list_group" [(ngModel)]="preset_value.com_code" (ionChange)="checkChange($event,'com_code')" id="com_code" name="com_code" data-readonly="False" data-required="False" data-allowduplicate="False" data-hidden="False" data-sql='Select companydesc,compcode from companymast;' data-sqldbtype="server" data-sqlvalue="compcode" data-sqlvaluedependent="False" data-expression="" data-validateexp="" data-id="com_code" data-projectid="16" data-fieldname="com_code" data-eformid="company" readonly="False"  data-modeOfEntry="tbe" data-displayorder="1" data-suggestive="False" data-referjson='{"id":1150,"title":"comnay_code","txtabledetailid":"sec_comp","datatype":"CharField","field_slug":"com_code","isdbfield":true,"enum_meta":[]}' >
+
+								<ion-item>
+									<ion-label color="dark">Select Company</ion-label>
+								</ion-item>
+								<ng-container *ngIf="optionsJson['com_code'] != null ">
+									<ion-item *ngFor="let item of optionsJson['com_code']">
+										<ion-label>{{item['companydesc']}}</ion-label>
+										<ion-radio value="{{item['compcode']}}"></ion-radio>
+									</ion-item>
+								</ng-container>
+							</ion-list><ion-item ><button ion-button block (click)="buttonClick($event)" data-readonly="False" data-label="View" data-id="c_but" data-required="False" data-allowduplicate="True" data-hidden="False" data-sql="" data-sqldbtype="" data-sqlvalue="" data-sqlvaluedependent="False" data-expression="txnbuttonaction({'eupdate','MenuPage','com_code:COMPANYID'})" data-validateexp="" data-modeOfEntry="tbe" data-suggestive="False" id="c_but" data-referjson='{"id":1151,"title":"com_but","txtabledetailid":"sec_comp","datatype":"CharField","field_slug":"c_but","isdbfield":true,"enum_meta":[]}'>View</button></ion-item></ion-list></form></ion-content>

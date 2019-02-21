@@ -1,0 +1,25 @@
+<table id="colmaptbnew" class="table table-bordered table-striped" style="border:1px solid lightblue">
+              <thead>
+                <tr class="bg-light-blue">
+                  <th>Source Field</th>
+                  <th>Target Field</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody> 
+                {% for col in colmap %}
+                <tr>
+                  <td>{{col.sourcefield}}</td>
+                  <td>{{col.targetfield}}</td>
+                  <td>
+                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" value="Edit" data-target="#editcolumn-mapping" id="edit_columnmap" data-cmapid={{col.id}} data-tmapid={{tablemapid}}><i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-xs" id="columnmapdelete" data-cmapid={{col.id}} data-tmapid={{tablemapid}} ><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+               </tr>  
+               {% endfor %}               
+             </tbody>
+           </table>

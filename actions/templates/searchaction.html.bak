@@ -1,0 +1,47 @@
+<!-- Save Action from html actions.html -->
+{% load static %}
+<div class="modal fade" id="actionmodelbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form id="searchform">
+    {% csrf_token %}
+    <div class="col-lg-12 col-xs-2">
+        <h3 class="box-title">Add Search Actions</h3></div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Title:</label>
+        <input type="text" class="form-control" name="title" id="txname" value="{{ form.title.value|default_if_none:'' }}">
+        <p id="validationmsg" style="color:red;font-weight: 20px;"></p>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Icon cls:</label>
+        {{form.iconcls}}
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Sql:</label>
+        <textarea class="form-control" name="sql" id="expression">{{form.sql.value|default_if_none:''}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Sort Type:</label>
+        {{form.sort_type}}
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Sort Field:</label>
+        <input type="text" class="form-control" name="sort_field" id="sort_field" value="{{ form.sort_field.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Chunk Size:</label>
+        <input type="number" class="form-control" name="chunk_size" id="chunk_size" value="{{ form.chunk_size.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Page Size:</label>
+        <input type="number" class="form-control" name="page_size" id="page_size" value="{{ form.page_size.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Copy Tx View:</label>
+        {{form.copy_tx_view}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="searchaction" data-actiontype="{{action_type}}" data-transactionviewid="{{viewid}}">Save</button>
+    </div>
+</form>

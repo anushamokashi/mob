@@ -1,0 +1,22 @@
+<div class="modal fade" id="addDbprobody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+   <form id="form" method="POST" action ="{% url 'appmodal' %}">
+    {% csrf_token %}
+    <div class="form-group">
+     <label for="exampleInputtitle">Title</label>
+     <input type="name" class="form-control" name="title" id="exampleInputtitle" placeholder="Title">
+   </div>
+   <div class="form-group">
+     <label for="exampleInputappdb">Appdb</label>
+     {{ form.appdb }}
+   </div>
+    <div class="form-group">
+     <label for="exampleInputadmindb">ClientDb</label>
+     {{ form.clientdb }}
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="sumbit" class="btn btn-success">Save</button>
+  </div>
+</form>

@@ -1,0 +1,41 @@
+{% load static %}
+<!-- Update model from html transindex.html -->
+<div class="modal fade" id="viewmodelbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form method="POST" action="/transactionview/viewedit/{{viewid}}">
+    {% csrf_token %} 
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Title:</label>
+        <input type="text" class="form-control" name="title" id="title" value="{{ form.title.value|default_if_none:'' }}" readonly>
+        <p id="validationmsg" style="color:red;font-weight: 20px;"></p>
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Description:</label>
+        <textarea class="form-control"  name="description">{{form.description.value}}</textarea>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>View Type:</label>
+                {{form.viewtype}}
+            </div> 
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Save Type:</label>
+                {{form.savetype}}
+            </div> 
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="message-text" class="control-label">Expression:</label>
+        <textarea class="form-control" rows="6"  name="expression">{{form.expression.value |default_if_none:''}}</textarea>
+    </div> 
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <button type="sumbit" class="btn btn-success">Save</button>
+  </div>
+</form>

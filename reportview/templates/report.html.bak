@@ -1,0 +1,346 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+
+{% block maincontent %}
+
+<section class="content-header">
+    <h1>
+        {{project_title}} Report
+    </h1>
+    <ol class="breadcrumb">
+        <li> <a href="/transaction/transmain/"> <i class="fa fa-dashboard"> </i> Home </a> </li>
+        <li class="active"> Report</li>
+    </ol>
+</section>
+
+<!-- label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+  <!-- small box -->
+</div>
+
+<div class="box-body">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        
+                        <div class="col-lg-10 col-xs-2">
+                             <h3 class="box-title"> Report </h3>
+                        </div>
+                            
+                        <button type="button" style="width:80px;" data-toggle="modal" data-target="#reportModal" data-whatever="" class="btn bg-blue" data-parentproject ="{{parentproject}}" data-fromdb="{{report_ser_json}}" onclick="addreport(event)"> Add New </button>
+                            
+                        <!--  Model content for transcation add -->
+                        <div class="modal fade" id="reportModal" role="dialog" aria-labelledby="reportModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" > <span aria-hidden="true"> &times; </span> </button>
+                                        <h4 class="modal-title" id="reportModalLabel"> New Report </h4>
+                                    </div>
+
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">                                              
+                                            <div class="form-group">
+                                                <label>Parent Report:</label>
+                                                <select class="form-control select2" id="people" style="width:100%" name="parent_report_ref_id">
+                                                </select>
+                                            </div>
+                                            
+                                            <div>
+                                                <input type="hidden" class="form-control reportid" name="reportid" value="">
+                                            </div>
+                                            
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="sumbit" class="btn btn-success savereport" data-parentproject ={{parentproject}}>Save</button>
+                                                <button type="sumbit" class="btn btn-success updatereport" data-parentproject ={{parentproject}}>Update</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>      
+                        </div>
+                    </div>
+
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        {% if reports %}
+                            <table id="reportTable" class="table table-bordered table-striped" style="border:1px solid lightblue">
+                                <thead>
+                                    <tr class="bg-light-blue">
+                                        <th>Report Title</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    {% for report in reports %}
+                                    <tr>
+                                        <td>{{report.report_title}}</td>
+                                        <td style="display:none;"> {{report.id}} </td>
+                                        <td>
+                                            <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" value="Edit"  data-target="#reportModal" data-reportpk="{{report.id}}" data-reportid="{{report.parent_report_ref_id}}" data-reporttitle="{{report.report_title}}" data-parentproject ="{{parentproject}}" data-fromdb="{{report_ser_json}}" onclick="editreport(event)" ><i class="glyphicon glyphicon-pencil"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <a href="/report/delReport/{{report.id}}" data-confirm="Are you sure you want to delete?"> <button type="button" class="btn btn-danger btn-xs" > <i class="glyphicon glyphicon-trash"> </i> </button> </a>
+                                        </td>
+                                    </tr>  
+                                    {% endfor %}               
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p> There are no reports available. </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+     
+
+
+
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script >
+  
+    $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+    })
+
+    function addreport(event){
+        $("#reportModalLabel").text("New Report");
+        $(".savereport").parent().find(":button.updatereport").hide();
+        $(".updatereport").parent().find(":button.savereport").show();
+        $select = $('#people');
+       
+        debugger;
+        //request the JSON data and parse into the select element
+        var parent_project = event.currentTarget.attributes['data-parentproject'].nodeValue
+        var stored_data = event.currentTarget.attributes['data-fromdb'].nodeValue
+        var componentdata = JSON.parse(stored_data);
+        console.log(componentdata);
+        $(".reportid").text("");
+        
+        $.ajax({
+            type :'POST',
+            url: 'http://192.168.124.18:82/report_list_data/',
+            data:{'parentproject':parent_project},
+            dataType:'JSON',
+            success:function(data){
+                debugger;
+                console.log(data);
+                $select.html('');
+
+                if(stored_data == "[]"){
+                    for (var j in data){
+                        $select.append('<option value=' + data[j].id + '>' + data[j].title + '</option>');
+                    }
+                    $('#people').val("----");
+                }
+                else{
+                    var stored_data_title = [];
+                    for (var j = 0;j < componentdata.length; j++){
+                        stored_data_title.push(componentdata[j].report_title);
+                    }
+                    console.log(stored_data_title);
+
+                    for (var i = 0; i < data.length; i++) {
+                        if(stored_data_title.indexOf(data[i].title) === -1){
+                            console.log(stored_data_title.indexOf(data[i].title))
+                            $select.append('<option value=' + data[i].id + '>' + data[i].title + '</option>');
+                        }  
+                    }
+                    $('#people').val("----");
+                }
+            },
+            error:function(){
+                debugger;
+            //if there is an error append a 'none available' option
+            $select.html('<option id="-1">none available</option>');
+            }
+        });
+    };
+
+    $('.savereport').click(function(e){
+       
+        var parent_project = e.currentTarget.attributes['data-parentproject'].nodeValue
+        var parent_report_id =  $("#people option:selected").val()
+        var report_title =  $("#people option:selected").text()
+        var meta_data;
+        var parentdata = {
+				'parentproject' : parent_project,
+				'parent_report_id' : parent_report_id,
+		};
+
+        $.ajax({
+            type :'POST',
+            url: 'http://192.168.124.18:82/report_meta_data/',
+            data: parentdata,
+            async:false,
+            success:function(meta){
+                debugger;
+                console.log(meta);
+                meta_data = meta;
+                //alert("successfully fetch data");
+
+                var values = {
+                    report_title : report_title,
+                    meta_data : meta_data,
+                    parent_report_id : parent_report_id,
+                };
+                
+                $.ajax({
+                    type :'POST',
+                    url: "{% url 'saveReport' %}",
+                    data: values,
+                    success:function(res){
+                        debugger;
+                        if (res == "Success"){
+                            alert("Saved Successfully");
+                        }
+                        else{
+                            alert("Failuer to save");
+                        }
+                    },
+                    error:function(res){
+                        alert("Doesnot post save function");
+                    }
+                });
+            },
+            error:function(){
+               
+                alert("failure to fetch data");
+            }
+        });
+    });
+
+
+    function editreport(event){
+        $("#reportModalLabel").text("Edit Report");
+        $(".savereport").parent().find(":button.updatereport").show();
+        $(".updatereport").parent().find(":button.savereport").hide();
+        
+        $select = $('#people');
+   
+        debugger;
+        //request the JSON data and parse into the select element
+        var parent_project = event.currentTarget.attributes['data-parentproject'].nodeValue
+        var selected_report_title = event.currentTarget.attributes['data-reporttitle'].nodeValue
+        var selected_report_id = event.currentTarget.attributes['data-reportid'].nodeValue
+        var selected_report_pk = event.currentTarget.attributes['data-reportpk'].nodeValue   
+        var stored_data = event.currentTarget.attributes['data-fromdb'].nodeValue
+        var componentdata = JSON.parse(stored_data);
+        console.log(componentdata);
+        $select.append('<option selected="selected" value='+selected_report_id +'>' + selected_report_title + '</option>');
+        $(".reportid").text(selected_report_pk);
+        $.ajax({
+            type :'POST',
+            url: 'http://119.81.83.210:85/report_list_data/',
+            data:{'parentproject':parent_project},
+            dataType:'JSON',
+            success:function(data){
+                debugger;
+                console.log(data);
+                
+                var stored_data_title = [];
+                for (var j = 0;j < componentdata.length; j++){
+                    stored_data_title.push(componentdata[j].report_title);
+                }
+                console.log(stored_data_title);
+
+                for (var i = 0; i < data.length; i++) {
+                    if(stored_data_title.indexOf(data[i].title) === -1){
+                        console.log(stored_data_title.indexOf(data[i].title))
+                        $select.append('<option value=' + data[i].id + '>' + data[i].title + '</option>');
+                    }  
+                }
+                
+                    
+                
+            },
+            error:function(){
+            //if there is an error append a 'none available' option
+            $select.html('<option id="-1">none available</option>');
+            }
+        });
+    };
+
+
+    $('.updatereport').click(function(e){
+        var pk = $(".reportid").text()
+        var parent_project = e.currentTarget.attributes['data-parentproject'].nodeValue
+        var parent_report_id =  $("#people option:selected").val()
+        var report_title =  $("#people option:selected").text()
+        var meta_data;
+        var parentdata = {
+				'parentproject' : parent_project,
+				'parent_report_id' : parent_report_id,
+		};
+
+        $.ajax({
+            type :'POST',
+            url: 'http://192.168.124.18:82/report_meta_data/',
+            data: parentdata,
+            async:false,
+            success:function(meta){
+                debugger;
+                console.log(meta);
+                meta_data = meta;
+                //alert("successfully fetch data");
+
+                var values = {
+                    report_title : report_title,
+                    meta_data : meta_data,
+                    parent_report_id : parent_report_id,
+                    pk : pk
+                };
+                
+                $.ajax({
+                    type :'POST',
+                    url: "{% url 'updateReport' %}",
+                    data: values,
+                    success:function(res){
+                        debugger;
+                         //$(this).attr("disabled", true);
+                       //alert("successfully saved");
+                    },
+                    error:function(res){
+                        alert("failure to save");
+                    }
+                });
+            },
+            error:function(){
+               
+                alert("failure to fetch data");
+            }
+        });
+    });
+
+    
+    $(document).ready(function() {
+        $('a[data-confirm]').on('click',function(e) {
+            e.preventDefault();
+            var href = $(this).attr('href');
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+            } 
+            $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+            $('#dataConfirmOK').attr('href', href);
+            $('#dataConfirmModal').modal({show:true});
+            return false;
+        });
+    });
+    
+    
+</script>
+
+{% endblock %}

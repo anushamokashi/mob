@@ -1,0 +1,17 @@
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { IonicStorageModule } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { HttpModule } from '@angular/http';
+import { Network } from '@ionic-native/network';
+import { SQLite} from '@ionic-native/sqlite';
+import { SQLitePorter } from '@ionic-native/sqlite-porter';
+import { Toast } from '@ionic-native/toast';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Camera } from '@ionic-native/camera';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
+import { Base64 } from '@ionic-native/base64';
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
+end

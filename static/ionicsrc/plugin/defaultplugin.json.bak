@@ -1,0 +1,69 @@
+{
+	"plugins": {
+		"sqlite": {
+			"plugin": "ionic cordova plugin add cordova-sqlite-storage",
+			"npm": "npm install --save @ionic-native/sqlite"
+		},
+		"porter": {
+			"plugin": "ionic cordova plugin add uk.co.workingedge.cordova.plugin.sqliteporter",
+			"npm": "npm install --save @ionic-native/sqlite-porter"
+		},
+		"newtork": {
+			"plugin": "ionic cordova plugin add cordova-plugin-network-information",
+			"npm": "npm install --save @ionic-native/network"
+		},
+		"file": {
+			"plugin": "ionic cordova plugin add cordova-plugin-file@5.0.0",
+			"npm": "npm install --save @ionic-native/file"
+		},
+		"transfer": {
+			"plugin": "ionic cordova plugin add cordova-plugin-file-transfer",
+			"npm": "npm install --save @ionic-native/file-transfer"
+		},
+		"toast": {
+			"plugin": "ionic cordova plugin add cordova-plugin-x-toast",
+			"npm": "npm install --save @ionic-native/toast"
+		},
+		"status": {
+			"plugin": "ionic cordova plugin add cordova-plugin-statusbar",
+			"npm": "npm install --save @ionic-native/status-bar"
+		},
+		"locnot": {
+			"plugin": "ionic cordova plugin add cordova-plugin-local-notification",
+			"npm": "npm install --save @ionic-native/local-notifications"
+		},
+		"scan": {
+			"plugin": "ionic cordova plugin add phonegap-plugin-barcodescanner",
+			"npm": "npm install --save @ionic-native/barcode-scanner"
+		},
+		"camera": {
+			"plugin": "ionic cordova plugin add cordova-plugin-camera",
+			"npm": "npm install --save @ionic-native/camera"
+		},
+		"imagepicker": {
+			"plugin": "ionic cordova plugin add cordova-plugin-telerik-imagepicker",
+			"npm": "npm install --save @ionic-native/image-picker"
+		},
+		"filechooser": {
+			"plugin": "ionic cordova plugin add cordova-plugin-filechooser",
+			"npm" : "npm install --save @ionic-native/file-chooser"
+		},
+		"filepath":{
+			"plugin" : "ionic cordova plugin add cordova-plugin-filepath",
+			"npm" : "npm install --save @ionic-native/file-path"
+		},
+		"base64":{
+			"plugin" : "ionic cordova plugin add com-badrit-base64",
+			"npm" : "npm install --save @ionic-native/base64"
+		},
+		"SpeechRecognition":{
+			"plugin" : "ionic cordova plugin add cordova-plugin-speechrecognition",
+			"npm" : "npm install --save @ionic-native/speech-recognition"
+		},
+		"onesignal":{
+			"plugin" : "ionic cordova plugin add onesignal-cordova-plugin",
+			"npm" : "npm install --save @ionic-native/onesignal"
+		}
+		
+	}
+}

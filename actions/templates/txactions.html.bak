@@ -1,0 +1,234 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+{% block sidemenu  %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu">
+  <!-- <li class="treeview">
+    <a href="{% url 'transindex' %}">
+      <i class="fa fa-file-text"></i> <span>Transaction</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li> -->
+
+  <li class="treeview">
+    <a href="/transactionview/transview/{{transaction_id}}/{{project_id}}">
+        <i class="fa fa-arrow-circle-left"></i> <span>Back</span>
+    </a>
+  </li>
+  <li class="treeview">
+    <a href="/transactionview/viewcomponent/{{viewid}}">
+      <i class="fa  fa-file-text"></i> <span>View</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li>
+  <li class="active treeview">
+    <a href="/actions/addactions/{{viewid}}">
+      <i class="fa fa-get-pocket"></i> <span>Action</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li>
+  </li>
+    {% if view.createpage %}
+    <li class="bg-green-active" id="createIoniclb">
+        <a id="generate_page" onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="view">
+            <i class="fa fa-product-hunt"></i> <span>Generate Page</span>
+            <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+        </a>
+    </li>
+     {% else %}
+    <li class="bg-blue" id="createIoniclb">
+        <a id="generate_page" onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="view">
+            <i class="fa fa-product-hunt"></i> <span>Generate Page</span>
+            <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+        </a>
+    </li>
+    {% endif %}
+</ul>
+<!-- /.sidebar -->
+{% endblock sidemenu %}
+
+{% block maincontent %}
+<section>
+    <div id="divErrorMessages"></div>
+    <div id="divResults">
+    </div>
+</section>
+
+<section class="content-header">
+
+  <h1>
+    Actions
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="{% url 'transindex' %}"><i class="fa fa-file-text"></i> Transaction</a></li>
+        <li><a href="/transactionview/transview/{{transaction_id}}/{{project_id}}"><i class="fa fa-file-text"></i> Transaction View</a></li>
+    <li class="active"> {{view.title}}</li>
+  </ol>
+</section>
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+  <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <div class="col-lg-10 col-xs-2"><h3 class="box-title">Actions </h3></div>
+            <button type="button"  data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#exampleModal" data-whatever="" class="btn bg-blue checkbox" data-actiontype ="{{action_type}}" >Add Actions</button>
+            <!--  Model content for transcation add -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Add Actions</h4>
+                  </div>
+
+                  <form method="POST" action="/actions/addactions/{{viewid}}">
+                    {% csrf_token %}
+                    <div class="modal-body">  
+                      <div class="form-group">
+                        <label>Actions:</label>
+                        {{form.actiontype}}
+                      </div>
+                      <div>
+                        <input type="hidden" class="form-control" name="displayorder" value=0>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="sumbit" class="btn btn-success" data-viewid={{viewid}}>ADD</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>      
+            </div>
+          </div>
+
+          <!-- /.box-header -->
+          <div class="box-body table-responsive">
+            {% if action_type %}
+            <table id="example2" class="table table-bordered table-striped" style="border:1px solid lightblue">
+              <thead>
+                <tr class="bg-light-blue">
+                  <th>Action Type</th>
+                  <th>Config</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody> 
+                {% for action in action_type %}
+                <tr>
+                  <td>{{action.actiontype}}</td>
+                  <td>
+                    <button type="button" class="btn bg-navy btn-xs" data-toggle="modal" data-backdrop="static" data-keyboard="false" value="Edit" data-target="#actionModal" id="action_modal" data-transactionid={{action.transactionviewid_id}}
+                    data-actiontype={{action.actiontype}}><i class="glyphicon glyphicon-cog"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <a href="/actions/delete_actiontype/{{action.id}}/{{viewid}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" ><i class="glyphicon glyphicon-trash"></i></button></a>
+                  </td>
+                   </tr>  
+               {% endfor %}               
+             </tbody>
+           </table>
+           {% else %}
+           <p> There are no Actions</p>
+           {% endif %}
+         </div>
+         <!-- /.box-body -->
+       </div>
+       <!-- /.box -->
+     </div>
+     <!-- /.col -->
+   </div>
+   <!-- /.row -->
+ </section>
+ <!-- /.content -->
+ <div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body" id="actionmodelbody">
+        <!-- content goes here -->
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.box-body -->   
+</div>
+
+ <div class="example-modal" >
+        <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+     
+<div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+ <div id="floatingBarsG">
+    <div class="blockG" id="rotateG_01"></div>
+    <div class="blockG" id="rotateG_02"></div>
+    <div class="blockG" id="rotateG_03"></div>
+    <div class="blockG" id="rotateG_04"></div>
+    <div class="blockG" id="rotateG_05"></div>
+    <div class="blockG" id="rotateG_06"></div>
+    <div class="blockG" id="rotateG_07"></div>
+    <div class="blockG" id="rotateG_08"></div>
+</div>
+  <h3 style="color:white">Please Wait...</h3>
+</div>
+</div>
+</div>
+
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+    
+<!-- page script -->
+ <script>
+  $(function () {
+    $("#example2").DataTable({
+      stateSave: true
+    });
+
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass   : 'iradio_flat-green'
+    })
+  });
+
+    $(document).ready(function() {
+      $("#processing-modal").modal('show');
+        setTimeout(function() {
+            $("#processing-modal").modal('hide');  
+          },300);
+      $('a[data-confirm]').click(function(ev) {
+        var href = $(this).attr('href');
+        if (!$('#dataConfirmModal').length) {
+          $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+        } 
+        $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+        $('#dataConfirmOK').attr('href', href);
+        $('#dataConfirmModal').modal({show:true});
+        return false;
+      });
+      });
+
+</script>
+<script src="{% static 'mainjs/actionjs/actions.js' %}"></script>
+<script src="{% static 'mainjs/viewjs/view.js' %}"></script>
+{% endblock maincontent %} 

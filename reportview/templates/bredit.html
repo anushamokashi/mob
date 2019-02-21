@@ -1,0 +1,99 @@
+<div class="modal fade" id="BRbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<h3 class="modal-title" id="lineModalLabel">Edit Report Business Rule</h3>
+<form method="POST" id="breditform" action="/reportview/BRedit/{{title}}/{{report_br.id}}/">
+   {% csrf_token %}
+   <div class="modal-body">
+      <div class="row">
+         <div class="col-md-12 col-lg-12">
+            {{ form.non_field_errors }}
+            <div id="loading" style="display:none;">
+               <span id="load_text">loading...</span>
+            </div>
+            <div id="report_add_form_ajax" style="display:none;">
+               <span>Form submit successfully.</span>
+            </div>
+            <div id="form_ajax_error" style="display:none;">
+               <span>Can not submit data due to errors.</span>
+            </div>
+           
+            <div>
+               <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+               <input class="btn btn-success pull-right" type="submit" value="Submit" ></input>
+            </div>
+            <br/>
+            <br/>
+            <div class="tab-v2">
+               <ul class="nav nav-tabs">
+                  <li><a href="#business_rule" data-toggle="tab">Business Rule</a></li>
+                  <li><a href="#sql" data-toggle="tab">sql</a></li>
+                  <!-- <li><a href="#graphical_report" data-toggle="tab">  Graphical Report</a></li>
+                     <li><a href="#box_report" data-toggle="tab">Box Report</a></li>-->
+               </ul>
+               <div class="tab-content">
+                  <div class="tab-pane fade in active" id="business_rule">
+                     <div class="row">
+                        <div class="col-md-6">
+                           <label>Title <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="businesstitle" value="{{ report_br.title }}"></input>
+                           <label>Report param field</label>
+                           
+                            {{form.report_param_field}}
+                           
+                           <label>Report field</label>
+                           
+                           {{form.report_field}}
+                           
+                           <label>Validate expression <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="validate_expression" value="{{ report_br.min_filter_chars }}"></input>
+                           <label>Description</label>
+                           <textarea class="form-control" style="width:100%" name="description"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                           <label>Expression</label>
+                           <input class="form-control" style="width:100%" name="expression" value="{{ report_br.expression }}"></input>
+                           <label>Display format expression</label>
+                           <input class="form-control" style="width:100%" name="display_format_expression" value="{{ report_br.display_format_expression }}"></input>
+                          
+                        </div>
+                     </div>
+                  </div>
+                  <div class="tab-pane fade in" id="sql">
+                     <div class="row">
+                        <div class="col-md-12">
+                           <label>Sql*</label>
+                           <br/>
+                           <label for="sql_comp_id">Components:</label>
+      <select class="form-control" id="sql_comp_id" style="width:100%" onclick="sqlCompFunction()">
+         <option selected="selected" value="" >----------</option>
+         {% for comp in comp_list %}
+               <option id={{comp.id }} value={{comp.title}} data-desc={{comp.description}} >{{ comp.title}}</option>
+          {% endfor %}
+      </select>
+      <br>
+       <textarea class="form-control" style="width:100%" id="id_sql" name="sql" ></textarea>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="row">
+                           <label>
+                            <input type="checkbox" name="enable_filter" value="{{ report_br.enable_filter }}">Enablefilter</label>
+                           <br/>
+                           <label>Result chunk size</label>
+                            <input class="form-control" style="width:100%" name="result_chunk_size" value="{{ report_br.result_chunk_size }}"></input>
+                        </div>
+                         </div>
+                          <div class="col-md-6">
+                            <div class="row">
+                           
+                           <label>Min filter chars</label>
+                            <input class="form-control" style="width:100%" name="min_filter_chars"  value="{{ report_br.min_filter_chars }}" ></input>
+                        </div>
+                         </div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>

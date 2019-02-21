@@ -1,0 +1,289 @@
+{% extends 'tempmain.html' %} 
+{% load static %} 
+{% block sidemenu %}
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/rolesetup/roleindex">
+            <i class="fa fa-cogs"></i>
+            <span>Role Setup</span>
+        </a>
+    </li >
+               
+    <li class="treeview">
+        <a href="/transaction/enumlist/">
+            <i class="fa fa-map-o"></i>
+            <span>Enum List</span>
+        </a>
+    </li>
+              
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-sign-in"></i> 
+            <span>Login</span>
+            
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i> 
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/logintemplate/loginindex/"><i class="fa fa-circle-o"></i> Design login Page</a></li>
+            <li><a href="/logintemplate/serverconfig/"><i class="fa fa-circle-o"></i> Server Config</a></li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="/hometemplate/pagecomponent/">
+            <i class="fa fa-sticky-note-o"></i> <span>HomePage</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="{% url 'transindex' %}">
+            <i class="fa fa-file-text"></i> <span>Transaction</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/reportview/repoviewdetails/">
+            <i class="fa fa-desktop"></i> <span>ReportView</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/syncmaster/configurations/">
+            <i class="fa fa-refresh"></i> <span>Sync Configurations</span>
+        </a>
+    </li>
+    <li class="treeview active menu-open">
+        <a href="/notification/notificationindex/">
+            <i class="fa fa-bell-o"></i> 
+            <span>Notification Configuration</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i> 
+            </span>
+        </a>
+     
+
+        {% if notificationObjJson %}
+            <ul class="treeview-menu bg-red">
+                <li class="active">
+                    <a onclick="generate_json(event)" ><i class="fa fa-cogs"></i><span>Generate JSON</span></a>
+                </li>
+            </ul>
+        {% else %}
+            <ul class="treeview-menu bg-blue">
+                <li class="active">
+                    <a onclick="generate_json(event)">
+                        <i class="fa fa-cogs"></i><span>Generate JSON</span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+        
+    </li>
+
+    <li class="treeview">
+        <a href="/printformat/printformatindex/">
+           <i class="fa fa-print"></i> <span>PrintFormat Configuration</span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="/eventconfiguration/mapTxnFields/">
+            <i class="fa fa-calendar"></i> <span>Event Configuration</span>
+        </a>
+    </li>
+</ul>
+{% endblock sidemenu %} 
+
+{% block maincontent %}
+<section class="content-header">
+   <h1>
+      {{project_title}} Notification Configuration
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active"> Notification Configuration</li>
+   </ol>
+</section>
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+   <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-lg-10 col-xs-2">
+                            <h3 class="box-title">Notifications</h3>
+                        </div>
+                        <button type="button" style="width:80px;" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#exampleModal" data-whatever="" class="btn bg-blue selectedit">Add New</button>
+                  
+                        <!--  Model content for transcation add -->
+                        <div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="exampleModalLabel">New Notification</h4>
+                                    </div>
+                           
+                                    <form method="POST" action="/notification/notificationindex/">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">Notification Title:</label>
+                                                <input type="text" class="form-control" name="title" id="title" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">Description:</label>
+                                                <textarea class="form-control" name="description"></textarea>
+                                            </div>
+                                            <div>
+                                                <input type="hidden" class="form-control" name="projectid" value={{projectid}} required>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="sumbit" class="btn btn-success">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        {% if notificationObj %}
+                            <table id="example1" class="table table-bordered table-striped" style="border:1px solid lightblue">
+                                <thead>
+                                    <tr class="bg-light-blue">
+                                    <th>Notification Name</th>
+                                    <th>Config</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                   
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for notification in notificationObj %}
+                                    <tr>
+                                    <td>{{notification.title}}</td>
+                                    <td>
+                                        <a href="/notification/notificationconfig/{{notification.id}}" class="btn bg-navy btn-xs"><span class="glyphicon glyphicon-cog"></span></a>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" value="Edit" data-backdrop="static" data-keyboard="false" data-target="#notificationEditModal" id="notification_edit" data-notificationid="{{notification.id}}"  onclick="notificationEdit(event)"><i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="/notification/deletenotification/{{notification.id}}" data-confirm="Are you sure you want to delete?">
+                                        <button type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                        </a>
+                                    </td>
+                                   
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p> There are no notification configuration</p>
+                        {% endif %}
+                    </div>
+                     <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>
+   <!-- /.content -->
+
+   
+   <div class="modal fade" id="notificationEditModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+               <h3 class="modal-title" id="lineModalLabel">Edit Notification</h3>
+            </div>
+            <section>
+                    <div id="divErrorNotitifcationEdit"></div>
+                    <div id="divResultNotitifcationEdit"></div>                      
+                </section>
+            <div class="modal-body" id="notificationEditModalBody">
+               <!-- content goes here -->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- /.box-body -->
+</div>
+<div class="example-modal" >
+   <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+      <div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+         <div id="floatingBarsG">
+            <div class="blockG" id="rotateG_01"></div>
+            <div class="blockG" id="rotateG_02"></div>
+            <div class="blockG" id="rotateG_03"></div>
+            <div class="blockG" id="rotateG_04"></div>
+            <div class="blockG" id="rotateG_05"></div>
+            <div class="blockG" id="rotateG_06"></div>
+            <div class="blockG" id="rotateG_07"></div>
+            <div class="blockG" id="rotateG_08"></div>
+         </div>
+         <h3 style="color:white">Please Wait...</h3>
+      </div>
+   </div>
+</div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script>
+   $(document).ready(function() {
+       $("#processing-modal").modal('show');
+       setTimeout(function() {
+         $("#processing-modal").modal('hide');  
+       },1000);
+       $('a[data-confirm]').click(function(ev) {
+           var href = $(this).attr('href');
+           if (!$('#dataConfirmModal').length) {
+               $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+           }
+           $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+           $('#dataConfirmOK').attr('href', href);
+           $('#dataConfirmModal').modal({
+               show: true
+           });
+           return false;
+       });
+   });
+</script>
+   
+   
+<script>
+   $(function() {
+       $("#example1").DataTable({
+        stateSave: true
+       });
+   });
+</script>
+
+<script>
+   $(function () {
+     //Initialize Select2 Elements
+     $('.select2').select2()
+   
+   })
+</script>
+<script src="{% static 'mainjs/notificationjs/notification.js' %}"></script> 
+<script src="{% static 'mainjs/viewjs/view.js' %}"></script> 
+{% endblock maincontent %}

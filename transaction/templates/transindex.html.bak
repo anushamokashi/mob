@@ -1,0 +1,323 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+{% block sidemenu  %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        </a>
+    </li>
+     <li class="treeview">
+        <a href="/rolesetup/roleindex">
+            <i class="fa fa-cogs"></i> <span>Role Setup</span>
+        </a>
+    </li>
+
+     <li class="treeview">
+      <a href="/transaction/enumlist/">
+         <i class="fa fa-map-o"></i> <span>Enum List</span>
+         <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+         </span>
+      </a>
+   </li>
+
+   <li class="treeview">
+      <a href="#">
+      <i class="fa fa-sign-in"></i> 
+      <span>Login</span>
+      <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i> 
+      </span>
+      </a>
+      <ul class="treeview-menu">
+         <li><a href="/logintemplate/loginindex/"><i class="fa fa-circle-o"></i> Design login Page</a></li>
+         <li><a href="/logintemplate/serverconfig/"><i class="fa fa-circle-o"></i> Server Config</a></li>
+      </ul>
+   </li>
+   <li class="treeview">
+      <a href="/hometemplate/pagecomponent/">
+         <i class="fa fa-sticky-note-o"></i> <span>HomePage</span>
+         <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+         </span>
+      </a>
+   </li>
+   <li class="active treeview">
+      <a href="{% url 'transindex' %}">
+         <i class="fa fa-file-text"></i> <span>Transaction</span>
+         <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+         </span>
+      </a>
+   </li>
+
+    <li class="treeview">
+        <a href="/reportview/repoviewdetails/">
+            <i class="fa fa-desktop"></i> <span>ReportView</span>
+        </a>
+    </li>
+  
+   <li class="treeview">
+      <a href="/syncmaster/configurations/">
+         <i class="fa fa-refresh"></i> <span>Sync Configurations</span>
+      </a>
+   </li>
+
+    <li class="treeview">
+        <a href="/notification/notificationindex/">
+            <i class="fa fa-bell-o"></i> <span>Notification Configuration</span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="/jasper/jasperindex/">
+            <i class="fa fa-pencil-square-o"></i> <span>Jasper Configuration</span>
+        </a>
+    </li>
+</ul>
+{% endblock sidemenu %}
+{% block maincontent %}
+<section class="content-header">
+   <h1>
+      {{project_title}} Transactions Details
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active"> Transactions</li>
+   </ol>
+</section>
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+   <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+   <section class="content">
+      <div class="row">
+         <div class="col-xs-12">
+            <div class="box">
+               <div class="box-header">
+                  <div class="col-lg-10 col-xs-8">
+                     <h3 class="box-title">Transaction</h3>
+                  </div>
+                  <button type="button" style="width:80px;" data-toggle="modal" data-target="#exampleModal" data-whatever="" class="btn bg-blue" data-parentproject={{parentproject}}>Add New</button>
+                  <!--  Model content for transcation add -->
+                  <div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel">
+                     <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                              <h4 class="modal-title" id="exampleModalLabel">New Transaction</h4>
+                           </div>
+                           <form method="POST" action="/transaction/saveform/{{transactionid}}">
+                              {% csrf_token %}
+                              <div class="modal-body">
+                                 <div class="form-group">
+                                    <label for="recipient-name" class="control-label">Transaction Title:</label>
+                                    <input type="text" class="form-control" name="txname" id="transname" required>
+                                    <p id="validationmsg" style="color:red;font-weight: 20px;"></p>
+                                 </div>
+                                 <div class="form-group">
+                                    <label for="message-text" class="control-label">Transaction Description:</label>
+                                    <textarea class="form-control" name="txdescription"></textarea>
+                                 </div>
+                                 <div>
+                                    <input type="hidden" class="form-control" name="projectid" value={{projectid}} required>
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="sumbit" class="btn btn-success">Save</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.box-header -->
+               <div class="box-body table-responsive">
+                  {% if transgroup %}
+                  <table id="trans_tb" class="table table-bordered table-striped" style="border:1px solid lightblue">
+                     <thead>
+                        <tr class="bg-light-blue">
+                           <th>Transaction Name</th>
+                           <th>Edit</th>
+                           <th>Delete</th>
+                           <th>Get In</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for transaction in transgroup %}
+                        <tr>
+                           <td>{{transaction.txname}}</td>
+                           <td>
+                              <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" value="Edit" data-target="#edModal" id="edit_button" data-transactionid={{transaction.id}} data-parentproject="{{parentproject}}" data-parenttransaction="{{transaction.parenttransaction}}"><i class="glyphicon glyphicon-pencil"></i>
+                              </button>
+                           </td>
+                           <td>
+                              <a href="/transaction/delete/{{transaction.id}}" data-confirm="Are you sure you want to delete?">
+                              <button type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                              </a>
+                           </td>
+                           <td>
+                              <a href="/transactionview/transview/{{transaction.id}}/{{projectid}}" class="btn btn-sm btn-info btn-xs"><span class="glyphicon glyphicon-arrow-right"></span> GETIN</a>
+                           </td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+                  {% else %}
+                  <div class="box-body">
+                     <strong>Alert! </strong>No Record Found.
+                  </div>
+                  {% endif %}
+               </div>
+               <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+         </div>
+         <!-- /.col -->
+      </div>
+      <!-- /.row -->
+   </section>
+   <!-- /.content -->
+   <div class="modal fade" id="edModal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+               <h3 class="modal-title" id="lineModalLabel">Update Transaction</h3>
+            </div>
+            <div class="modal-body" id="mymodelbody">
+               <!-- content goes here -->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- /.box-body -->
+</div>
+<div class="example-modal" >
+   <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+      <div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+         <div id="floatingBarsG">
+            <div class="blockG" id="rotateG_01"></div>
+            <div class="blockG" id="rotateG_02"></div>
+            <div class="blockG" id="rotateG_03"></div>
+            <div class="blockG" id="rotateG_04"></div>
+            <div class="blockG" id="rotateG_05"></div>
+            <div class="blockG" id="rotateG_06"></div>
+            <div class="blockG" id="rotateG_07"></div>
+            <div class="blockG" id="rotateG_08"></div>
+         </div>
+         <h3 style="color:white">Please Wait...</h3>
+      </div>
+   </div>
+</div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script>
+   $(document).ready(function() {
+       $("#processing-modal").modal('show');
+       setTimeout(function() {
+         $("#processing-modal").modal('hide');  
+       },300);
+       $('a[data-confirm]').click(function(ev) {
+           var href = $(this).attr('href');
+           if (!$('#dataConfirmModal').length) {
+               $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+           }
+           $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+           $('#dataConfirmOK').attr('href', href);
+           $('#dataConfirmModal').modal({
+               show: true
+           });
+           return false;
+       });
+   });
+   
+   $(document).on('click', '#edit_button',function(mevent) {
+       debugger;
+        var transactionid ="";
+        var parentproject ="";
+        var parenttransaction="";
+        var dpcon="";
+        var model = null;
+        transactionid = mevent.currentTarget.attributes['data-transactionid'].value
+        parentproject = mevent.currentTarget.attributes['data-parentproject'].nodeValue
+        parenttransaction = mevent.currentTarget.attributes['data-parenttransaction'].nodeValue
+        dpcon = '/transaction/tedit/' + transactionid;
+       $("#edModal").on("show.bs.modal", function() {
+           
+            setTimeout(function() {
+               if (model == null) {
+              
+           model = $.ajax(dpcon)
+               .done(function(data) {
+                   $("#mymodelbody").html("");
+                   $("#mymodelbody").html(data);
+               })
+               .fail(function() {
+                   alert("error");
+               });
+               }
+           },500);
+   
+       });
+   
+       $('#edModal').on('hidden.bs.modal', function () {
+           $("#edModal").modal('hide');
+            $(this).data('modal', null);
+           $("#mymodelbody").html("");
+           })
+   
+   });
+</script>
+<!-- page script -->
+<script>
+   $(function() {
+       $('#trans_tb').DataTable({
+        stateSave: true
+       });
+   });
+</script>
+<script type="text/javascript">
+   $("#transname").focusout(
+       function(event) {
+           var transname = $(this).val();
+           console.log(transname);
+   
+           $.ajax({
+               type: 'POST',
+               url: '/transaction/transnamevalidation/',
+               data: {
+                   txname: transname
+               },
+               success: function(data) {
+   
+                   if (data) {
+                       $("#validationmsg").text(data);
+                       setTimeout(function() {
+                           $("#validationmsg").text("");
+                       }, 5000);
+                   }
+               },
+               failure: function(data) {
+                   alert('An error occurred.');
+                   console.log(data);
+               }
+   
+           });
+       });
+   
+</script>
+<script>
+   $(function () {
+     //Initialize Select2 Elements
+     $('.select2').select2()
+   
+   })
+</script>
+{% endblock maincontent %}

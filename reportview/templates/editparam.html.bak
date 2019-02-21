@@ -1,0 +1,148 @@
+<div class="modal fade" id="parambody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<h4 class="modal-title" id="parammodalLabel">  Edit Param Field </h4>
+<form method="POST" id="editparamform" action ="/reportview/parameditmodal/{{title }}/{{rpt_param.id}}/">
+   {% csrf_token %}
+   <div class="modal-body">
+      <div class="row">
+         <div class="col-md-12 col-lg-12">
+            {{ form.non_field_errors }}
+            <div id="loading" style="display:none;">
+               <span id="load_text">loading...</span>
+            </div>
+            <div id="report_add_form_ajax" style="display:none;">
+               <span>Form submit successfully.</span>
+            </div>
+            <div id="form_ajax_error" style="display:none;">
+               <span>Can not submit data due to errors.</span>
+            </div>
+            
+            <div>
+               <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+               <input class="btn btn-success pull-right" type="submit" value="Submit" ></input>
+            </div>
+            <br/>
+            <br/>
+            <div class="tab-v2">
+               <!--<ul class="nav nav-tabs">
+                  <li class="active"><a href="#report_params" data-toggle="tab">Report Param</a></li>
+                  <li><a href="#business_rule" data-toggle="tab">Business Rule</a></li>
+                   <li><a href="#graphical_report" data-toggle="tab">  Graphical Report</a></li>
+                     <li><a href="#box_report" data-toggle="tab">Box Report</a></li>
+               </ul>-->
+               <div class="tab-content">
+                  <div class="tab-pane fade in active" id="report_params">
+                     <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                           <label>Title
+                           <span class="asteriskField">*</span>
+                           </label>
+                           <input class="form-control" id="title1" style="width:100%" value="{{ rpt_param_form.title.value }}"name="title"></input>
+                           <label>Slug</label>
+                          
+                           <input class="form-control" id="slug" style="width:100%" value="{{ rpt_param_form.slug.value }}"name="slug" readonly="True"></input>
+                           <label>Caption</label>
+                           <input class="form-control" id="caption" style="width:100%" value="{{ rpt_param_form.caption.value }}"name="caption"></input>
+                           <label>Query</label>
+                           <input class="form-control" id="query" style="width:100%" value="{{ rpt_param_form.query.value }}"name="query"></input>
+                           <label>Display Order <span class="asteriskField">*</span></label>
+                           <input class="form-control" id="displayorder" style="width:100%" value="{{ rpt_param_form.display_order.value }}"name="display_order"></input>
+                           <br>
+                           <label>
+                           Is hidden : {{rpt_param_form.is_hidden}}</label>
+                           <br/>
+                           <label>
+                           <label>
+                           Allow Duplicate : {{rpt_param_form.allow_empty}}</label>
+                           <br/>
+                           <label>
+                           <br>
+                            <label>Value field</label>
+                            <input class="form-control select2" style="width:100%" name="value_field" value="{{ rpt_param_form.value_field.value }}"></input>
+                           
+                           <label>Display field </label>
+                           <input class="form-control select2" style="width:100%" name="display_field" value="{{ rpt_param_form.display_field.value }}">
+
+                            <label>Identifiers</label>
+
+                           <input class="form-control" id="identifiers" name="identifiers" style="width:100%" value="{{ rpt_param_form.identifiers.value }}"></input>
+
+                           <br>
+                           <label>Descrption</label>
+                           <textarea class="form-control" id="description" style="width:550px" name="description"></textarea>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                           <label>No of decimal digits <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="no_of_decimal_digits" value="{{ rpt_param_form.no_of_decimal_digits.value }}"></input>
+                           <label>
+                          <!-- <input type="checkbox" name="allow
+                              _multiselect">Allow multiselect</label>-->    
+                           <br>                     
+                           <label>Data type</label>
+                           {{rpt_param_form.data_type}}
+                            <br>  
+                           <label>Component type</label>
+                           {{rpt_param_form.component_type}}
+                           <br>                          
+                           <label>Widget type</label>
+                           {{rpt_param_form.widget_type}}
+                             <br>   
+                           <label>Expression</label>
+                           <input class="form-control" style="width:100%" name="expression" value="{{ rpt_param_form.expression.value }}"></input>
+                           <br>   
+                           <label>Validate expression</label>
+                           <input class="form-control" style="width:100%" name="validate_expression" value="{{ rpt_param_form.validate_expression.value }}"></input>
+                           <!--<label>Identifier </label>
+                           <input class="form-control" style="width:100%" name="resource_identifier" value="{{ rpt_param_form.resource_identifier.value }}"></input>-->
+                           
+                        </div>
+                     </div>
+                  </div>
+                  <!--<div class="tab-pane fade in" id="business_rule">
+                     <div class="row">
+                           <div class="col-md-6">
+
+                           <label>Related table component </label>
+                           <select class="form-control select2" style="width:100%" name="related_table_component">
+                              <option value="report" value="{{ rpt_param_form.related_table_component.value }}">Report</option>
+                           </select>
+                           <label>Title <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="brtitle" value="{{ rpt_business_rule.title }}"></input>
+                           <label>Description</label>
+                           <textarea class="form-control" style="width:100%" name="description" value="{{ rpt_br_form.description.value }}"></textarea>
+
+                           <label>Validate expression</label>
+                           <input class="form-control" style="width:100%" name="validate_expression" value="{{ rpt_br_form.validate_expression.value }}"></input>
+                           <label>Min filter chars <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="min_filter_chars" value="{{ rpt_br_form.min_filter_chars.value }}"></input>
+                           <label>sql</label>
+                           <br/>
+                        <label for="sql_comp_id">Components:</label>
+      <select class="form-control" id="sql_comp_id" style="width:100%" onclick="sqlCompFunction()">
+         <option selected="selected" value="" >----------</option>
+         {% for comp in comp_list %}
+               <option id={{comp.id }} value={{comp.title}} data-desc={{comp.description}} >{{ comp.title}}</option>
+          {% endfor %}
+      </select>
+      <br>
+       <textarea class="form-control" style="width:100%" id="id_sql" name="sql" ></textarea>
+                        </div>
+                        <div class="col-md-6">
+                           <label>Expression</label>
+                           <input class="form-control" style="width:100%" name="expression" value="{{ rpt_br_form.expression.value }}"></input>
+                           <label>Display format expression</label>
+                           <input class="form-control" style="width:100%" name="display_format_expression"value="{{ rpt_br_form.display_format_expression.value }}"></input>
+                           <label>
+                           <input type="checkbox" name="enable_filter"value="{{ rpt_br_form.checkbox.value }}">Enable Filter</label>
+                           <label>
+                           <label>Result chunk size</label>
+                           <input class="form-control" style="width:100%" name="result_chunk_size"value="{{ rpt_br_form.result_chunk_size.value }}"></input>
+                        </div>
+                     
+                     </div>
+                  </div>-->
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>

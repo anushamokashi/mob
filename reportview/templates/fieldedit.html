@@ -1,0 +1,222 @@
+<div class="modal fade" id="fieldbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+ <h4 class="modal-title" id="fieldmodal">  Edit Report Field </h4>
+<form method="POST" id="fieldform" action="/reportview/fieldeditmodal/{{title}}/{{rpt_field.id}}/">
+   {% csrf_token %}
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+            {{ form.non_field_errors }}
+                <div id="loading" style="display:none;">
+                    <span id="load_text">loading...</span>
+                </div>
+                <div id="report_add_form_ajax" style="display:none;">
+                    <span>Form submit successfully.</span>
+                </div>
+                <div id="form_ajax_error" style="display:none;">
+                    <span>Can not submit data due to errors.</span>
+                </div>
+                <input type="hidden" id="fieldsave" value="{{title.id}}">
+                
+           
+                <div class="tab-v2">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="field_params">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Title <span class="asteriskField">*</span> </label>
+                                        <input class="form-control" id="title1" style="width:100%" name="title" value="{{ rpt_field_form.title.value  }}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Slug</label>
+                                        <input class="form-control"  style="width:100%" name="slug" value="{{ rpt_field_form.slug.value  }}" readonly="True"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" id="description" style="width:100%" name="description" value="{{ rpt_field_form.description.value  }}"></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>caption</label>
+                                        <input class="form-control" id="caption" style="width:100%" name="caption" value="{{ rpt_field_form.caption.value  }}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Display order</label>
+                                        <input class="form-control" style="width:100%" name="display_order" value="{{ rpt_field_form.display_order.value  }}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Query</label>
+                                        <input class="form-control" id="query" style="width:100%" name="query"value="{{ rpt_field_form.query.value  }}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>No of decimal digits <span class="asteriskField">*</span></label>
+                                        <input class="form-control" style="width:100%" name="no_of_decimal_digits" value="{{ rpt_field_form.no_of_decimal_digits.value  }}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Expression</label>
+                                        <input class="form-control" style="width:100%" name="expression" value="{{ rpt_field_form.expression.value |default_if_none:'' }}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Validate expression</label>
+                                        <input class="form-control" style="width:100%" name="validate_expression" value="{{ rpt_field_form.validate_expression.value |default_if_none:'' }}"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Data type</label>
+                                        {{rpt_field_form.data_type}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Iconcls(Buttontypeonly)</label>
+                                        {{rpt_field_form.iconcls}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Width</label>
+                                        <input class="form-control" id="width" style="width:100%" name="width" value="{{ rpt_field_form.width.value  }}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Height</label>
+                                        <input class="form-control" id="height" style="width:100%" name="height" value="{{ rpt_field_form.height.value  }}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Column alignment</label>
+                                        {{rpt_field_form.column_alignment}}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" name="show_running_total" value="{{ rpt_field_form.show_running_total.value  }}">Show running total
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" name="show_total"{% if rpt_field_form.show_total.value %}checked{% endif %}>Show total
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" name="is_hidden" {% if rpt_field_form.is_hidden.value %}checked{% endif %}>is hidden
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" name="apply_comma" value="{{ rpt_field_form.apply_comma.value  }}">Apply comma
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" name="dont_repeat" {% if rpt_field_form.dont_repeat.value%}checked{% endif %}>Dont repeat
+                                        </label> 
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                                    <input type="checkbox" name="dont_show_zero" value="{{ rpt_field_form.dont_show_zero.value  }}">Dont show zero</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+        <input class="btn btn-success pull-right" type="submit" value="Submit"></input>
+    </div>
+</form>
+
+
+ <!--  <label>Template <span class="asteriskField">*</span></label>
+                           <input class="form-control" id="template" style="width:100%" name="template" value="{{ rpt_field_form.template.value  }}"></input> 
+                          
+    
+        
+                           
+                           <label>No of decimal digits <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="no_of_decimal_digits" value="{{ rpt_field_form.no_of_decimal_digits.value  }}"></input>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <label>Title <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="fieldtitle" value="{{ rpt_business_rule.title }}"></input>
+                           <label>Description</label>
+                           <textarea class="form-control" style="width:100%" name="description" value="{{ rpt_br_form.description.value  }}"></textarea>
+                           
+                           <label>Min filter chars <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="min_filter_chars" value="{{ rpt_br_form.min_filter_chars.value  }}"></input>
+                           <label>sql</label>
+                           <br/>
+                            <label for="sql_comp_id">Components:</label>
+      <select class="form-control" id="sql_comp_id" style="width:100%" onclick="sqlCompFunction()">
+         <option selected="selected" value="" >----------</option>
+         {% for comp in comp_list %}
+               <option id={{comp.id }} value={{comp.title}} data-desc={{comp.description}} >{{ comp.title}}</option>
+          {% endfor %}
+      </select>
+      <br>
+       <textarea class="form-control" style="width:100%" id="id_sql" name="sql" ></textarea>
+                        </div>
+                        <div class="col-md-6">
+                           
+                           <label>Display format expression</label>
+                           <input class="form-control" style="width:100%" name="display_format_expression"value="{{ rpt_br_form.display_format_expression.value  }}"></input>
+                           <label>
+                           <input type="checkbox" name="enable_filter'" value="{{ rpt_br_form.enable_filter.value  }}">Enable Filter</label>
+                           <label>
+                           <label>Result chunk size</label>
+                           <input class="form-control" style="width:100%" name="result_chunk_size" value="{{ rpt_br_form.result_chunk_size.value  }}"></input>
+                        </div>
+                     </div>
+                  </div>-->

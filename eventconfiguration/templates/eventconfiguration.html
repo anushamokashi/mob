@@ -1,0 +1,272 @@
+{% extends 'tempmain.html' %} 
+{% load static %} 
+{% block sidemenu %}
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/rolesetup/roleindex">
+            <i class="fa fa-cogs"></i>
+            <span>Role Setup</span>
+        </a>
+    </li >
+               
+    <li class="treeview">
+        <a href="/transaction/enumlist/">
+            <i class="fa fa-map-o"></i>
+            <span>Enum List</span>
+        </a>
+    </li>
+              
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-sign-in"></i> 
+            <span>Login</span>
+            
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i> 
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/logintemplate/loginindex/"><i class="fa fa-circle-o"></i> Design login Page</a></li>
+            <li><a href="/logintemplate/serverconfig/"><i class="fa fa-circle-o"></i> Server Config</a></li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="/hometemplate/pagecomponent/">
+            <i class="fa fa-sticky-note-o"></i> <span>HomePage</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="{% url 'transindex' %}">
+            <i class="fa fa-file-text"></i> <span>Transaction</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/reportview/repoviewdetails/">
+            <i class="fa fa-desktop"></i> <span>ReportView</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/syncmaster/configurations/">
+            <i class="fa fa-refresh"></i> <span>Sync Configurations</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/notification/notificationindex/">
+           <i class="fa fa-bell-o"></i> <span>Notification Configuration</span>
+           
+        </a>
+     </li>
+
+    <li class="treeview">
+        <a href="/printformat/printformatindex/">
+           <i class="fa fa-print"></i> <span>PrintFormat Configuration</span>
+        </a>
+    </li>
+    <li class="active">
+        <a href="/eventconfiguration/mapTxnFields/">
+           <i class="fa fa-calendar"></i> <span>Event Configuration</span>
+        </a>
+    </li>
+</ul>
+{% endblock sidemenu %} 
+
+{% block maincontent %}
+<section>
+    <div id="divErrorEvent"> </div>
+    <div id="divResultEvent"> </div>
+</section>
+<section class="content-header">
+   <h1>
+      {{project_title}} Event Configuration
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active"> Event Configuration</li>
+   </ol>
+</section>
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+   <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-lg-10 col-xs-2">
+                            <h3 class="box-title">Map Transactionview Fields</h3>
+                        </div>
+                        
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <form role="form" method="POST" id="eventForm">
+                            {% csrf_token %}
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label> Title </label>
+                                            {{eventform.title }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Slug</label>
+                                            <!-- {{ eventform.slug }} -->
+                                            <input type="text" class="form-control" readonly name="slug" id="slug" value="{{ eventform.slug.value|default_if_none:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                        <label for="message-text" class="control-label">Choose Transaction View*</label>
+                                        {{ eventform.txview }}
+                                    </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Event Title*</label>
+                                            {{ eventform.event_title }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Event Description</label>
+                                            {{eventform.event_desc }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Event Location</label>
+                                            {{eventform.event_location }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label> Event Starting Date* </label>
+                                                {{eventform.event_start_day }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Event Starting Time</label>
+                                                {{eventform.event_start_time }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label> Event Ending Date </label>
+                                                {{eventform.event_end_day }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Event ending Time</label>
+                                                {{eventform.event_end_time }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Specify no. of minutes before you want to send an EMAIL reminder </label>
+                                                {{eventform.email_reminder }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Specify no. of minutes before you want to send an POPUP reminder</label>
+                                                {{eventform.popup_reminder }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            <!-- /.box-body -->
+                            </div>
+                            <div class="box-footer">
+                                <div class = "row">
+                                    <div class="col-md-6" style ="text-align: left">
+                                        <!-- <button type="button" class="btn btn-danger" onclick="deleteEvent(event)">Delete</button> -->
+                                        <a href="/eventconfiguration/deleteEvent/{{eventObj.id}}" data-confirm="Are you sure you want to delete?">
+                                            <button type="button" class="btn btn-danger">Delete</button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6" style ="text-align: right">
+                                        <button type="button" class="btn btn-primary" onclick="saveEvent(event)">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>
+<!-- /.content -->
+
+   
+   
+<div class="example-modal" >
+   <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+      <div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+         <div id="floatingBarsG">
+            <div class="blockG" id="rotateG_01"></div>
+            <div class="blockG" id="rotateG_02"></div>
+            <div class="blockG" id="rotateG_03"></div>
+            <div class="blockG" id="rotateG_04"></div>
+            <div class="blockG" id="rotateG_05"></div>
+            <div class="blockG" id="rotateG_06"></div>
+            <div class="blockG" id="rotateG_07"></div>
+            <div class="blockG" id="rotateG_08"></div>
+         </div>
+         <h3 style="color:white">Please Wait...</h3>
+      </div>
+   </div>
+</div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script>
+   $(document).ready(function() {
+       $("#processing-modal").modal('show');
+       setTimeout(function() {
+         $("#processing-modal").modal('hide');  
+       },1000);
+       $('a[data-confirm]').click(function(ev) {
+           var href = $(this).attr('href');
+           if (!$('#dataConfirmModal').length) {
+               $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+           }
+           $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+           $('#dataConfirmOK').attr('href', href);
+           $('#dataConfirmModal').modal({
+               show: true
+           });
+           return false;
+       });
+   });
+</script>
+   
+   
+<script src="{% static 'mainjs/eventconfigurationjs/eventconfiguration.js' %}"></script> 
+{% endblock maincontent %}

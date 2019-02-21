@@ -1,0 +1,3 @@
+    HttpModule,
+    IonicStorageModule.forRoot(),
+end

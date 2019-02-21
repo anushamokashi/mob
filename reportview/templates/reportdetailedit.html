@@ -1,0 +1,113 @@
+<div class="modal fade" id="paramModal" role="dialog" aria-labelledby="paramModalLabel">
+                  <div class="modal-dialog" style="width:600px;"role="document">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"> &times; </span> </button>
+                           <h4 class="modal-title" id="paramModalLabel">  New Report Param Field </h4>
+                        </div>
+                        <form method="POST">
+                           {% csrf_token %}
+                           <div class="modal-body" >
+                              <div class="row">
+                                 <div class="col-md-12 col-lg-12">
+                                    {{ form.non_field_errors }}
+                                    <div id="loading" style="display:none;">
+                                       <span id="load_text">loading...</span>
+                                    </div>
+                                    <div id="report_add_form_ajax" style="display:none;">
+                                       <span>Form submit successfully.</span>
+                                    </div>
+                                    <div id="form_ajax_error" style="display:none;">
+                                       <span>Can not submit data due to errors.</span>
+                                    </div>
+                                   
+                                       <div>
+                                          <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+                                          <input class="btn btn-success pull-right" type="submit" value="Submit" onclick="savereport()"></input>
+                                       </div>
+                                       <br/>
+                                       <br/>
+                                       <div class="tab-v2">
+                                          <ul class="nav nav-tabs">
+                                             <li class="active"><a href="#report_des" data-toggle="tab">Report Param</a></li>
+                                             <li><a href="#business_rule" data-toggle="tab">Business Rule</a></li>
+                                            
+                                             <!-- <li><a href="#graphical_report" data-toggle="tab">  Graphical Report</a></li>
+                                                <li><a href="#box_report" data-toggle="tab">Box Report</a></li>-->
+                                          </ul>
+                                          <div class="tab-content">
+                                             
+                                            <div class="row">
+                                              <div class="col-md-6 col-lg-6">
+                                             <div class="tab-pane fade in active" id="report_des">
+                                                <label>Title</label>
+                                                <input class="form-control" style="width:100%" name="title"></input>
+                                                <label>Slug</label>
+                                                <select class="form-control select2" style="width:100%" name="report_type">
+                                                   <option value="report">Report</option>
+                                                </select>
+                                                 <label>Caption</label>
+                                                <input class="form-control" style="width:100%" name="title"></input>
+                                                <label>Query</label>
+                                                <input class="form-control" style="width:100%" name="title"></input>
+                                                <label>Display Order</label>
+                                                <input class="form-control" style="width:100%" name="title"></input>
+                                                <label>
+                                                      <input type="checkbox" name="enable_header">is hidden</label>
+                                                      <label>
+                                                      <input type="checkbox" name="enable_header">Allow Empty</label>
+                                                      <br>
+                                                  <label>Descrption</label>
+
+                                                  <textarea class="form-control" style="width:100%" name="description"></textarea>
+                                                </div>   
+                                                </div>
+                                           
+                                             
+                                              <div class="col-md-6 col-lg-6">
+                                             <div class="tab-pane fade in active" id="report_des">
+                                                <label>No of decimal digits</label>
+                                                <input class="form-control" style="width:100%" name="title"></input>
+                                                <label>
+                                                      <input type="checkbox" name="enable_header">Allow multiselect</label>
+                                                      <br>
+                                                <label>Data type</label>
+                                                <select class="form-control select2" style="width:100%" name="report_type">
+                                                   <option value="report">Report</option>
+                                                </select>
+                                                <label>Component type</label>
+                                                 <select class="form-control select2" style="width:100%" name="report_type">
+                                                   <option value="report">Report</option>
+                                                </select>
+                                                <label>Widget type</label>
+                                                <select class="form-control select2" style="width:100%" name="report_type">
+                                                   <option value="report">Report</option>
+                                                </select>
+                                                
+                                                <label>Related table component </label>
+                                                <select class="form-control select2" style="width:100%" name="report_type">
+                                                   <option value="report">Report</option>
+                                                </select>
+                                                <label>Value field</label>
+                                                <select class="form-control select2" style="width:100%" name="report_type">
+                                                   <option value="report">Report</option>
+                                                </select>
+                                                  <label>Display field </label>
+                                                <select class="form-control select2" style="width:100%" name="report_type">
+                                                   <option value="report">Report</option>
+                                                </select>
+                                                <label>Identifier </label>
+                                                <input class="form-control" style="width:100%" name="title"></input>
+                                                </div>   
+                                                </div>
+                                             
+                                               </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                  </div>
+                               </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>

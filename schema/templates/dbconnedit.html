@@ -1,0 +1,43 @@
+<div class="modal fade" id="editeditediteditediteditediteditDbbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+         <!-- content goes here -->
+         <form method="POST" action ="{% url 'Edit' transactionid=objs.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+               <label for="exampleInputtitle">Title</label>
+               <input type="name" class="form-control" name="title" value ="{{objs.title}}" id="exampleInputtitle" placeholder="Title">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputdbname">Dbname</label>
+               <input type="name" class="form-control" name="dbname" value ="{{objs.dbname}}" id="exampleInputdbname" placeholder="Dbname">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputusername">UserName</label>
+               <input type="name" class="form-control" name="username" value ="{{objs.username}}"id="exampleInputusername" placeholder="UserName">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputpassword">Password</label>
+               <input type="name" class="form-control" name="password" value ="{{objs.password}}" id="exampleInputpassword" placeholder="Password">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputhost">Host</label>
+               <input type="name" class="form-control" name="host" id="exampleInputhost" value ="{{objs.host}}" placeholder="Host">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputport">Port</label>
+               <input type="name" class="form-control" name="port" id="exampleInputport" value ="{{objs.port}}" placeholder="Port">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputsid">SID</label>
+              <input type="name" class="form-control" name="sid" id="exampleInputsid" value ="{{objs.sid}}" placeholder="Sid">
+            </div>
+             <div class="form-group">
+               <label for="exampleInputport">Vendor</label>
+                  {{form.vendor}}
+                  <i></i>
+               </label>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="sumbit" class="btn btn-success">Save</button>
+        </div>
+         </form>

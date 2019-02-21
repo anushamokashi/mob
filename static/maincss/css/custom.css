@@ -1,0 +1,19 @@
+.login_but{
+    width :100px !important;
+	height: 35px !important;
+    color: white !important;
+    background: #0aad0a !important;
+    border: green !important;
+    font-weight: bold !important;
+    border: 1px solid green !important;
+	margin:0 0 0 90px !important;
+}
+
+.background_login{
+    background:#2C3E50 !important;
+
+}
+
+.background_register{
+   background:#2C3E50 !important;
+}

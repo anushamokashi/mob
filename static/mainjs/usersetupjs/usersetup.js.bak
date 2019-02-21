@@ -1,0 +1,59 @@
+  function csrfSafeMethod(method) {
+	        // these HTTP methods do not require CSRF protection
+	        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	    }
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function saveUser(){
+    debugger;
+    var formdata = $("#saveUserForm").serialize();
+    var password=$('#password').val()
+    var confirmPassword = $('#confirmPassword').val();
+    if (password == confirmPassword){
+        if (window.value != "This mail-id is in use"){
+            $.ajax({
+                type : 'POST',
+                url : '/usersetup/usersgup/',
+                data : formdata,
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken",getCookie('csrftoken'));
+       	        	}
+        		},
+                success : function (data) {
+                    if (data){
+                        //window.location.href = data.redirectUrl;                        
+                    }
+                    else{
+                        alert("Enter Valid mailId address");
+                    }
+                },
+                failure : function (data) {
+                    alert('An error occurred.');
+                }
+            });
+        }
+        else{
+            alert("This mail-id is in use.Try again");
+        }
+    }
+    else{
+        alert("Password doesnot match. Try again!");
+    }
+        
+
+};

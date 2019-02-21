@@ -1,0 +1,61 @@
+<div class="modal fade" id="querybody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<h4 class="modal-title">New Report Query</h4>
+<form method="POST" id="repoQuerydetails" action ="/reportview/reportQuerySave/{{query.id}}/">
+   {% csrf_token %}
+   <div class="modal-body" style="height: auto;">
+      {{ form.non_field_errors }}
+      <div id="loading" style="display: none;">
+         <span id="load_text">loading...</span>
+      </div>
+      <div id="report_add_form_ajax" style="display: none;">
+         <span>Form submit successfully</span>
+      </div>
+      <div id="form_ajax_error" style="display: none;">
+         <span>cannot submit data due to errors</span>
+      </div>
+      <input type="hidden" id="querysave" value="{{edit.id}}">
+      <input class="btn btn-success pull-right" type="submit" value="Submit" style="margin-left: 5px;" onclick="reportQuerysave()" />
+      <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+      <br>
+      <br>
+      <!--<ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#queryrepo">Report Query</a></li>
+        <li><a data-toggle="tab" href="#reportquerydesc">Report Query Description </a></li>
+      </ul>-->
+      <div class="tab-content">
+         <div id="queryrepo" class="tab-pane fade in active">
+            <label>Title*</label>
+            <input class="form-control" style="width:100%"  name="title"></input>
+          
+            <br>
+            <label>
+            <input type="checkbox" name="is_main_query">Is main query
+            </label>
+            <br/>
+            <br/>
+            <label>Join type:</label>
+            <select class="form-control select2" name="join_type">
+               <option value="none">None</option>
+               <option value="left-outer-join">left outer join</option>
+               <option value="inner-join">inner join</option>
+               <option value="cross-join">cross join</option>
+            </select>
+         </div>
+          <label >sql</label>
+                          <!-- <label for="sql_comp_id">Components:</label>
+      <select class="form-control" id="sql_comp_id" style="width:100%" onclick="sqlCompFunction()">
+         <option selected="selected" value="" >----------</option>
+         {% for comp in comp_list %}
+               <option id={{comp.id }} value={{comp.title}} data-desc={{comp.description}} >{{ comp.title}}</option>
+          {% endfor %}
+      </select>-->
+      <br>
+       <textarea class="form-control" style="width:100%;height:150px" id="id_sql" name="sql"></textarea>
+        <!-- <div id="reportquerydesc" class="tab-pane fade">
+            <br/>
+            <label>Description:</label>
+            <textarea class="form-control" cols="40" rows="10" name="description"></textarea>
+         </div>-->
+      </div>
+   </div>
+</form>

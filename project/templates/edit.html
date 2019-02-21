@@ -1,0 +1,76 @@
+<div class="modal fade" id="mymodalbody" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+</div>
+<div id="errorDiv5" style="font-size:20px" > </div>
+
+<form id="form" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="tableid" value="{{transactionid}}">
+    <div class="form-group">
+        <label for="pname"> Project Name </label>
+        <input type="text" readonly class="form-control" id="pname" name="project_id" value="{{recvid}}">
+    </div>
+    <div class="form-group">
+        <label> Select User </label>
+        {{ form.userid }}
+        <!-- <select  required id="userlist" name="userid" >
+            <option value="{{cur_usr}}" selected> {{recvid.userid}} </option>
+            {% if users %}
+                {% for user in users %}
+                    <option value="{{user.id}}">
+                        {{user.email}} 
+                    </option>
+                {% endfor %}
+            {% endif %}
+        </select>  -->
+       
+    </div>
+    <div class="form-group">
+        <label for="exampleInputadmindb">Data base</label>
+        {{ form.db_profileid }}
+    </div>
+    <div class="form-group">
+        <label for="pname"> Set as Default Project </label>
+        <label class="switch1">
+            {{form.setasdefaultproject}}
+            <div class="slider round">
+            </div>
+        </label>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="sumbit" class="sss btn btn-success" id="save_btn">Save</button>
+        </div>
+</form>
+
+<script type ='text/javascript'>
+		$('#save_btn').on('click',function(e){
+			debugger;
+
+			var frm = $("form");
+			$.ajax({
+					type : 'post',
+					url : '/project/saveUserInDB/',
+					data : frm.serialize(),
+					//dataType: 'json',				 
+					success : function (data) {
+						debugger;
+						if(data.split(":-:")[1]=="0"){
+							$("#errorDiv5").text(data.split(":-:")[0]).css("color","green");
+							
+						}else if(data.split(":-:")[1]=="2"){
+							$("#errorDiv5").text(data.split(":-:")[0]).css("color","red");
+							
+							
+						}
+						else if(data.split(":-:")[1]=="1"){
+
+							$("#errorDiv5").text(data.split(":-:")[0]);
+							
+						}
+					},
+					failure : function (data) {
+						alert('An error occurred.');
+                		console.log(data);
+				}
+			});
+		});
+</script>

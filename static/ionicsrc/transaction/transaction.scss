@@ -1,0 +1,314 @@
+page-transaction {
+    //.datetime-disabled {
+    //background:lightgrey !important;
+    //}
+    //.input[disabled]{
+    //background:lightgrey !important;
+    //}
+	button[ion-fab] {
+    overflow: visible;
+    position: relative;
+
+    ion-label {
+        position: absolute;
+        top: -8px;
+        right: 40px;
+
+        color: white;
+        background-color: rgba(0,0,0,0.7);
+        line-height: 24px;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+	}	
+
+	.fab{
+		contain: layout;
+	}
+    .fab_color_yes {
+        background: map-get($colors,secondary);
+    }
+	.fab_color_no {
+        background: map-get($colors,primary);
+    }
+	.save_fab{
+	   background: #29b106;
+	}
+	.new_fab{
+	   background: #05b7ca;
+	 }
+	.delete_fab{
+	   background:#d40808;
+     }
+	.search_fab{
+	  background:#d4a808;
+	}
+	.print_fab{
+	  background:#087fd4;
+	}
+	.cancel_fab{
+	 background:#7c7d7d;
+	 }
+	
+    .fab ion-icon {
+        color: #fff;
+    }
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+		padding: 1rem;
+    }
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #eceeef;
+    }
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid map-get($colors,primary);;
+    }
+    .table tbody + tbody {
+        border-top: 2px solid #eceeef;
+    }
+    .table .table {
+        background-color: #fff;
+    }
+    .table-sm th,
+    .table-sm td {
+        padding: 0.3rem;
+    }
+    .table-bordered {
+        border: 1px solid map-get($colors,primary);;
+    }
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid map-get($colors,primary);;
+    }
+    .table-bordered thead th,
+    .table-bordered thead td {
+        border-bottom-width: 2px;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.075);
+    }
+    .table-active,
+    .table-active > th,
+    .table-active > td {
+        background-color: rgba(0, 0, 0, 0.075);
+    }
+    .table-hover .table-active:hover {
+        background-color: rgba(0, 0, 0, 0.075);
+    }
+    .table-hover .table-active:hover > td,
+    .table-hover .table-active:hover > th {
+        background-color: rgba(0, 0, 0, 0.075);
+    }
+    .table-success,
+    .table-success > th,
+    .table-success > td {
+        background-color: #dff0d8;
+    }
+    .table-hover .table-success:hover {
+        background-color: #d0e9c6;
+    }
+    .table-hover .table-success:hover > td,
+    .table-hover .table-success:hover > th {
+        background-color: #d0e9c6;
+    }
+    .table-info,
+    .table-info > th,
+    .table-info > td {
+        background-color: #d9edf7;
+    }
+    .table-hover .table-info:hover {
+        background-color: #c4e3f3;
+    }
+    .table-hover .table-info:hover > td,
+    .table-hover .table-info:hover > th {
+        background-color: #c4e3f3;
+    }
+    .table-warning,
+    .table-warning > th,
+    .table-warning > td {
+        background-color: #fcf8e3;
+    }
+    .table-hover .table-warning:hover {
+        background-color: #faf2cc;
+    }
+    .table-hover .table-warning:hover > td,
+    .table-hover .table-warning:hover > th {
+        background-color: #faf2cc;
+    }
+    .table-danger,
+    .table-danger > th,
+    .table-danger > td {
+        background-color: #f2dede;
+    }
+    .table-hover .table-danger:hover {
+        background-color: #ebcccc;
+    }
+    .table-hover .table-danger:hover > td,
+    .table-hover .table-danger:hover > th {
+        background-color: #ebcccc;
+    }
+    .thead-inverse th {
+        color: #fff;
+        background-color: map-get($colors,primary);
+    }
+    .thead-default th {
+        color: #464a4c;
+        background-color: map-get($colors,primary);
+    }
+    .table-inverse {
+        color: #fff;
+        background-color: #292b2c;
+    }
+    .table-inverse th,
+    .table-inverse td,
+    .table-inverse thead th {
+        border-color: #fff;
+    }
+    .table-inverse.table-bordered {
+        border: 0;
+    }
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    .table-responsive.table-bordered {
+        border: 0;
+    }
+    .scroll {
+        display: block;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        white-space: nowrap;
+    }
+    
+    .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+    border-bottom-color: #dedede;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  
+  .toolbar_hd_no{
+	  border-bottom: 1px solid #eae4e4;
+      background: transparent;
+   }
+ .menu_hd_no{
+	 color: map-get($colors,primary);
+ }
+ .toolbar-background-md{
+	border-color:none;
+	background:transparent; 
+	}
+	.bar-button-default-md{
+	   color: map-get($colors,primary);
+	}
+	.no_header_title{
+	   padding:20px;
+	   text-align:center;	
+	}
+	.bg-primary{
+	   background: map-get($colors,primary);
+	}
+	.bg-secondary{
+	  background: map-get($colors,secondary);
+	}
+	.title_color{
+	  color:#fff;
+	 }
+	.title_color_primary{
+	   color:map-get($colors,primary);
+	}
+	.ion-title{
+		text-align:center;
+	}
+	.icon_logout{
+		padding:25px 20px;
+		font-size:16px;
+	}
+	.content_padding{
+	    padding-bottom:5px;
+	 }
+	.card_list_padding{
+	    padding-bottom:10px;
+	 }
+	.input_for_boxed{
+	   padding-left:10px !important;
+	   border:1px solid #dedede !important;	
+	 }
+	.input_border{
+		border-bottom:1px solid #dedede !important;
+		width:100%;
+    	}
+	.select_input_border{
+		border-bottom:1px solid #dedede !important;
+		width:100%;
+		max-width:100%
+	}
+	.date_placeholer{
+	    padding: 13px 8px 13px 0px;
+	 }
+	.textarea_placeholder{
+	   margin: 13px 8px 13px 0px;
+	 }
+	.list_group{
+		border-bottom:1px solid #dedede !important;
+		margin: 0px 0 16px;
+    	}
+	.input_border_focus{
+	   border-bottom-color: map-get($colors,primary) !important;
+	 }
+	.item-md.item-input.input-has-focus .item-inner {
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.list-md .item-input.input-has-focus:last-child {
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.list-md .item-input.input-has-focus:last-child .item-inner {
+  box-shadow: none;
+}
+
+.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child {
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child .item-inner {
+  box-shadow: none;
+}
+
+.item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner {
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):last-child {
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+.item-md.item-block .item-inner{
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+.list-md .item-input:last-child {
+  border-bottom: transparent !important;
+}
+}

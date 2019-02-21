@@ -1,0 +1,23 @@
+
+{% load static %}
+<!-- Update model from html transindex.html -->
+<div class="modal fade" id="FireSqlEditModalbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form method="POST" id="firesqlEditForm">
+    {% csrf_token %} 
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Title:</label>
+        <input type="text" class="form-control" name="title" id="title" value="{{ form.title.value|default_if_none:'' }}">
+    </div>
+
+    <div class="form-group">
+        <label>SQL</label>
+        <textarea class="form-control"  name="sql" id="sql" rows="6"> {{form.sql.value|default_if_none:'' }} </textarea>
+    </div> 
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save" onclick="firesqlUpdate(event)" data-viewid ={{viewid}} data-firesqlid={{firesqlid}}>Save</button>
+    </div>
+</form>

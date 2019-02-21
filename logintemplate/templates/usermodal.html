@@ -1,0 +1,80 @@
+{% load static %}
+
+<div class="modal fade" id="userModelbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form id="userform" method="POST">
+{% csrf_token %}
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="logintype">First Name*</label>
+                <!-- <input type="text" class="form-control" name="title" value="{{ form.title.value|default_if_none:'' }}" id="id_title"> -->
+                {{userform.first_name}}
+            </div>        
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group" >  
+                <label for="bg">Last name</label>
+                <!-- <input type="text" class="form-control" name="description" value="{{ form.description.value|default_if_none:'' }}"> -->
+                {{userform.last_name}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" >
+                <label for="layput">Mobile Number*</label>
+                {{userform.mobile_number}}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" >
+                <label for="layput">Email Id*</label>
+                {{userform.email_id}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" >
+                <label for="layput">Password*</label>
+                {{userform.password}}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" >
+                <label for="layput">Confirm Password*</label>
+                {{userform.confirm_password}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" >
+                <label for="layput">Role*</label>
+                {{userform.role}}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="regpage">Is User Active?</label> 
+                <label class="switch">
+                    {{userform.is_active}}
+                    <div class="slider round"></div>
+                </label>
+            </div> 
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="sumbit" class="btn btn-success" id="addUser">Save</button>
+    </div>
+</form>           
+
+  
+

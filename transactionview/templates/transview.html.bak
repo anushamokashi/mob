@@ -1,0 +1,243 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+{% block sidemenu  %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu">
+  <li class="treeview">
+    <a href="{% url 'transindex' %}">
+      <i class="fa fa-arrow-circle-left"></i> <span>Back</span>
+    </a>
+  </li>
+  <li class="active treeview">
+    <a href="">
+      <i class="fa fa-th-list"></i> <span>Transaction View</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li>
+  <li class="treeview">
+    <a href="/transaction/tabledetail/">
+      <i class="fa fa-table"></i> <span>Table Details</span>
+      <span class="pull-right-container">
+        <!--    <i class="fa fa-angle-left pull-right"></i> -->
+      </span>
+    </a>
+  </li>
+</ul>
+<!-- /.sidebar -->
+{% endblock sidemenu %}
+
+
+{% block maincontent %}
+
+<section class="content-header">
+
+  <h1>
+    {{project_title}} Transaction View Details
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="{% url 'transindex' %}"><i class="fa fa-file-text"></i>Transaction</a></li>
+    <li class="active">{{tran_title}}</li>
+  </ol>
+</section>
+{% if messages %}
+    <div>
+        {% for message in messages %}
+        {% if 'success' in message.tags %}
+        <div class="alert alert-success alert-dismissible">
+        <span>{{ message }}</span>
+        <p class="lead">Please Make Login <a href="{% url 'login' %}">here</a>.</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div class="alert alert-danger alert-dismissible">
+        <span>{{ message }}</span>
+        <p class="lead">Please give correct details</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        </div>
+        {% endif %}
+
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+  <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <div class="col-lg-10 col-xs-8"><h3 class="box-title">Transaction View </h3></div>
+            <button type="button" style="width:80px;" data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false" data-whatever="" class="btn bg-blue selectedit">Add New</button>
+            <!--  Model content for transcation add -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">New Transaction view </h4>
+                  </div>
+
+                  <form method="POST" action="/transactionview/transview/{{transactionid}}/{{projectid}}">
+                    {% csrf_token %}
+                    <div class="modal-body">  
+                      <div class="form-group">
+                        <label for="recipient-name" class="control-label">Title:</label>
+                        <input type="text" class="form-control" name="title" id="transname" required>
+                        <p id="validationmsg" style="color:red;font-weight: 20px;"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="control-label">Description:</label>
+                        <textarea class="form-control"  name="description"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label>View Type:</label>
+                        {{form.viewtype}}
+                      </div>
+                      <div class="form-group">
+                        <label>Save Type:</label>
+                        {{form.savetype}}
+                      </div>
+                      <div>
+                        <input type="hidden" class="form-control" name="projectid" value={{projectid}}>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="sumbit" class="btn btn-success">Save</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>      
+            </div>
+          </div>
+
+          <!-- /.box-header -->
+          <div class="box-body table-responsive">
+            {% if transgroup %}
+            <table id="view_table" class="table table-bordered table-striped" style="border:1px solid lightblue">
+              <thead>
+                <tr class="bg-light-blue">
+                  <th>Title</th>
+                  <th>View Type</th>
+                  <th>Save Type</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                  <th>Get In</th>
+                  <th>Generate Page</th>
+                </tr>
+              </thead>
+              <tbody> 
+                {% for view in transgroup %}
+                <tr>
+                  <td>{{view.title}}</td>
+                  <td>{{view.viewtype}}</td>
+                  <td>{{view.savetype}}</td>
+                  <td>
+                    <button type="button" class="btn bg-olive btn-xs edit" data-toggle="modal" value="Edit" data-target="#viewModal" id="edit_button" data-transactionid={{view.id}}><i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <a href="/transactionview/viewdelete/{{view.id}}" data-confirm="Are you sure you want to delete?"><button type="button" class="btn btn-danger btn-xs" ><i class="glyphicon glyphicon-trash"></i></button></a>
+                  </td>
+                  <td>
+                   <a href="/transactionview/viewcomponent/{{view.id}}" class="btn btn-sm btn-info btn-xs"><span class="glyphicon glyphicon-arrow-right"></span> GETIN</a>
+                 </td>
+                 <td>
+                  {% if view.createpage %}
+                  <a><button type="button" class="btn bg-navy btn-xs" id="generate_page" onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="tview">Generate Page</button></a>
+                  {% else %}
+                  <a><button type="button" class="btn btn-warning btn-xs" id="generate_page" onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="tview">Generate Page</button></a>
+                  {% endif %}            
+                  </td>
+               </tr>  
+               {% endfor %}               
+             </tbody>
+           </table>
+           {% else %}
+           <div class="box-body">
+           <strong>Alert! </strong>No Record Found.
+           </div>
+           {% endif %}
+         </div>
+         <!-- /.box-body -->
+       </div>
+       <!-- /.box -->
+     </div>
+     <!-- /.col -->
+   </div>
+   <!-- /.row -->
+ </section>
+ <!-- /.content -->
+ <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="lineModalLabel">Update Transaction view</h3>
+      </div>
+      <div class="modal-body" id="viewmodelbody">
+        <!-- content goes here -->
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.box-body -->   
+</div>
+
+<div class="example-modal" >
+  <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+    <div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+      <div id="floatingBarsG">
+          <div class="blockG" id="rotateG_01"></div>
+          <div class="blockG" id="rotateG_02"></div>
+          <div class="blockG" id="rotateG_03"></div>
+          <div class="blockG" id="rotateG_04"></div>
+          <div class="blockG" id="rotateG_05"></div>
+          <div class="blockG" id="rotateG_06"></div>
+          <div class="blockG" id="rotateG_07"></div>
+          <div class="blockG" id="rotateG_08"></div>
+      </div>
+      <h3 style="color:white">Please Wait...</h3>
+    </div>
+  </div>
+</div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script>
+   $(document).ready(function() {
+    $("#processing-modal").modal('show');
+      setTimeout(function() {
+        $("#processing-modal").modal('hide');  
+      },300);
+      $('a[data-confirm]').click(function(ev) {
+        var href = $(this).attr('href');
+        if (!$('#dataConfirmModal').length) {
+          $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+        } 
+        $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+        $('#dataConfirmOK').attr('href', href);
+        $('#dataConfirmModal').modal({show:true});
+        return false;
+      });
+      });
+</script>
+<script>
+    $(function() {
+        $('#view_table').DataTable({
+          stateSave: true
+        });
+    });
+</script>
+<script src="{% static 'mainjs/viewjs/view.js' %}"></script> 
+{% endblock maincontent %} 

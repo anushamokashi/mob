@@ -1,0 +1,63 @@
+{% load static %}
+<form method="POST" id="contform">
+   {% csrf_token %}
+   <div class="box box-solid boxcolor">
+      <div class="box-header">
+         <h3 class="box-title" style="color:white">Properties</h3>
+         <div class="box-tools pull-right">
+            <button type="button" class="btn bg-green" onclick="updatecontainer(event)" data-container="{{containerid}}">Save</button>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" onclick="remove()" data-widget="remove"><i class="fa fa-remove"></i></button>
+         </div>
+      </div>
+      <div class="box-body" id="reload" style="padding: 15px;">
+         <!--table for container properites --> 
+         <table class="table table-bordered mixcolor"  style="border:1px solid white;">
+            <thead>
+               <tr>
+                  <th style="width:50%">Items</th>
+                  <th>Properties</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>Title</td>
+                  <td><input type="text" class="form-control" name="title" value="{{ form.title.value|default_if_none:'' }}" id="title"></td>
+               </tr>
+               <tr>
+                  <td>Caption</td>
+                  <td><input type="text" class="form-control" name="caption" value="{{ form.caption.value|default_if_none:'' }}" id="caption"></td>
+               </tr>
+               <tr>
+                  <td>Container Type</td>
+                  <td>{{form.containertype}}</td>
+               </tr>
+               <tr>
+                  <td>Input Type</td>
+                  <td>{{form.inputtype}}</td>
+               </tr>
+               <tr>
+                  <td>Parent</td>
+                  <td>{{form.parent}}</td>
+               </tr>
+               <tr>
+                  <td>Expression</td>
+                  <td><textarea class="form-control expression" id="expression" name="expression" value="{{ form.expression.value|default_if_none:'' }}">{{ form.expression.value|default_if_none:'' }}</textarea>
+                     <input type="hidden" class="form-control" id="postexp" name="postexp" value="{{ form.postexp.value|default_if_none:'' }}">
+                  </td>
+               </tr>
+               <tr>
+                  <td>DB Table</td>
+                  <td>{{form.dbtable}}</td>
+               </tr>
+               <tr>
+                  <td>Display Order</td>
+                  <td><input type="text" class="form-control" name="displayorder" value="{{ form.displayorder.value|default_if_none:'' }}"></td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+</form>
+<script src="{% static 'mainjs/postfixjs/validateexpression.js' %}"></script>
+<script src="{% static 'mainjs/viewjs/view.js' %}"></script>

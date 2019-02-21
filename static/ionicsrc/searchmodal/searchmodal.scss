@@ -1,0 +1,17 @@
+page-searchmodal {
+	.card_search{
+		border-top:2px solid map-get($colors,primary);
+	}
+	.card_header{
+		font-size: 1.8rem;
+		padding: 10px 16px;
+	}
+	.more_icon{
+		float: right;
+		font-size: 2.4rem;
+	}
+	.no_data{
+		color:#b1acac;
+	
+	}
+}

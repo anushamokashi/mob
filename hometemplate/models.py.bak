@@ -1,0 +1,114 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models
+from project.models import Project
+from transactionview.models import Transactionview
+from django_extensions.db.models import TimeStampedModel
+from reportview.models import Report
+
+# Create your models here.
+MENU_TYPE_CHOICES=(
+	('grid','Grid'),
+	('sidemenu','SideMenu'),
+	)
+COLUMN_TYPE_CHOICES=(
+	('one','One'),
+	('two','Two'),
+	('three','Three'),
+	)
+SIDEMENU_TYPE_CHOICES=(
+	('left','Left'),
+	('right','Right'),
+	('bottom','Bottom')
+	)
+T_R_CHOICES=(
+	('transactionview','Transactionview'),
+	('reportview','Reportview'),)
+
+ROOT_CHOICES=(
+	('default','Default'),
+	('other','Other'),)
+
+ICON_TYPE_CHOICES =(
+	('add','Add'),
+	('albums','Albums'),
+	('logo-android','Android'),
+	('logo-angular','Angular'),
+	('aperture','Aperture'),
+	('logo-apple','Apple'),
+	('apps','Apps'),
+	('archive','Archive'),
+	('barcode','Barcode'),
+	('basket','Basket'),
+	('bicycle','Bicycle'),
+	('logo-bitcoin','Bitcoin'),
+	('bonfire','Bonefire'),
+	('book','Book'),
+	('bookmark','Bookmark'),
+	('bookmarks','Bookmarks'),
+	('briefcase','Briefcase'),
+	('calculator','Calculator'),
+	('calendar','Calendar'),
+	('card','Card'),
+	('cash','Cash'),
+	('clock','Clock'),
+	('cloud','Cloud'),
+	('logo-codepen','Codepen'),
+	('construct','Construct'),
+	('contact','Contact'),
+	('copy','Copy'),
+	('create','Create'),
+	('cube','Cube'),
+	('desktop','Desktop'),
+	('disc','Disc'),
+	('document','Document'),
+	('flame','Flame'),
+	('flower','Flower'),
+	('floder','Floder'),
+	('globe','Globe'),
+	('grid','Grid'),
+	('help-buoy','Help-Buoy'),
+	('home','Home'),
+	('images','Images'),
+	('information-circle','Information-Circle'),
+	('keypad','Keypad'),
+	('laptop','Laptop'),
+	('list-box','List-Box'),
+	('lock','Lock'),
+        ('locate','Locate'),
+	('logo-pinterest','Pinterest'),
+	('nuclear','Nuclear'),
+	('pie','Pie'),
+	('stats','Stats'),
+	('stopwatch','Stopwatch'),
+	('tennisball','Tennisball'),
+        ('thumbs-up','Thumbs-up')
+
+		)
+class Homepage(TimeStampedModel,models.Model):
+	menutype = models.CharField(max_length=50,choices=MENU_TYPE_CHOICES,null=True, blank=True)
+	column = models.CharField(max_length=50,choices=COLUMN_TYPE_CHOICES,null=True, blank=True)
+	sidemenu = models.CharField(max_length=50,choices=SIDEMENU_TYPE_CHOICES,null=True, blank=True) 
+	project_id = models.ForeignKey(Project,on_delete=models.CASCADE ,related_name='custom2_url_params') 
+
+	def __str__(self):
+		return self.menutype
+
+class Menu(TimeStampedModel,models.Model):
+	title = models.CharField(max_length=100)
+	description = models.CharField(max_length=500)
+	iconcls = models.CharField(max_length=100,choices=ICON_TYPE_CHOICES)
+	typeofview = models.CharField(max_length=100,choices=T_R_CHOICES,null=True, blank=True)
+	transactionview = models.ForeignKey(Transactionview,on_delete=models.CASCADE ,related_name='custom4_url_params',null=True, blank=True)
+	reportview = models.ForeignKey(Report,on_delete=models.CASCADE ,related_name='custom5_url_params',null=True, blank=True)
+	homepageid = models.ForeignKey(Homepage,on_delete=models.CASCADE ,related_name='custom3_url_params')
+	createpage = models.BooleanField(default=False) 
+
+	def __str__(self):
+		return self.title
+
+class RootPage(TimeStampedModel,models.Model):
+	pageoption = models.CharField(max_length=50,choices=ROOT_CHOICES)
+	pageValue = models.ForeignKey(Menu,on_delete=models.SET_NULL ,related_name='pgvale_url_params',null=True, blank=True)
+	project = models.ForeignKey(Project,on_delete=models.CASCADE ,related_name='pgvalue2_url_params')

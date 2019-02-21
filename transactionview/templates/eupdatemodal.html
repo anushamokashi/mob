@@ -1,0 +1,86 @@
+<!-- Eupdate Add model from html viewcomponent.html -->
+{% load static %}
+<div class="modal fade" id="eupdateaddbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<form id="eupdatemodalform_add">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Title:</label>
+        <input type="text" class="form-control" name="title" id="title" value="{{ eform.title.value|default_if_none:'' }}">
+         <div id="titleer"></div>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Update Type</label>
+        {{eform.updatetype}}
+        <div id="updatetypeer"></div>
+    </div>
+     <div class="form-group">
+        <label for="recipient-name" class="control-label">Action Type</label>
+        {{eform.action_type}}
+        <div id="actiontypeer"></div>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Target Transactionview</label>
+        <select class="form-control" name="targettxview" id="targettxview" style="width: 100%;">
+            {% if targettx %}
+            <option value="" selected="selected">-------</option>
+            {%for tx in targettx %}
+            {% if element.targettxview_id == tx.id %}
+            <option value={{tx.id}} selected="selected">{{tx.title}}</option>
+            {% else %}
+            <option value={{tx.id}}>{{tx.title}}</option>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </select>
+        <div id="targettxviewer"></div>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Source Ui Field</label>
+        {{eform.source_ui_field}}
+        <div id="source_ui_fielder"></div>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Target Ui Field</label>
+        <select class="form-control select2" name="target_ui_field" id="target_ui_field" style="width: 100%;">
+             {% if component %}
+            <option value="" selected="selected">-------</option>
+            {%for cp in component %}
+            {% if element.target_ui_field_id == cp.id %}
+            <option value={{cp.id}} selected="selected">[{{cp.containerid}}] - {{cp.title}}</option>
+            {% else %}
+            <option value={{cp.id}}>[{{cp.containerid}}] - {{cp.title}}</option>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </select>
+        <div id="target_ui_fileder"></div>
+    </div>
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Ui Control Field</label>
+        {{eform.ui_control_field}}
+        <div id="ui_control_fielder"></div>
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Filter Clause</label>
+        <textarea class="form-control" name="filter_clause" id ="filter_clause">{{element.filter_clause}}</textarea>
+        <div id="filter_clauseer"></div>
+    </div>
+    <div id="saveresult"></div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        {% if targettx %}
+        <button type="button" class="btn btn-success" onclick="eupdatesave(event)" id="eupdatesavebt" data-process ="edit" data-id="{{element.id}}">Save</button>
+        {% else %}
+        <button type="button" class="btn btn-success" onclick="eupdatesave(event)" id="eupdatesavebt" data-process ="add" data-id="{{viewid}}">Save</button>
+        {% endif %}
+    </div>
+</form>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+});
+</script>
+<script src="{% static 'mainjs/viewjs/view.js' %}"></script>

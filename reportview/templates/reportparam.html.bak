@@ -1,0 +1,137 @@
+<div class="modal fade" id="parambody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<h4 class="modal-title" id="parammodalLabel">  New Report Param Field </h4>
+<form method="POST" id="paramform"  action ="/reportview/saveparams/{{param.id}}/">
+   {% csrf_token %}
+   <div class="modal-body">
+      <div class="row">
+         <div class="col-md-12 col-lg-12">
+            {{ form.non_field_errors }}
+            <div id="loading" style="display:none;">
+               <span id="load_text">loading...</span>
+            </div>
+            <div id="report_add_form_ajax" style="display:none;">
+               <span>Form submit successfully.</span>
+            </div>
+            <div id="form_ajax_error" style="display:none;">
+               <span>Can not submit data due to errors.</span>
+            </div>
+            <input type="hidden" id="paramsave" value="{{param.id}}">
+            <div>
+               <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" style="margin-left: 5px;">Cancel</button>
+               <input class="btn btn-success pull-right" type="submit" value="Submit"></input>
+            </div>
+            <br/>
+            <br/>
+            <div class="tab-v2">
+               <!--  <ul class="nav nav-tabs">
+                   <li class="active"><a href="#report_params" data-toggle="tab">Report Param</a></li>
+                <li><a href="#business_rule" data-toggle="tab">Business Rule</a></li>
+                  <li><a href="#graphical_report" data-toggle="tab">  Graphical Report</a></li>
+                     <li><a href="#box_report" data-toggle="tab">Box Report</a></li>
+               </ul>-->
+               <div class="tab-content">
+                  <div class="tab-pane fade in active" id="report_params">
+                     <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                           <label>Title
+                           <span class="asteriskField">*</span>
+                           </label>
+                           <input class="form-control" id="title1" style="width:100%" value=""name="title"></input>
+                           <!-- <label>Slug</label>
+                           
+                           <input class="form-control" style="width:100%" value=""name="slug" readonly="True"></input> -->
+                           <label>Caption</label>
+                           <input class="form-control" id="caption" style="width:100%" value=""name="caption"></input>
+                           <label>Query</label>
+                           <input class="form-control" id="query" style="width:100%" value=""name="query"></input>
+                           <label>Display Order <span class="asteriskField">*</span></label>
+                           <input class="form-control" id="displayorder" style="width:100%" value=""name="display_order"></input>
+                           <label>is hidden:</label>{{paramform.is_hidden}}
+                            <br>
+                           <label>
+                           <input type="checkbox" id="empty" name="allow_empty">Allow Empty</label>
+                           <br>
+                           <label>Value field</label>
+                           <input class="form-control select2" style="width:100%" name="value_field"></input>
+                           
+                           <label>Display field </label>
+                           <input class="form-control select2" style="width:100%" name="display_field"></input>
+                              <label>Identifiers</label>
+
+                           <input class="form-control" id="identifiers" name="identifiers" style="width:100%" value=""></input>
+
+                           <label>Descrption</label>
+                           <textarea class="form-control" id="description" style="width:550px" name="description"></textarea>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                           <label>No of decimal digits <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="no_of_decimal_digits"></input>
+                           <!--<label>
+                           <input type="checkbox" name="allow
+                              _multiselect">Allow multiselect</label>
+                           <br>
+                            <label>Identifier </label>
+                           <input class="form-control" style="width:100%" name="resource_identifier"></input>
+                        <label>Related table component </label>
+                           <select class="form-control select2" style="width:100%" name="related_table_component">
+                              <option value="report">Report</option>
+                           </select>-->
+                           <label>Data type</label>
+                            {{paramform.data_type}}
+                            <br>
+                           <label>Component type</label>
+                           {{paramform.component_type}}
+                           <br>
+                           <label>Widget type</label>
+                           {{paramform.widget_type}}
+                              <br>
+                           <label>Validate expression</label>
+                           <input class="form-control" style="width:100%" name="validate_expression"></input>
+                            <br>
+                           <label>Expression</label>
+                           <input class="form-control" style="width:100%" name="expression"></input>
+                           
+                        </div>
+                     </div>
+                  </div>
+                  
+                            <!-- <textarea class="form-control" style="width:100%" name="description"></textarea>
+                 <div class="tab-pane fade in" id="business_rule">
+                     <div class="row">
+                        <div class="col-md-6">
+                           <label>Title <span class="asteriskField">*</span></label>
+                           <input class="form-control" id ="brtitle"style="width:100%" name="brtitle"></input>
+                           <label>Description</label>
+                          
+                           <input class="form-control" style="width:100%" name="validate_expression"></input>
+                           <label>Min filter chars <span class="asteriskField">*</span></label>
+                           <input class="form-control" style="width:100%" name="min_filter_chars"></input>
+                           <label >sql</label>
+                           <label for="sql_comp_id">Components:</label>
+      <select class="form-control" id="sql_comp_id" style="width:100%" onclick="sqlCompFunction()">
+         <option selected="selected" value="" >----------</option>
+         {% for comp in comp_list %}
+               <option id={{comp.id }} value={{comp.title}} data-desc={{comp.description}} >{{ comp.title}}</option>
+          {% endfor %}
+      </select>
+      <br>
+       <textarea class="form-control" style="width:100%" id="id_sql" name="sql"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                           
+                           <label>Display format expression</label>
+                           <input class="form-control" style="width:100%" name="display_format_expression"></input>
+                           <label>
+                           <input type="checkbox" name="enable_filter'">Enable Filter</label>
+                           <label>
+                           <label>Result chunk size</label>
+                           <input class="form-control" style="width:100%" name="result_chunk_size"></input>
+                        </div>
+                     </div>-->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>

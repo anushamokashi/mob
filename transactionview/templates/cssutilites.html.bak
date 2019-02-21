@@ -1,0 +1,281 @@
+{% extends 'tempmain.html' %}
+{% load static %}
+
+{% block navbarRight %}
+<div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="#" data-toggle="control-sidebar">{{project_title}}</a>
+        </li>
+
+        <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Switch Project
+            <ul class="dropdown-menu">
+                <!-- inner menu: contains the actual data -->
+                <li class="dropdown-item" style="height:45px;padding: 10px;text-align: center;">
+                    <h4>Avaliable Projects</h4>
+                </li>
+                {% if projectselect %}
+                    {% for selection in projectselect %}
+                        <li class="header">
+                            <a href="/transaction/switchproject/{{selection.project_id_id}}">
+                                <h4>
+                                    <img src="{% static 'maincss/img/folder.png' %}" class="img-circle" alt="User Image" />
+                                    &nbsp;  &nbsp;&nbsp;{{selection.project_id.title}}
+                                </h4>
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </li>
+
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="{% static 'maincss/images/user.png' %}" style="background: white;width:20px;height:20px;" class="img-circle" alt="User Image">
+                <span class="hidden-xs">{{element.userid}}</span>
+            </a>
+            <ul class="dropdown-menu">
+                <!-- User image -->
+                <li class="user-header">
+                    <img src="{% static 'maincss/images/user.png' %}" style="background: white" class="img-circle" alt="User Image">
+
+                    <p>
+                        {{element.userid}}
+                    </p>
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                    <div class="pull-right">
+                        <a href="{% url 'signout' %}" class="btn btn-default btn-flat" style="background: none;border: none;"><button type="button" class="btn btn-block btn-danger">Sign Out</button></a>
+                    </div>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Control Sidebar Toggle Button -->
+        <li class="dropdown user user-menu">
+            <a data-viewid ={{viewid}} onclick="saveSqlInServerDb(event)"><i class="fa fa-gears"></i></a>
+        </li>
+    </ul>
+</div>
+{% endblock navbarRight %}
+
+{% block sidemenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+<ul class="sidebar-menu">
+
+    <li class="treeview">
+        <a href="/transactionview/transview/{{transaction_id}}/{{project_id}}">
+            <i class="fa fa-arrow-circle-left"></i> <span>Back</span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="/transactionview/viewcomponent/{{view.id}}">
+            <i class="fa  fa-file-text"></i> <span>View</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="/actions/addactions/{{view.id}}">
+            <i class="fa fa-get-pocket"></i> <span>Action</span>
+        </a>
+    </li>
+    <li class="active treeview">
+        <a href="/transactionview/txncss/{{view.id}}">
+            <i class="fa fa-css3"></i> <span>Css Utilites</span>
+        </a>
+    </li>
+    {% if view.createpage %}
+    <li class="bg-green-active" id="createIoniclb">
+        <a onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="view">
+            <i class="fa fa-product-hunt"></i> <span>Generate Page</span>
+        </a>
+    </li>
+     {% else %}
+    <li class="bg-blue" id="createIoniclb">
+        <a onclick="generate_page(event)" data-txviewid ={{view.id}} data-from="view">
+            <i class="fa fa-product-hunt"></i> <span>Generate Page</span>
+        </a>
+    </li>
+    {% endif %}
+</ul>
+<!-- /.sidebar -->
+{% endblock sidemenu %} {% block maincontent %}
+<section>
+    <div id="divErrorMessages"></div>
+    <div id="divResults">
+    </div>
+</section>
+<section class="content-header" id="reload">
+    <h1>
+   Css Utilites
+  </h1>
+    <ol class="breadcrumb">
+        <li><a href="/transaction/transmain/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{% url 'transindex' %}"><i class="fa fa-file-text"></i> Transaction</a></li>
+        <li><a href="/transactionview/transview/{{transaction_id}}/{{project_id}}"><i class="fa fa-file-text"></i> Transaction View</a></li>
+        <li class="active"> {{view.title}}</li>
+    </ol>
+</section>
+
+<!-- /.label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+    <!-- small box -->
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+  <section>
+      <div class="row">
+          <div class="col-lg-12 col-xs-12" id="containerdiv">
+              <div class="box box-default">
+                  <div class="box-header with-border">
+                          <h3 class="box-title">Default Css For View </h3>
+                      <div class="box-tools pull-right">
+                          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                      </div>
+
+                  <!-- /.box-header -->
+                  <div class="box-body">
+                    <div id="css_divErrorMessages"></div>
+                      <div id="css_divResults">
+                      </div>
+                      <div class="box-body">
+                         <form id="csstxn_form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                               <label for="logintype">Header In Ionic</label>
+                               {{form.ionic_header}}
+                            </div>
+                            <div class="form-group" id="select_root">
+                               <label for="logintype">Header Color</label>
+                               {{form.header_color}}
+                            </div>
+                            <div class="form-group" id="select_root">
+                               <label for="logintype">Custom Header Title</label>
+                               {{form.custom_header_title}}
+                            </div>
+                            <div class="form-group" id="select_root">
+                               <label for="logintype">Background Color</label>
+                               {{form.background}}
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                               <button type="button" class="btn btn-primary" data-viewid = {{txviewid}} onclick="csstxn_submit(event)">Submit</button>
+                            </div>
+                         </form>
+                      </div>
+                  </div>
+                  <!-- /.box-body -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-xs-4" id="divbody">
+              <div id="compprop1">
+                  <div id="tablebody1">
+                      <!--table for component properites -->
+                  </div>
+              </div>
+
+              <div id="compprop2">
+                  <div id="tablebody">
+                      <!--table for container properites -->
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+</div>
+
+
+
+
+
+ <div class="example-modal" >
+        <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+
+<div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+ <div id="floatingBarsG">
+    <div class="blockG" id="rotateG_01"></div>
+    <div class="blockG" id="rotateG_02"></div>
+    <div class="blockG" id="rotateG_03"></div>
+    <div class="blockG" id="rotateG_04"></div>
+    <div class="blockG" id="rotateG_05"></div>
+    <div class="blockG" id="rotateG_06"></div>
+    <div class="blockG" id="rotateG_07"></div>
+    <div class="blockG" id="rotateG_08"></div>
+</div>
+  <h3 style="color:white">Please Wait...</h3>
+</div>
+</div>
+</div>
+
+<!-- /.box-body -->
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script>
+    $(function() {
+        $("#tabcol").DataTable({
+            "ordering": false,
+            stateSave: true
+
+        });
+        $("#eupdatetb").DataTable({
+            "ordering": false,
+            stateSave: true
+        });
+        $("#eposttb").DataTable({
+            "ordering": false,
+             stateSave: true
+
+        });
+        $("#firesqltable").DataTable({
+            "ordering": false,
+             stateSave: true
+
+        });
+
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass   : 'iradio_flat-green'
+        });
+
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $("#processing-modal").modal('show');
+        $("#compprop2").hide();
+        $("#compprop1").hide();
+        $("#divbody").hide();
+        setTimeout(function() {
+          $("#processing-modal").modal('hide');
+        },300);
+
+        $('#CompModal').on('hidden.bs.modal', function () {
+            $('#cont_add')[0].reset();
+
+        });
+
+        $('a[data-confirm]').click(function(ev) {
+            var href = $(this).attr('href');
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+            $('#dataConfirmOK').attr('href', href);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+        });
+    });
+</script>
+
+<script src="{% static 'mainjs/viewjs/view.js' %}"></script>
+
+{% endblock maincontent %}

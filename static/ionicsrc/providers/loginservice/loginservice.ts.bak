@@ -1,0 +1,93 @@
+import { Injectable } from '@angular/core';
+import { Http,Headers } from '@angular/http';
+import 'rxjs/add/operator/map';
+import { Storage } from '@ionic/storage';
+
+import { SingletonProvider } from '../../providers/singleton/singleton';
+
+/*
+  Generated class for the LoginserviceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+@Injectable()
+export class LoginserviceProvider {
+	resturl :any;
+
+  constructor(public http: Http,public storage: Storage,public singleton: SingletonProvider) {
+	  this.resturl = this.singleton.resturl;
+    console.log('Hello LoginserviceProvider Provider');
+  }
+customLoginNew(sql:string,loginType:string,testJson:object,pid:string,playerId:string) {
+		let quickDetails= {
+			"SQL":sql,
+			"SQLPARAMS":testJson,
+			"LOGINTYPE":loginType,
+			"PROJECTNAME":this.singleton.projectname,
+			"PLAYERID":playerId,
+		};
+		
+		var headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		let params ="PID="+pid+"&quickDetails="+JSON.stringify(quickDetails);
+	    if(loginType == "form"){
+		return this.http.post(this.resturl+'mobileserviceapi/customLogin',params,{headers: headers});
+		}
+	   else if(loginType =="otp"){
+		 return this.http.post(this.resturl+'mobileserviceapi/customOtpNew',params,{headers: headers});
+
+		}
+		
+	}
+
+	customOtpNew(sql:string,loginType:string,testJson:object,pid:string,projectname:string) {
+		let quickDetailsOtp= {
+			"SQL":sql,
+			"SQLPARAMS":testJson,
+			"LOGINTYPE":loginType,
+			"PROJECTNAME":projectname
+		};
+		
+		var headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		let params = "PID="+pid+"&quickDetailsOtp="+JSON.stringify(quickDetailsOtp);   
+
+		return this.http.post(this.resturl+'mobileserviceapi/customOtpNew',params,{headers: headers});
+		
+	}
+
+	customSearch(data:object,pid:string,projectname:string){
+		var headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		let params = "PID="+pid+"&searchButton="+JSON.stringify(data);   
+
+		return this.http.post(this.resturl+'mobileserviceapi/customSearchButton',params,{headers: headers});
+	}
+
+	// duplicateCheking(checklist:any){
+	// 	var headers = new Headers();
+	// 	headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	// 	let params = "checkList="+JSON.stringify(checklist);    
+
+	// 	return this.http.post('http://192.168.125.75:32923/mfginventory/mobileserviceapi/duplicateCheking',params,{headers: headers});
+	// }
+	
+	 hiddenSqlService(data:object){
+		var headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		let params = "PID="+data['pid']+"&fieldType="+data['fieldType']+"&eformid="+data['eFormId']+"&fieldName="+data['fieldName']+"&projectid="+data['projectId']+"&USERNAME="+data['username']+"&limit="+data['limit']+"&limitvalue="+data['limitvalue'];
+	
+		return this.http.post(this.resturl+'mobileserviceapi/eformsql',params,{headers: headers});
+	}
+   
+      sendMapjson(Json: any) {
+        let MapJson = Json;
+		console.log(MapJson);
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        let params = "PID="+this.singleton.PID+"&mapJson="+JSON.stringify(MapJson);
+        console.log("f");
+        return this.http.post(this.resturl+'mobileserviceapi/syncmaster/',params,{headers: headers});
+		}	
+}

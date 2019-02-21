@@ -1,0 +1,87 @@
+from rest_framework import serializers
+from .models import Transaction,Txtabledetails,Txtablecomponentdetails,enumkeyvalue
+
+class enumkeyvalueSerializer(serializers.ModelSerializer):
+	class Meta:
+		model= enumkeyvalue
+		fields=(
+			'key', 
+			'value', 
+			'enum_title_fk', 
+			)
+
+class TxtablecomponentdetailsSerializer(serializers.ModelSerializer):
+	enum_meta = serializers.SerializerMethodField()
+	txtabledetailid = serializers.ReadOnlyField(source = "txtabledetailid.tablename")
+
+	def get_enum_meta(self,obj):
+		txenum_meta = enumkeyvalue.objects.filter(enum_title_fk_id = obj.enum)
+		product_main_category_serialized = enumkeyvalueSerializer(instance=txenum_meta,many=True)
+		return product_main_category_serialized.data 
+ 	
+	class Meta:
+		model= Txtablecomponentdetails
+		fields=(
+			'id',
+			'title', 
+			'txtabledetailid', 
+			'columnname', 
+			'datatype',
+			'maxlength',
+			'no_of_decimal_digits', 
+			'field_slug',
+			'isdbfield',
+			'isnull',
+			'is_system_component',
+			'enum',
+			'enum_meta'
+			)
+
+
+class TxtabledetailsSerializer(serializers.ModelSerializer):
+	field_meta = serializers.SerializerMethodField()
+	parent = serializers.ReadOnlyField(source = "parent.title")
+
+	def get_field_meta(self,obj):
+		txcomponent_meta = Txtablecomponentdetails.objects.filter(txtabledetailid_id=obj.id,is_system_component=False)	
+		product_main_category_serialized = TxtablecomponentdetailsSerializer(instance=txcomponent_meta,many=True)
+		return product_main_category_serialized.data 
+
+	class Meta:
+		model= Txtabledetails
+		fields=(
+			'id',
+			'title', 
+			'tablename', 
+			'description',
+			'relationshiptype',
+			'transactionid',
+			'projectid',
+			'isprimary',
+			'table_slug',
+			'field_meta',
+			'parent',
+			)
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+	table_meta = serializers.SerializerMethodField()
+
+	def get_table_meta(self,obj):
+		txtabledetails_category = Txtabledetails.objects.filter(pk=obj.id)
+		txtabledetails_category_serialized = TxtabledetailsSerializer(instance=txtabledetails_category,many=True)
+		return txtabledetails_category_serialized.data 
+
+
+	class Meta:
+		model = Transaction
+		fields= (
+			'txname',
+			'txdescription',
+			'projectid',
+			'table_meta',
+			)
+
+
+
+

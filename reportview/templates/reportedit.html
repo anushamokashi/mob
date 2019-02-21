@@ -1,0 +1,1058 @@
+{% extends 'tempmain.html' %} {% load static %} {% block sidemenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+
+<ul class="sidebar-menu" data-widget="tree">
+    
+
+   <li class="active treeview">
+        <a href="/reportview/repoviewdetails/">
+            <i class="fa fa-arrow-circle-left"></i> <span>Back</span>
+        </a>
+    </li>
+   
+</ul>
+{% endblock sidemenu %}
+</section>
+{% block maincontent %}
+<section class="content-header">
+   <h1>
+      {{project_title}} Report Edit
+   </h1>
+   <ol class="breadcrumb">
+      <li>
+         <a href="/transaction/transmain/"> <i class="fa fa-dashboard"> </i> Home </a>
+      </li>
+      <li> <a href="/reportview/repoviewdetails/"> ReportView </a> </li>
+      <li class="active"> ReportView Edit</li>
+   </ol>
+</section>
+<!-- label above user -->
+<div class="col-lg-12 col-xs-4" style="margin:20px 0 0 0;">
+   <!-- small box -->
+</div>
+<div class="box-body">
+   <section class="content">
+      <div class="row">
+         <div class="col-xs-12">
+            <div class="box">
+               <div class="box-header">
+                  <div class="col-lg-10 col-xs-2">
+                     <h3 class="box-title table-responsive"> Report Details Edit </h3>
+                  </div>
+                  <button type="button" style="width:80px;" data-whatever="" class="btn bg-blue" data-toggle="collapse" data-target="#demo"> <i class="fa fa-plus"></i></button>
+                  <div id="demo" class="collapse">
+                     <table>
+                        <tr>
+                           <td>Title</td>
+                           <td>{{ edit.title }}</td>
+                        </tr>
+                        <tr>
+                           <td>Report_header_line1</td>
+                           <td>{{ edit.report_header_line1 }}</td>
+                        </tr>
+                        <tr>
+                           <td>Report_header_line2</td>
+                           <td>{{ edit.report_header_line2 }}</td>
+                        </tr>
+                        <tr>
+                           <td>Is_hidden</td>
+                           <td>{{ edit.is_hidden }}</td>
+                        </tr>
+                        <tr>
+                           <td>Report_type</td>
+                           <td>{{ edit.report_type }}</td>
+                        </tr>
+                        <tr>
+                           <td>Report Slug</td>
+                           <td>{{ edit.slug }}</td>
+                        </tr>
+                        <tr>
+                           <td>Edit</td>
+                           <td>
+                              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal" data-title="Edit Report Details" id="myModal"><i class="fa fa-pencil fa-lg"></i></button>
+                           </td>
+                        </tr>
+                       <!-- <tr>
+                           <td>Generate Process Definition</td>
+                           <div>
+                              <td>
+                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ajax_modal" data-title="Generate Process Definition " data-url="/metadata/report/939/" data-return-url="/report/partial/crm-2/report/partial/edit/939/" data-list-div-id="report_detail_edit_id" data-whatever="@mdo"><i class="fa fa-recycle"></i></button><i class="fa fa-check" style="color:green"></i>
+                              </td>
+                           </div>
+                        </tr>-->
+                     </table>
+                  </div>
+                  <div class="modal fade" id="mymodal" role="dialog" aria-labelledby="editmodalLabel">
+                     <div class="modal-dialog" style="width:600px;" role="document">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Edit Report Details</h4>
+                           </div>
+                           <div class="modal-body" id="editbody">
+                              <!-- content goes here -->
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <hr/>
+                  <div class="col-lg-10 col-xs-2">
+                     <h3 class="box-title"> Report Parameters </h3>
+                  </div>
+                  <button type="button" style="width:80px;" data-whatever="" class="btn bg-blue" data-parentproject="{{parentproject}}" data-fromdb="{{report_ser_json}}" data-toggle="collapse" data-target="#reportparam"> <i class="fa fa-plus"></i></button>
+                  <br/>
+                  <br/>
+                  <div id="reportparam" class="collapse">
+                     <button style="width:80px;" data-toggle="modal" data-target="#parammodal" class="btn bg-blue" id="paramModal"><i class="fa fa-plus"></i> New </button>
+                     <div class="modal fade" id="parammodal" role="dialog" aria-labelledby="parammodalLabel">
+                        <div class="modal-dialog" style="width:600px;" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"> &times; </span> </button>
+                              </div>
+                              <div class="modal-body" id="parambody">
+                                 <!-- content goes here -->
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!--<button type="button" class="btn btn-info">Report Param Navigation</button>-->
+                     <br>
+                     <br>
+                     <div class="box-body table-responsive">
+                        {% if params %}
+                        <table id="exam" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                           <thead>
+                              <tr>
+                                 <th style="background: cadetblue;">Title</th>
+                                 <th style="background: cadetblue;">Caption</th>
+                                 <th style="background: cadetblue;">Display_order</th>
+                                 <th style="background: cadetblue;">Is_hidden</th>
+                                 <th style="background: cadetblue;">Edit</th>
+                                 <th style="background: cadetblue;">Delete</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for report_param_field in params %}
+                              <tr>
+                                 <td>{{report_param_field}}</td>
+                                 <td>{{report_param_field.caption}}</td>
+                                 <td>{{report_param_field.display_order}} </td>
+                                 <td>{{report_param_field.is_hidden}}</td>
+                                 <td>
+                                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#parammodal" data-id="{{report_param_field.id}}" id="parameditModal"><i class="glyphicon glyphicon-pencil"></i>
+                                    </button>
+                                    </a>
+                                 </td>
+                                 <td>
+                                    <a href="/reportview/delparam/{{report_param_field.id}}/" data-confirm="Are you sure you want to delete?">
+                                    <button type="button" class="btn btn-danger btn-xs"> <i class="glyphicon glyphicon-trash"> </i> </button>
+                                    </a>
+                                 </td>
+                              </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                        {% else %}
+                        <p> There are no reports available. </p>
+                        {% endif %}
+                     </div>
+                  </div>
+                  <hr/>
+                  <div class="col-lg-10 col-xs-2">
+                     <h3 class="box-title">Report Query</h3>
+                  </div>
+                  <button type="button" style="width:80px;" data-whatever="" class="btn bg-blue" data-toggle="collapse" data-target="#reportquery"> <i class="fa fa-plus"></i></button>
+                  <br/>
+                  <br/>
+                  <div id="reportquery" class="collapse">
+                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#querymodal" id="queryModal"><i class="fa fa-plus"></i> New </button>
+                     <br>
+                     <br>
+                     <div class="modal fade" id="querymodal" role="dialog">
+                        <div class="modal-dialog" style="width:600px;" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+                              <div class="modal-body" id="querybody">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="box-body table-responsive">
+                        {% if query %}
+                        <table id="repoquery" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                           <thead>
+                              <tr>
+                                 <th style="background: cadetblue;">Is_main_query</th>
+                                 <th style="background: cadetblue;">Title</th>
+                                 <th style="background: cadetblue;">Join_type</th>
+                                 <th style="background: cadetblue;">Edit</th>
+                                 <th style="background: cadetblue;">Delete</th>
+                                 <th style="background: cadetblue;">ReportProcess</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for queryfield in query %}
+                              <tr>
+                                 <td>{{queryfield.is_main_query}}</td>
+                                 <td>{{queryfield}} </td>
+                                 <td>{{queryfield.join_type}}</td>
+                                 <td>
+                                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#querymodal" data-id="{{queryfield.id}}" id="queryeditModal"><i class="glyphicon glyphicon-pencil"></i>
+                                    </button>
+                                 </td>
+                                 <td>
+                                    <a href="/reportview/delQuery/{{queryfield.id}}/" data-confirm="Are you sure you want to delete?">
+                                    <button type="button" class="btn btn-danger btn-xs"> <i class="glyphicon glyphicon-trash"> </i> </button>
+                                    </a>
+                                 </td>
+                                  <td>
+                                    <a href="/reportview/reportprocess/{{title}}/{{queryfield.id}}/">
+                                    <button type="button" class="btn btn-danger btn-xs" > ReportProcess </button>
+                                    </a>
+                                 </td>
+                              </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                        {% else %}
+                        <p> There are no reports available. </p>
+                        {% endif %}
+                     </div>
+                  </div>
+                  <hr/>
+                  <div class="col-lg-10 col-xs-2">
+                     <h3 class="box-title">Report Field</h3>
+                  </div>
+                  <button type="button" style="width:80px;" data-whatever="" class="btn bg-blue" data-toggle="collapse" data-target="#fieldparam"> <i class="fa fa-plus"></i></button>
+                  <br/>
+                  <br/>
+                  <div id="fieldparam" class="collapse">
+                     <button style="width:80px;" data-toggle="modal" data-target="#fieldmodal" class="btn bg-blue" id="fieldModal"><i class="fa fa-plus"></i> New </button>
+                     <div class="modal fade" id="fieldmodal" role="dialog" aria-labelledby="fieldmodal">
+                        <div class="modal-dialog" style="width:600px;" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"> &times; </span> </button>
+                              </div>
+                              <div class="modal-body" id="fieldbody">
+                                 <!-- content goes here -->
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!--<button type="button" class="btn btn-info">Report Field Navigation</button>-->
+                     <br>
+                     <br> 
+                     <div class="box-body table-responsive">
+                        {%if field%}
+                        <table id="repobus" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                           <thead>
+                              <tr>
+                                 <th style="background: cadetblue;">Title</th>
+                                 <th style="background: cadetblue;">caption</th>
+                                 <th style="background: cadetblue;">Don't Repeat</th>
+                                 <th style="background: cadetblue;">Display Order</th>
+                                 <th style="background: cadetblue;">Edit</th>
+                                 <th style="background: cadetblue;">Delete</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for title in field %}
+                              <tr>
+                                 <td>{{title}}</td>
+                                 <td>{{title.caption}}</td>
+                                 <td>{{title.dont_repeat}}</td>
+                                 <td>{{title.display_order}}</td>
+                                 <td>
+                                    <button type="button" class="btn bg-olive btn-xs"><i class="glyphicon glyphicon-pencil" data-target="#fieldmodal" id="fieldeditModal" data-id="{{title.id}}" data-toggle="modal"></i>
+                                    </button>
+                                    </a>
+                                 </td>
+                                 <td>
+                                    <a href="/reportview/delfield/{{title.id}}" data-confirm="Are you sure you want to delete?">
+                                    <button type="button" class="btn btn-danger btn-xs"> <i class="glyphicon glyphicon-trash"> </i> </button>
+                                    </a>
+                                 </td>
+                                 {% endfor %}
+                              </tr>
+                           </tbody>
+                        </table>
+                        {% else %}
+                        <p> There are no reports available. </p>
+                        {% endif %}
+                     </div>
+                  </div>
+                  <hr/>
+                  <div class="col-lg-10 col-xs-2">
+                     <h3 class="box-title"> Report Grouping </h3>
+                  </div>
+                  <button type="button" style="width:80px;" data-toggle="collapse" class="btn bg-blue" data-target="#reportgroup" id="grouping"> <i class="fa fa-plus"></i></button>
+                  <br>
+                  <br>
+                  <div id="reportgroup" class="collapse">
+                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#grouping_modal" id="groupModal"><i class="fa fa-plus"></i> New </button>
+                     <br>
+                     <br>
+                     <div class="modal fade" id="grouping_modal" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"> &times; </span> </button>
+                              </div>
+                              <div class="modal-body" id="groupbody">
+                                 <!-- content goes here -->
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="box-body table-responsive">
+                        {%if grouping%}
+                        <table id="repogroup" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                           <thead>
+                              <tr>
+                                 <th style="background: cadetblue;">Group By Field</th>
+                                 <th style="background: cadetblue;">Caption Field</th>
+                                 <th style="background: cadetblue; width: 200px;">Header Caption Template</th>
+                                 <th style="background: cadetblue;">Display Order</th>
+                                 <th style="background: cadetblue;">Edit</th>
+                                 <th style="background: cadetblue;">Delete</th>
+
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for title in grouping %}
+                              <tr>
+                                 <td>{{title.groupby_field}}</td>
+                                 <td>{{title.caption_field}}</td>
+                                 <td>{{title.header_caption_template}}</td>
+                                 <td>{{title.display_order}}</td>
+                                 <td>
+                                    <button type="button" class="btn bg-olive btn-xs"><i class="glyphicon glyphicon-pencil" data-target="#grouping_modal" id="groupeditModal" data-id="{{title.id}}" data-toggle="modal"></i>
+                                    </button>
+                                    </a>
+                                 </td>
+                                 <td>
+                                    <a href="/reportview/delgroup/{{title.id}}/" data-confirm="Are you sure you want to delete?">
+                                    <button type="button" class="btn btn-danger btn-xs"> <i class="glyphicon glyphicon-trash"> </i> </button>
+                                    </a>
+                                 </td>
+                                 {% endfor %}
+                              </tr>
+                           </tbody>
+                        </table>
+                        {% else %}
+                        <p> There are no reports available. </p>
+                        {% endif %}
+                     </div>
+                  </div>
+                  <hr/>
+                <div class="col-lg-10 col-xs-2">
+                  <h3 class="box-title"> Report Action</h3>
+               </div>
+               <button type="button" style="width:80px;" data-whatever="" class="btn bg-blue"  data-toggle="collapse" data-toggle="tooltip" data-target="#reportAction"> <i class="fa fa-plus"></i></button>
+               <br/>
+               <br/>
+               <div id="reportAction" class="collapse">
+                  <button type="button" class="btn btn-primary" data-toggle="modal"  data-target="#reportaction"  id="actionRepo"> <i class="fa fa-plus"></i> Add Actions </button>
+                  <br><br>
+                  <div class="modal fade " id="reportaction" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
+                     <div class="modal-dialog" id="reportmodaldialog">
+                        <div class="modal-content">
+                           <div class="modal-header" style="font-size: 20px;">Report Action
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"> &times; </span> </button>
+                           </div>
+                           <div id="printActionResult">
+
+                           </div>
+                           <div id="printActionError">
+
+                           </div>
+                           <div class="modal-body" id="actionbody" style="height:auto;">
+                              <!-- content goes here -->
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="box-body table-responsive">
+                  {% if actions %}
+                     <table id="action" class="table table-bordered table-striped">
+                        <thead>
+                           <tr>
+                              <th style="background: cadetblue;">Title</th>
+                              <th style="background: cadetblue;">Configuration</th>
+                              <th style="background: cadetblue;">Delete</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                          {% for action in actions %}
+                           <tr>
+                               
+                              <td>{{action.report_action}}</td>
+
+                              <td><button type="button" class="btn bg-navy btn-xs" data-toggle="modal"  data-target="#reportaction" onclick="report_action(event)" data-actiontype = "{{action.report_action}}" data-id="{{action.id}}"><i class="glyphicon glyphicon-cog"></i></button></td>
+
+                              <td> <a href="/reportview/del_action/{{title}}/{{action.id}}/" data-confirm="Are you sure you want to delete?">
+                              <button type="button" class="btn btn-danger btn-xs"> <i class="glyphicon glyphicon-trash"> </i> </button></a>
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                      {% else %}
+                        <p>No Report Actions</p>
+                        {% endif %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<hr/>
+                 
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'mainjs/reportjs/report.js' %}"></script>
+<style type="text/css">
+   table {
+   font-family: arial, sans-serif;
+   border-collapse: collapse;
+   width: 100%;
+   }
+   td {
+   border: 1px solid #dddddd;
+   text-align: left;
+   padding: 8px;
+   text-align: center;
+   }
+   th {
+   border: 1px solid #dddddd;
+   text-align: left;
+   padding: 8px;
+   width: 100px;
+   }
+   tr:nth-child(even) {
+   background-color: #dddddd;
+   }
+</style>
+<script  type="text/javascript">
+   $(document).on('click', '#myModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       param = "/reportview/editmodal/{{title}}/";
+       $("#mymodal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(param)
+                   .done(function(data) {
+   
+                       $("#editbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   $(document).on('click', '#paramModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       param = "/reportview/parammodal/{{title}}/";
+   
+       $("#parammodal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(param)
+                   .done(function(data) {
+   
+                       $("#parambody").html(data);
+   
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   $(document).on('click', '#parameditModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       //var data = event_object.data('id');
+       var id = e.currentTarget.dataset['id'];
+       console.log(id)
+           //repoid= $('#paramsave').val()
+       param = "/reportview/parameditmodal/{{title}}/" + id + "/";
+       $("#parammodal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(param)
+                   .done(function(data) {
+   
+                       $("#parambody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   $(document).on('click', '#queryModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       queryconf = "/reportview/Querymodal/{{title}}/";
+       $("#querymodal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(queryconf)
+                   .done(function(data) {
+   
+                       $("#querybody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   $(document).on('click', '#queryeditModal', function(e) {
+       debugger;
+       var dpconf = "";
+       id = e.currentTarget.dataset['id'];
+       var modal = null;
+       queryconf = "/reportview/Queryeditmodal/{{title}}/" + id + "/";
+       $("#querymodal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(queryconf)
+                   .done(function(data) {
+   
+                       $("#querybody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   $(document).on('click', '#fieldModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       param = "/reportview/fieldmodal/{{title}}/";
+       $("#fieldmodal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(param)
+                   .done(function(data) {
+   
+                       $("#fieldbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   $(document).on('click', '#fieldeditModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       var id = e.currentTarget.dataset['id'];
+       param = "/reportview/fieldeditmodal/{{title}}/" + id + "/";
+       $("#fieldmodal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(param)
+                   .done(function(data) {
+   
+                       $("#fieldbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   $(document).on('click', '#brmodal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       dpconf = "/reportview/BRmodal/{{title}}/";
+       $("#BRModal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(dpconf)
+                   .done(function(data) {
+   
+                       $("#BRbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   $(document).on('click', '#breditModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var id = e.currentTarget.dataset['id'];
+       var modal = null;
+       dpconf = "/reportview/BRedit/{{title}}/" + id + "/";
+       $("#BRModal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(dpconf)
+                   .done(function(data) {
+   
+                       $("#BRbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   $(document).on('click', '#groupModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+   
+       groupconf = "/reportview/groupmodal/{{title}}/";
+       $("#grouping_modal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(groupconf)
+                   .done(function(data) {
+   
+                       $("#groupbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   $(document).on('click', '#groupeditModal', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       var id = e.currentTarget.dataset['id'];
+       //console.log(id);
+       groupconf = "/reportview/groupeditmodal/{{title}}/" + id + "/";
+       $("#grouping_modal").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(groupconf)
+                   .done(function(data) {
+   
+                       $("#groupbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   $(document).on('click', '#Repo', function(e) {
+       debugger;
+       var actionconf = "";
+       var modal = null;
+      
+       actionconf = "/reportview/reportact/{{title}}/";
+       $("#reportviewact").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(actionconf)
+                   .done(function(data) {
+   
+                       $("#repoactionbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+   
+   function BR(id) {
+       alert('cilcked');
+       var id = $('#brsave').val()
+       var formdata = $("#brform").serialize();
+       console.log(formdata);
+       $.ajax({
+           type: 'POST',
+           url: "/reportview/brsave/" + id + "/",
+           data: formdata,
+           success: function(res) {
+               debugger;
+               if (res == "Success") {
+                   alert("Saved Successfully");
+               } else {
+                   alert("Failuer to save");
+               }
+           },
+   
+       });
+   
+   }
+   
+   $(document).ready(function() {
+       $('#exam').DataTable();
+       $('#repoquery').DataTable();
+       $('#repofield').DataTable();
+       $('#repobus').DataTable();
+       $('#repogroup').DataTable();
+       $('#repodash').DataTable();
+       $('#repofire').DataTable();
+   
+   });
+   
+   function insert(str, index, value) {
+       return str.substr(0, index) + value + str.substr(index);
+   }
+   
+   function buildExp(cmp_val, exp_val, sel_typ) {
+       var exp;
+       if (sel_typ == "comp") {
+           index = $('#id_sql').prop("selectionStart");
+           exp = insert(exp_val, index, cmp_val);
+   
+       }
+       return exp;
+   }
+
+   
+   function sqlCompFunction() {
+       debugger;
+       var comp_val = $("#sql_comp_id").val();
+       $("#sql_comp_id").val("")
+       var expression_builded_val = $("#id_sql").val();
+       var exp_val = buildExp(comp_val, expression_builded_val, "comp");
+       $("#id_sql").val(exp_val);
+   }
+    $(document).on('click', '#actionRepo', function(e) {
+       debugger;
+       var dpconf = "";
+       var modal = null;
+       actionconf = "/reportview/add_action_report/{{title}}/";
+       $("#reportaction").on("show.bs.modal", function() {
+           if (modal == null) {
+               var modal = $.ajax(actionconf)
+                   .done(function(data) {
+   
+                       $("#actionbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+   });
+
+function report_action(event){
+      debugger;
+       var dpconf = "";
+       var model = null;
+       var id = event.currentTarget.dataset['id'];
+       var type = event.currentTarget.dataset['actiontype']
+       //console.log(id);
+       actionconf = "/reportview/"+type+"_config/{{title}}/" + id + "/";
+       $("#reportaction").on("show.bs.modal", function() {
+           if (model == null) {
+               model = $.ajax(actionconf)
+                   .done(function(data) {
+   
+                       $("#actionbody").html(data);
+                       //$("#modal").html("");
+                       //$("#modal").html(data);
+                   })
+                   .fail(function() {
+                       alert("error");
+                   });
+           }
+   
+       });
+
+        $('#reportaction').on('hidden.bs.modal', function () {
+            $("#actionbody").modal('hide');
+             $(this).data('modal', null);
+            $("#actionbody").html("");
+            })
+
+
+
+    };
+
+/*------------------------------------------------------------------------------
+* Function For Print Format Action
+*----------------------------------------------------------------------------*/
+
+function printformatsave(event){
+    debugger;
+    var id=event.currentTarget.dataset['id'] 
+    var formdata = $("#printformataction").serialize();
+
+    $.ajax({
+        type:'POST',
+        url:"/reportview/print_format_config/{{title}}/"+id+"/",
+        data:formdata,
+        success:function(res){
+            debugger
+            console.log(res);
+            if (res == "Failure"){
+                console.log(res)
+                $("#printActionError").empty();
+                $("#printActionError").fadeTo(2000, 500).append("<h4>Alert!</h4>Save Failed").addClass("alert alert-danger alert-dismissible").slideUp(500, function() {
+                    $("#printActionError").slideUp(500);
+                });
+
+            }
+    
+            else if(res == "Success"){
+                debugger;
+                $("#printActionResult").empty();
+
+                $("#printActionResult").fadeTo(2000, 500).append("<h4>Alert!</h4>Saved Successfully.").addClass("alert alert-success alert-dismissible").slideUp(500, function() {
+                    $("#printActionResult").slideUp(500);
+                });
+                window.location.reload();
+            }
+           
+        },
+        error: function(data) {
+            debugger
+            console.log(data);
+            $("#printActionError").empty();
+                $("#printActionError").fadeTo(2000, 500).append("<h4>Alert!</h4>Save Failed").addClass("alert alert-danger alert-dismissible").slideUp(500, function() {
+                    $("#printActionError").slideUp(500);
+            });
+        }
+    })
+    event.preventDefault()
+}
+
+
+
+
+
+
+/*------------------------------------------------------------------------------
+  Function for Forcing upper case letter in paramater field
+*----------------------------------------------------------------------------*/
+$(document).on('keypress', '#id_parameter',function(e) {
+
+debugger;
+if (e.keyCode > 97 && e.keyCode < 123)
+    return false;
+
+});
+
+
+function pdfsave(event){
+   debugger;
+   alert("pdf");
+   var id=event.currentTarget.dataset['id']
+   var formdata=$('#pdfform').serialize();
+   console.log(formdata);
+   $.ajax({
+      type:'POST',
+      url:"/reportview/pdf_config/{{title}}/"+id+"/",
+      data:formdata,
+      success:function(res){
+         alert("success")
+      }
+
+   })
+  }
+   
+  function csvsave(event){
+   debugger;
+   alert("csv");
+   var id=event.currentTarget.dataset['id']
+   var formdata=$('#csvform').serialize();
+   console.log(formdata);
+   $.ajax({
+      type:'POST',
+      url:"/reportview/csv_config/{{title}}/"+id+"/",
+      data:formdata,
+      success:function(res){
+         alert("success")
+      }
+
+   })
+
+  }
+
+function htmlsave(event){
+   debugger;
+   alert("html");
+   var id=event.currentTarget.dataset['id']
+   var formdata=$('#htmlform').serialize();
+   console.log(formdata);
+   $.ajax({
+      type:'POST',
+      url:"/reportview/html_config/{{title}}/"+id+"/",
+      data:formdata,
+      success:function(res){
+         alert("success")
+      }
+   })
+
+}
+
+function submitconfig(event){
+   debugger;
+   var id=event.currentTarget.dataset['id']
+   var formdata=$('#submitform').serialize();
+   console.log(formdata);
+   $.ajax({
+      type:'POST',
+      url:"/reportview/submit_config/{{title}}/"+id+"/",
+      data:formdata,
+      success:function(res){
+         //alert("success")
+         $("#sub_action_message").empty();
+         $("#sub_action_error").empty();
+         $("#sub_action_message").append("<p>Saved Successfully</p>");
+         setTimeout(function(){ 
+            $("#reportaction").modal('hide');
+            $("sub_action_message").empty(); 
+         }, 1000);
+         
+      },
+      error: function(data) {
+         $("#sub_action_error").empty();
+         $("#sub_action_message").empty();
+         $("#sub_action_error").append("<p>Saved Failed.Please Check Form.</p>");
+         }
+   })
+
+}
+
+function paymentconfig(event){
+   debugger;
+   var id=event.currentTarget.dataset['id']
+   var formdata=$('#payment_configform').serialize();
+   console.log(formdata);
+   $.ajax({
+      type:'POST',
+      url:"/reportview/payment_config/{{title}}/"+id+"/",
+      data:formdata,
+      success:function(res){
+         //alert("success")
+         $("#sub_action_message").empty();
+         $("#sub_action_error").empty();
+         $("#sub_action_message").append("<p>Saved Successfully</p>");
+         setTimeout(function(){ 
+            $("#reportaction").modal('hide');
+            $("sub_action_message").empty(); 
+         }, 1000);
+         
+      },
+      error: function(data) {
+         $("#sub_action_error").empty();
+         $("#sub_action_message").empty();
+         $("#sub_action_error").append("<p>Saved Failed.Please Check Form.</p>");
+         }
+   })
+
+}
+
+function newconfig(event){
+   debugger;
+   var id=event.currentTarget.dataset['id']
+   var formdata=$('#new_configform').serialize();
+   console.log(formdata);
+   $.ajax({
+      type:'POST',
+      url:"/reportview/new_config/{{title}}/"+id+"/",
+      data:formdata,
+      success:function(res){
+         //alert("success")
+         $("#sub_action_message").empty();
+         $("#sub_action_error").empty();
+         $("#sub_action_message").append("<p>Saved Successfully</p>");
+         setTimeout(function(){ 
+            $("#reportaction").modal('hide');
+            $("sub_action_message").empty(); 
+         }, 1000);
+         
+      },
+      error: function(data) {
+         $("#sub_action_error").empty();
+         $("#sub_action_message").empty();
+         $("#sub_action_error").append("<p>Saved Failed.Please Check Form.</p>");
+         }
+   })
+
+}
+
+$(document).ready(function() {
+   $('a[data-confirm]').on('click', function(e) {
+   e.preventDefault();
+   var href = $(this).attr('href');
+   if (!$('#dataConfirmModal').length) {
+   $('body').append('<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div></div></div>');
+   }
+   $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+   $('#dataConfirmOK').attr('href', href);
+   $('#dataConfirmModal').modal({
+   show: true
+   });
+   return false;
+   });
+   });
+</script>
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#mymodal">Open Modal</button>
+   -->
+<!-- Modal -->
+</html>
+{% endblock %}

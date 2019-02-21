@@ -1,0 +1,89 @@
+<div class="modal fade" id="groupbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+<h3 class="box-title"> Edit Report Grouping </h3>
+
+<form method="POST"  id="grouping"  action ="/reportview/groupeditmodal/{{title}}/{{rpt_group.id}}/">
+ {% csrf_token %}
+
+    <div class="modal-body" style="height: auto;">
+
+        {{ form.non_field_errors }}
+        <div id="loading" style="display: none;">
+            <span id="load_text">loading...</span>
+        </div>
+        <div id="report_add_form_ajax" style="display: none;">
+            <span>Form submit successfully</span>
+        </div>
+
+        <div id="form_ajax_error" style="display: none;">
+            <span>cannot submit data due to errors</span>
+        </div>
+
+        <input type="hidden" id="groupsave" value="{{title.id}}">
+          
+        <input class="btn btn-success pull-right" type="submit" value="Submit" style="margin-left: 5px;" />
+    
+        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+        <br>
+        <br>
+<!-- 
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#grouping">New Report Grouping</a></li>
+
+                </ul> -->
+
+        <div class="tab-content">
+            <div id="reopgroup" class="tab-pane fade in active">
+                <label>Group by field*</label>
+                {{rpt_group_form.groupby_field}}
+                <!--<select class="form-control select2" style="width:100%" name="groupby_field">
+                    <option>{{fot}} </option>
+                </select>-->
+
+                <label>Caption field</label>
+                {{rpt_group_form.caption_field}}
+               <!-- <select class="form-control select2" style="width:100%" name="caption_field">
+                    <option></option>
+                </select>-->
+                <label>Header caption template</label>
+               <input class="form-control" style="width:100%" name="header_caption_template"  value="{{ rpt_group_form.header_caption_template.value  }}"></input>
+               <label>Footer caption template</label>
+               <input class="form-control" style="width:100%"name="footer_caption_template"  value="{{ rpt_group_form.footer_caption_template.value  }}" ></input>
+                <label>
+                <input type="checkbox"  name="show_line_space"  value="{{ rpt_group_form.show_line_space.value  }}">Show line space</label>
+            <br/>
+           <!-- <label>
+                 <input type="checkbox" name="show_op_close_balance" >Show op close balance</label> -->
+                <br/>
+                <label>Display order*</label>
+               <input class="form-control" style="width:100%" name="display_order"  value="{{ rpt_group_form.display_order.value  }}"></input>
+            </div>
+
+            </div>
+</div>
+</form>
+ <script type="text/javascript">
+ /*  function groupingsave(id) {
+                                alert('cilcked');
+                                debugger;
+                                var id = $('#groupsave').val()
+                                var formdata = $("#grouping").serialize();
+                                console.log(formdata);
+                                 $.ajax({
+                                            type: 'POST',
+                                               url:"/reportview/groupingsave/"+ id + "/",
+                                               data: formdata,
+                                               success: function(res) {
+                                                   debugger;
+                                                   if (res == "Success") {
+                                                       alert("Saved Successfully");
+                                                   } else {
+                                                       alert("Failuer to save");
+                                                   }
+                                               },
+
+                                           });
+
+                            }*/
+
+</script>

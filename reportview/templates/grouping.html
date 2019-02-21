@@ -1,0 +1,64 @@
+<div class="modal fade" id="groupbody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+<h3 class="box-title"> Report Grouping </h3>
+<form method="POST" id="grouping" action="/reportview/groupingsave/{{report.id}}/">
+    {% csrf_token %}
+
+    <div class="modal-body" style="height: auto;">
+
+        {{ form.non_field_errors }}
+        <div id="loading" style="display: none;">
+            <span id="load_text">loading...</span>
+        </div>
+        <div id="report_add_form_ajax" style="display: none;">
+            <span>Form submit successfully</span>
+        </div>
+
+        <div id="form_ajax_error" style="display: none;">
+            <span>cannot submit data due to errors</span>
+        </div>
+
+        <input class="btn btn-success pull-right" type="submit" value="Submit" style="margin-left: 5px;" />
+
+        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+        <br>
+        <br>
+
+        <!-- <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#grouping">New Report Grouping</a></li>
+
+        </ul> -->
+
+        <div class="tab-content">
+            <div id="reopgroup" class="tab-pane fade in active">
+
+                <label>Group by field*</label>
+                <select class="form-control" name="groupby_field">
+                    <option selected="selected"  value="">----------</option>
+                    {% for comp in comp_list %}
+                    <option id="{{comp.id }}" value="{{comp.id}}" data-desc="{{comp.description}}" >{{ comp.title}}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Caption field</label>
+                <select class="form-control" name="caption_field">
+                    <option selected="selected"  value="">----------</option>
+                    {% for comp in comp_list %}
+                    <option id="{{comp.id }}" value="{{comp.id}}" data-desc="{{comp.description}}" >{{ comp.title}}</option>
+                    {% endfor %}
+                </select>
+                <label>Header caption template</label>
+                <input class="form-control" style="width:100%" name="header_caption_template" ></input>
+                <label>Footer caption template</label>
+                <input class="form-control" style="width:100%" name="footer_caption_template" ></input>
+                <label>
+                    <input type="checkbox" name="show_line_space" >Show line space</label>
+                <br/>
+                
+                <label>Display order*</label>
+                <input class="form-control" style="width:100%" name="display_order" value="{{ rpt_group_form.display_order.value  }}"></input>
+            </div>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,580 @@
+#exampleInputvendortype,#id_appdb,#id_admindb,#id_clientdb,#id_vendor,#id_relationshiptype,#id_parent,#id_datatype{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555555;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+#id_ptype,#id_application_type,#users,#id_title,#id_columnname,#id_maxlength,#id_no_of_decimal_digits, #id_enum{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #c3c5ca;
+}
+
+#id_db_profileid,#userlist,#id_dbtable,#id_data_type,#id_groupby_field,#id_caption_field,#id_column_alignment,
+#id_report_type,#id_report_param_field,#id_report_field,#id_typeofview,#id_component_type,#id_widget_type,
+#id_transactionview{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+}
+
+#id_setasdefaultproject,#id_is_readonly,#id_is_hidden,#id_is_required,#id_allow_duplicate,#id_table_append_by_underscore{
+
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 20px;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    background: url(blue.png) no-repeat;
+    border: none;
+    cursor: pointer;
+    background-position: -44px 0;
+    cursor: default;
+ }      
+    
+/* componet button in tabledetail.html */ 
+.component_button{
+  border :none;
+  background: none;
+  color:blue;
+  font-weight: 600;
+}   
+
+
+#id_protocol{
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid transparent;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    background: #3d986f;
+    color: white;
+} 
+
+#id_inputtype,#id_containertype,#id_widgettype,#id_modeOfEntry,#id_login_type,#id_layout,#id_widgets,#id_input_types,
+#id_alignment,#id_menutype,#id_column,#id_sidemenu,#id_pageoption,#id_pageValue,#id_bgcolor,#id_iconcls,#id_button_type,#sqlDbType,#id_from_date,#id_to_date,#id_status_process,
+#id_status_process_type,#id_action_event,#id_basicid_field,#id_user_field,#id_ui_control_field,#id_sort_type,#id_description,
+#id_target_tx_view,#id_based_on_container, #id_userid, #id_viewtype,#id_savetype,#id_first_name,#id_last_name,#id_mobile_number,
+#id_email_id,#id_password,#id_confirm_password, #id_key, #id_value,#id_db_type,#id_role,#id_updatetype,#id_action_type,
+#id_source_ui_field,#id_epost_target,#id_reportview,#id_template_type,#id_Views,#id_Txnview,#id_Rptview,
+#id_parameter,#id_pfconfig,#id_ionic_header,#id_header_color,#id_custom_header_title,#id_background,#id_expression,#id_slug,#id_event_title,#id_event_desc,#id_event_location,#id_event_start_day,
+#id_event_start_time,#id_event_end_day,#id_event_end_time,#id_email_reminder,#id_popup_reminder,#id_txview,#id_loginsql,#id_header_label_color,#id_label_color{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+}   
+ 
+#id_ptype:focus,#id_application_type:focus,#users:focus,#id_title:focus,#id_no_of_decimal_digits:focus,
+#id_enum:focus,#id_columnname:focus,#id_db_profileid:focus,#id_data_type:focus,#userlist:focus,
+#id_column_alignment:focus,#id_caption_field:focus,#id_report_type:focus,#id_report_field:focus,
+#id_report_param_field:focus ,#id_typeofview:focus, #id_transactionview:focus,#id_component_type:focus,#id_widget_type:focus,
+#id_userid:focus, #id_viewtype:focus,#id_savetype:focus,#exampleInputvendortype:focus,#id_appdb:focus,#id_admindb:focus,
+#id_clientdb:focus,#id_vendor:focus,#id_relationshiptype:focus,#id_parent:focus,#id_datatype:focus,
+#id_inputtype:focus,#id_containertype:focus ,#id_dbtable:focus,#id_bgcolor:focus,#id_widgettype:focus ,#id_login_type:focus
+#id_layout:focus,#id_alignment:focus,#id_widgets:focus,#id_modeOfEntry:focus ,#id_input_types:focus,#id_menutype:focus,
+#sqlDbType:focus,#id_iconcls:focus,#id_button_type:focus,#id_from_date:focus,#id_to_date:focus,#id_status_process:focus,#id_status_process_type:focus,
+#id_action_event:focus,#id_pricelist_field:focus,#id_user_field:focus,#id_column:focus,#id_sidemenu:focus,#id_pageValue:focus,#id_pageoption:focus,
+#id_sort_type:focus,#id_ui_control_field:focus,#id_description:focus,#id_target_tx_view:focus,#id_based_on_container:focus,
+#id_first_name:focus,#id_last_name:focus,#id_mobile_number:focus,#id_email_id:focus,#id_password:focus,#id_confirm_password:focus,
+#id_key:focus,#id_value:focus, #id_db_type:focus, id_role:focus,#id_updatetype:focus,#id_action_type:focus,#id_source_ui_field:focus,
+#id_epost_target:focus,#id_reportview:focus,#id_template_type:focus,#id_Views:focus,#id_Txnview:focus,#id_Rptview:focus,
+#id_parameter:focus,#id_pfconfig:focus,#id_header_color:focus,#id_ionic_header:focus,#id_custom_header_title:focus,#id_background:focus,
+#id_expression:focus,id_slug:focus,#id_event_title:focus,#id_event_desc:focus,#id_event_location:focus,
+#id_event_start_day:focus,#id_event_start_time:fcous,#id_event_end_day:focus,#id_event_end_time:focus,#id_email_reminder:focus,
+#id_popup_reminder:focus,#id_txview:Focus,#id_loginsql:focus{
+    border-color: #3c8dbc;
+    outline: 0;
+}
+
+
+    
+
+ 
+
+
+
+.mixcolor{
+    color:white;
+}    
+.boxcolor{
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4058b1), color-stop(1, #e47365)) !important;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  margin:0 0 0 30px;
+}
+
+.switch1 {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  margin:0 0 10px 30px;
+}
+.switch0 {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+
+.switch input {display:none;}
+
+.switch1 input {display:none;}
+
+.switch0 input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: lightskyblue;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px lightskyblue;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+/***loading html css **/
+.cssload-fond{
+  position:relative;
+  margin: auto;
+}
+
+.cssload-container-general
+{
+  animation:cssload-animball_two 1.15s infinite;
+    -o-animation:cssload-animball_two 1.15s infinite;
+    -ms-animation:cssload-animball_two 1.15s infinite;
+    -webkit-animation:cssload-animball_two 1.15s infinite;
+    -moz-animation:cssload-animball_two 1.15s infinite;
+  width:77px; height:77px;
+}
+.cssload-internal
+{
+  width:77px; height:77px; position:absolute;
+}
+.cssload-ballcolor
+{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+.cssload-ball_1, .cssload-ball_2, .cssload-ball_3, .cssload-ball_4
+{
+  position: absolute;
+  animation:cssload-animball_one 1.15s infinite ease;
+    -o-animation:cssload-animball_one 1.15s infinite ease;
+    -ms-animation:cssload-animball_one 1.15s infinite ease;
+    -webkit-animation:cssload-animball_one 1.15s infinite ease;
+    -moz-animation:cssload-animball_one 1.15s infinite ease;
+}
+.cssload-ball_1
+{
+  background-color:rgb(203,32,37);
+  top:0; left:0;
+}
+.cssload-ball_2
+{
+  background-color:rgb(248,179,52);
+  top:0; left:42px;
+}
+.cssload-ball_3
+{
+  background-color:rgb(0,160,150);
+  top:42px; left:0;
+}
+.cssload-ball_4
+{
+  background-color:rgb(151,191,13);
+  top:42px; left:42px;
+}
+
+
+
+
+
+@keyframes cssload-animball_one
+{
+  0%{ position: absolute;}
+  50%{top:21px; left:21px; position: absolute;opacity:0.5;}
+  100%{ position: absolute;}
+}
+
+@-o-keyframes cssload-animball_one
+{
+  0%{ position: absolute;}
+  50%{top:21px; left:21px; position: absolute;opacity:0.5;}
+  100%{ position: absolute;}
+}
+
+@-ms-keyframes cssload-animball_one
+{
+  0%{ position: absolute;}
+  50%{top:21px; left:21px; position: absolute;opacity:0.5;}
+  100%{ position: absolute;}
+}
+
+@-webkit-keyframes cssload-animball_one
+{
+  0%{ position: absolute;}
+  50%{top:21px; left:21px; position: absolute;opacity:0.5;}
+  100%{ position: absolute;}
+}
+
+@-moz-keyframes cssload-animball_one
+{
+  0%{ position: absolute;}
+  50%{top:21px; left:21px; position: absolute;opacity:0.5;}
+  100%{ position: absolute;}
+}
+
+@keyframes cssload-animball_two
+{
+  0%{transform:rotate(0deg) scale(1);}
+  50%{transform:rotate(360deg) scale(1.3);}
+  100%{transform:rotate(720deg) scale(1);}
+}
+
+@-o-keyframes cssload-animball_two
+{
+  0%{-o-transform:rotate(0deg) scale(1);}
+  50%{-o-transform:rotate(360deg) scale(1.3);}
+  100%{-o-transform:rotate(720deg) scale(1);}
+}
+
+@-ms-keyframes cssload-animball_two
+{
+  0%{-ms-transform:rotate(0deg) scale(1);}
+  50%{-ms-transform:rotate(360deg) scale(1.3);}
+  100%{-ms-transform:rotate(720deg) scale(1);}
+}
+
+@-webkit-keyframes cssload-animball_two
+{
+  0%{-webkit-transform:rotate(0deg) scale(1);}
+  50%{-webkit-transform:rotate(360deg) scale(1.3);}
+  100%{-webkit-transform:rotate(720deg) scale(1);}
+}
+
+@-moz-keyframes cssload-animball_two
+{
+  0%{-moz-transform:rotate(0deg) scale(1);}
+  50%{-moz-transform:rotate(360deg) scale(1.3);}
+  100%{-moz-transform:rotate(720deg) scale(1);}
+}
+/** loading in user **/
+#floatingBarsG{
+    position:relative;
+    width:60px;
+    height:75px;
+    margin:auto;
+}
+
+.blockG{
+    position:absolute;
+    background-color:rgb(255,255,255);
+    width:10px;
+    height:23px;
+    border-radius:8px 8px 0 0;
+        -o-border-radius:8px 8px 0 0;
+        -ms-border-radius:8px 8px 0 0;
+        -webkit-border-radius:8px 8px 0 0;
+        -moz-border-radius:8px 8px 0 0;
+    transform:scale(0.4);
+        -o-transform:scale(0.4);
+        -ms-transform:scale(0.4);
+        -webkit-transform:scale(0.4);
+        -moz-transform:scale(0.4);
+    animation-name:fadeG;
+        -o-animation-name:fadeG;
+        -ms-animation-name:fadeG;
+        -webkit-animation-name:fadeG;
+        -moz-animation-name:fadeG;
+    animation-duration:1.2s;
+        -o-animation-duration:1.2s;
+        -ms-animation-duration:1.2s;
+        -webkit-animation-duration:1.2s;
+        -moz-animation-duration:1.2s;
+    animation-iteration-count:infinite;
+        -o-animation-iteration-count:infinite;
+        -ms-animation-iteration-count:infinite;
+        -webkit-animation-iteration-count:infinite;
+        -moz-animation-iteration-count:infinite;
+    animation-direction:normal;
+        -o-animation-direction:normal;
+        -ms-animation-direction:normal;
+        -webkit-animation-direction:normal;
+        -moz-animation-direction:normal;
+}
+
+#rotateG_01{
+    left:0;
+    top:27px;
+    animation-delay:0.45s;
+        -o-animation-delay:0.45s;
+        -ms-animation-delay:0.45s;
+        -webkit-animation-delay:0.45s;
+        -moz-animation-delay:0.45s;
+    transform:rotate(-90deg);
+        -o-transform:rotate(-90deg);
+        -ms-transform:rotate(-90deg);
+        -webkit-transform:rotate(-90deg);
+        -moz-transform:rotate(-90deg);
+}
+
+#rotateG_02{
+    left:8px;
+    top:10px;
+    animation-delay:0.6s;
+        -o-animation-delay:0.6s;
+        -ms-animation-delay:0.6s;
+        -webkit-animation-delay:0.6s;
+        -moz-animation-delay:0.6s;
+    transform:rotate(-45deg);
+        -o-transform:rotate(-45deg);
+        -ms-transform:rotate(-45deg);
+        -webkit-transform:rotate(-45deg);
+        -moz-transform:rotate(-45deg);
+}
+
+#rotateG_03{
+    left:25px;
+    top:3px;
+    animation-delay:0.75s;
+        -o-animation-delay:0.75s;
+        -ms-animation-delay:0.75s;
+        -webkit-animation-delay:0.75s;
+        -moz-animation-delay:0.75s;
+    transform:rotate(0deg);
+        -o-transform:rotate(0deg);
+        -ms-transform:rotate(0deg);
+        -webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+}
+
+#rotateG_04{
+    right:8px;
+    top:10px;
+    animation-delay:0.9s;
+        -o-animation-delay:0.9s;
+        -ms-animation-delay:0.9s;
+        -webkit-animation-delay:0.9s;
+        -moz-animation-delay:0.9s;
+    transform:rotate(45deg);
+        -o-transform:rotate(45deg);
+        -ms-transform:rotate(45deg);
+        -webkit-transform:rotate(45deg);
+        -moz-transform:rotate(45deg);
+}
+
+#rotateG_05{
+    right:0;
+    top:27px;
+    animation-delay:1.05s;
+        -o-animation-delay:1.05s;
+        -ms-animation-delay:1.05s;
+        -webkit-animation-delay:1.05s;
+        -moz-animation-delay:1.05s;
+    transform:rotate(90deg);
+        -o-transform:rotate(90deg);
+        -ms-transform:rotate(90deg);
+        -webkit-transform:rotate(90deg);
+        -moz-transform:rotate(90deg);
+}
+
+#rotateG_06{
+    right:8px;
+    bottom:7px;
+    animation-delay:1.2s;
+        -o-animation-delay:1.2s;
+        -ms-animation-delay:1.2s;
+        -webkit-animation-delay:1.2s;
+        -moz-animation-delay:1.2s;
+    transform:rotate(135deg);
+        -o-transform:rotate(135deg);
+        -ms-transform:rotate(135deg);
+        -webkit-transform:rotate(135deg);
+        -moz-transform:rotate(135deg);
+}
+
+#rotateG_07{
+    bottom:0;
+    left:25px;
+    animation-delay:1.35s;
+        -o-animation-delay:1.35s;
+        -ms-animation-delay:1.35s;
+        -webkit-animation-delay:1.35s;
+        -moz-animation-delay:1.35s;
+    transform:rotate(180deg);
+        -o-transform:rotate(180deg);
+        -ms-transform:rotate(180deg);
+        -webkit-transform:rotate(180deg);
+        -moz-transform:rotate(180deg);
+}
+
+#rotateG_08{
+    left:8px;
+    bottom:7px;
+    animation-delay:1.5s;
+        -o-animation-delay:1.5s;
+        -ms-animation-delay:1.5s;
+        -webkit-animation-delay:1.5s;
+        -moz-animation-delay:1.5s;
+    transform:rotate(-135deg);
+        -o-transform:rotate(-135deg);
+        -ms-transform:rotate(-135deg);
+        -webkit-transform:rotate(-135deg);
+        -moz-transform:rotate(-135deg);
+}
+
+
+
+@keyframes fadeG{
+    0%{
+        background-color:rgb(41,158,96);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-o-keyframes fadeG{
+    0%{
+        background-color:rgb(41,158,96);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-ms-keyframes fadeG{
+    0%{
+        background-color:rgb(41,158,96);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-webkit-keyframes fadeG{
+    0%{
+        background-color:rgb(41,158,96);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-moz-keyframes fadeG{
+    0%{
+        background-color:rgb(41,158,96);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}

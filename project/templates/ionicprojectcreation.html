@@ -1,0 +1,717 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block toolbar %}
+<li>
+    <a href="#" data-toggle="control-sidebar">{{ptitle}}</a>
+  </li>
+  <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Switch Project
+            <ul class="dropdown-menu">
+                <!-- inner menu: contains the actual data -->
+                <li class="dropdown-item" style="height:45px;padding: 10px;text-align: center;">
+                <h4>Avaliable Projects</h4>
+              </li>
+                {% if projectselect %}
+                {% for selection in projectselect %}
+                  <li class="header">
+                    <a href="/project/ionicProject/{{selection.id}}">
+                      <h4>
+                        <img src="{% static 'maincss/img/folder.png' %}" class="img-circle" alt="User Image" />
+                           &nbsp;  &nbsp;&nbsp;
+                           {{selection.title}}
+                      </h4>
+                    </a>
+                  </li>
+                  {% endfor %}
+                  {% endif %}
+                </ul></a>
+              </li>
+{% endblock toolbar %}
+{% block adminmenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+          <li class="treeview">
+          <a href="/usersetup/userindex/">
+            <i class="fa fa-user-plus"></i> <span>User Setup</span>
+            <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+            </span>
+          </a>
+        <li class="treeview">
+          <a href="/project/projectindex/">
+            <i class="fa fa-folder"></i>
+            <span>Project Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="/schema/config/">
+            <i class="fa fa-database"></i> <span>DB Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="active treeview" id ="createIoniclb">
+          <a data-projectid ={{currentProject}} id ="createIonic" name="createIonic">
+            <i class="fa fa-android"></i> <span>Ionic Project Create</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview" id ="createIoniclb">
+          <a href="/project/ionicBuild/{{currentProject}}">
+            <i class="fa fa-building-o"></i> <span>Ionic Build</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview" id ="createIoniclb">
+          <a href="/project/theming/{{currentProject}}">
+            <i class="fa fa-css3"></i> <span>Ionic Theming</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        </li>
+        </ul>
+<!-- /.sidebar -->
+{% endblock adminmenu %}
+{% block contentmain %}
+<section>
+    <div id="divErrorMessages"></div>
+    <div id="divResults">
+    </div>
+</section>
+<section class="content-header">
+   <h1>
+      Ionic Project Configuration
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/home/main/"><i class="fa fa-dashboard"></i> Home</a></li>
+       <li><a href="/project/projectindex/"><i class="fa fa-folder"></i> Project</a></li>
+      <li class="active">Ionic Project Configuration</li>
+   </ol>
+</section>
+<section class="content">
+  <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ionic Project Setup</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id ="body">
+              <div class="form-group">
+                     <label for="exampleInputusername" class="col-sm-1 control-label">Project</label>
+                     <button type="button" class="btn bg-olive btn-flat margin" style="margin:0 0 0 60px;" id="ionicProj_create" data-id="default" data-projectid ={{currentProject}} data-url="createIonic" data-span ="project_added">
+                       Ionic Project create
+                     </button>
+                     <span class="glyphicon glyphicon-ok" id="platform_added" name ="project_added" style="color:white;margin:0 0 0 20px">Added</span>  
+                  </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+        <div class="col-md-12">
+          <div class="box box-success ">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ionic Adding Platform</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="form-group">
+                     <label for="exampleInputusername" class="col-sm-1 control-label">Platform</label>
+                     <div class="col-sm-2" style="margin:0 0 0 45px;">  
+                     <select class="form-control" id="platformtype">
+                        <option value="android">Android</option>
+                        <option value="ios">IOS</option>
+                        <option value="android">Windows</option>
+                    </select>
+                  </div>
+                   <button type="button" id="ionicProj_create"  value="add" class="btn bg-olive btn-flat" data-id="platformtype" data-projectid ={{currentProject}} data-url="ionicPlatform" data-span = "platform_added">Add</button>
+                   <span class="glyphicon glyphicon-ok" id="platform_added" name="platform_added" style="color:white;margin:0 0 0 20px">Added</span>
+                  </div>
+                  
+            </div>
+            <!-- /.box-body -->
+
+          </div>
+          <!-- /.box -->
+      </div>
+       
+       <div class="col-md-12">
+          <div class="box box-danger">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ionic Plugin Adding</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+               <div class="form-group">
+                     <label for="exampleInputusername" class="col-sm-1 control-label">Plugins</label> 
+                     <button type="button" class="btn bg-olive btn-flat margin" style="margin:0 0 0 60px;" id="ionicProj_create" data-id="default" data-projectid ={{currentProject}} data-url="ionicPlugin" data-span = "plugin_added">
+                       Default Plugins
+                     </button>
+                     <span class="glyphicon glyphicon-ok" id="plugin_added" name="plugin_added" style="color:white;margin:0 0 0 20px">Added</span> 
+                  </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+      </div>
+        <!-- /.col -->
+
+        <div class="col-md-12">
+          <div class="box box-info collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ionic Service Setup</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <form id="serviceform">
+                <div class="form-group">  
+             <label for="pname"> Host </label>
+             <div class="input-group">
+              <span class="input-group-btn">
+                {{form.protocol}}
+              </span>
+              <input type="text" class="form-control" id="host" name="host" value="{{ form.host.value|default_if_none:''}}">
+            </div></div>
+            <div class="form-group">
+              <label for="pname"> Port</label>
+              <input type="text" class="form-control" id="port" name="port" value="{{ form.port.value|default_if_none:''}}">
+          </div>
+          <div class="form-group">
+              <label for="pname"> Context</label>
+              <input type="text" class="form-control" id="context" name="context" value="{{ form.context.value|default_if_none:''}}">
+          </div>
+          <div class="form-group">
+              <label for="pname"> Basic Id </label>
+              <input type="text" class="form-control" id="basicid" name="basicid" value="{{ form.basicid.value|default_if_none:'' }}">
+          </div>
+          <button type="button" id="ionic_service"  value="add" class="btn bg-olive btn-flat" data-projectid ={{currentProject}} data-url="ionicPlatform">Add</button>
+        </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+      </div>
+        <!-- /.col -->
+
+      <div class="col-md-12">
+          <div class="box box-primary collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ionic Notification Setup</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <form id="notifyform">
+            <div class="form-group">
+              <label for="pname">API Key</label>
+              <input type="text" class="form-control" id="apikey" name="apikey" value="{{ nform.apikey.value|default_if_none:''}}">
+          </div>
+          <div class="form-group">
+              <label for="pname"> Google Sender ID</label>
+              <input type="text" class="form-control" id="senderid" name="senderid" value="{{ nform.senderid.value|default_if_none:''}}">
+          </div>
+          <button type="button" id="ionic_notify"  value="add" class="btn bg-olive btn-flat" data-projectid ={{currentProject}} data-url="ionicPlatform">Add</button>
+        </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+      </div>
+        <!-- /.col -->  
+      
+      
+      <div class="col-md-12">
+          <div class="box box-primary collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Google API Setup</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <form id="googlesetupform">
+            <div class="form-group">
+              <label for="pname">API Key</label>
+              <input type="text" class="form-control" id="googleapikey" name="apikey" value="{{ gform.apikey.value|default_if_none:''}}">
+          </div>
+          <div class="form-group">
+              <label for="pname"> Client ID</label>
+              <input type="text" class="form-control" id="clientid" name="clientid" value="{{ gform.clientid.value|default_if_none:''}}">
+          </div>
+          <button type="button" id="ionic_googleapi"  value="add" class="btn bg-olive btn-flat" data-projectid ={{currentProject}} data-url="ionicPlatform" onclick="googlesetup(event)">Add</button>
+        </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+      </div>
+        <!-- /.col -->  
+
+
+    <div class="col-md-12">
+      <div class="box box-danger collapsed-box">
+        
+        <div class="box-header with-border">
+          <h3 class="box-title">SMS Server SetUp</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i> </button>
+            </div>
+        </div>
+            
+        <div class="box-body">
+              
+          <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#smsserverTab" aria-controls="smsserverTab" role="tab" data-toggle="tab">SMS Server Setup</a></li>
+                <li role="presentation"><a href="#smsattributetab" aria-controls="smsattributetab" role="tab" data-toggle="tab">SMS Attributes</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <form id="smsForm">
+              <div class="tab-content">
+                
+                <div role="tabpanel" class="tab-pane active" id="smsserverTab">
+        
+                  {% csrf_token %}
+                  {{ smsform.id}}
+                  
+                  <div class="modal-body">
+                    
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Proxy Server</label>
+                        <input type="text" class="form-control" id="server" name="server" value="{{ smsform.server.value|default_if_none:'' }}" required>
+                    </div>
+                      <div class="form-group">
+                        <label for="recipient-name" class="control-label">Proxy Port</label>
+                        <input type="text" class="form-control" id="smsport" name="port" value="{{ smsform.port.value|default_if_none:'' }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Proxy URL</label>
+                        <input type="text" class="form-control" id="url" name="url" value="{{ smsform.url.value|default_if_none:'' }}" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="recipient-name" class="control-label">Use Proxy</label>
+                      <label class="switch">
+                        {{smsform.use_proxy}}
+                        <div class="slider round"></div>
+                    </label>
+                    </div>
+                    <div>
+                      <input type="hidden" class="form-control" id="projectid" name="projectid" value="{{currentProject}}">
+                    </div>
+                  </div>
+                
+                </div>
+    
+                <div role="tabpanel" class="tab-pane" id="smsattributetab">
+                  <div class="modal-body">
+                    <div id="smsAttrError"></div>
+                    <div id="SMSAttrTableDiv">
+                      <table class="table table-striped table-bordered" id="smsAttrTable">
+                        <thead class="bg-green">
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                                <th>Display Order</th>
+                                <th>Delete</th>  
+                            </tr>
+                        </thead>
+                        <tbody>  
+                          {{ formset.management_form }}
+                          {% for form in formset %}
+                              {{form.id}} 
+                              <tr>
+                                  <td>{{form.key}}</td>
+                                  <td>{{form.value}}</td>
+                                  <td>{{form.do}}</td>
+                                  <td>{{form.DELETE}}</td> 
+                              </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>  <!-- /.box-body -->
+        <div class="box-footer">
+          <button type="button" id="ionic_sms"  value="add" class="btn bg-olive btn-flat" data-projectid ={{currentProject}} data-url="ionicPlatform">Add</button>
+        </div>
+      </div>  <!-- /.box-body -->
+    </div>
+
+
+    <div class="col-md-12">
+      <div class="box box-primary collapsed-box">
+        
+        <div class="box-header with-border">
+          <h3 class="box-title">Email Configuration</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </div>
+       
+        <div class="box-body">
+          <form id="emailform">
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="pname">Mail Server</label>
+                    <input type="text" class="form-control" id="mailserver" name="server" value="{{ eform.server.value|default_if_none:''}}">
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="pname">Port</label>
+                    <input type="text" class="form-control" id="mailport" name="port" value="{{ eform.port.value|default_if_none:''}}">
+                </div>
+              </div>
+
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="pname">Mail Id</label>
+                  <input type="email" class="form-control" id="email_id" name="email_id" value="{{ eform.email_id.value|default_if_none:''}}">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="pname">Mail Password</label>
+                  <input type="password" class="form-control" id="pwd" name="pwd" value="{{ eform.pwd.value|default_if_none:''}}">
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="pname">Domain</label>
+                  <input type="text" class="form-control" id="Domain" name="Domain" value="{{ eform.Domain.value|default_if_none:''}}">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="pname">Default E-mail</label>
+                    <input type="email" class="form-control" id="default_email_id" name="default_email_id" value="{{ eform.default_email_id.value|default_if_none:''}}">
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="pname">Protocol</label>
+                    <input type="text" class="form-control" id="protocol" name="protocol" value="{{ eform.protocol.value|default_if_none:''}}">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Is Authentication Required</label>
+                    <label class="switch">
+                      {{eform.is_aunthentication_req}}
+                      <div class="slider round"></div>
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="recipient-name" class="control-label">Support TLS</label>
+                  <label class="switch">
+                    {{eform.support_tls}}
+                    <div class="slider round"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          
+            <input type="hidden" class="form-control" id="project_id" name="project_id" value="{{ currentProject }}">
+           
+            
+            <button type="button" id="email_config" class="btn bg-olive btn-flat" data-projectid ={{currentProject}} data-url="ionicPlatform">Add</button>
+          </form>
+        </div>
+      
+      </div>
+    </div>
+  
+
+      <div class="col-md-12">
+          <div class="box box-default collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ionic Package Json(Summary)</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id ="body">
+              {% if summary %}
+                {% for data in summary %}
+                <p>{{data}}</p>
+                {% endfor %}
+              {% else %}
+                <p>No Data Found</p>
+              {% endif  %}
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+   
+     </section>   
+<!-- jQuery 2.2.3 -->
+ <div class="example-modal" >
+        <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+     
+<div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+  <div class="cssload-container-general">
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_1"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_2"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_3"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_4"> </div></div>
+  </div>
+  <h3 style="color:white">Please Wait...</h3>
+</div>
+             </div>
+      </div>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"> </script>
+
+<script type="text/javascript">
+  $(function() {
+    $('#smsAttrTable tbody > tr').formset({
+      prefix: '{{ formset.prefix }}',
+      deleteText:'<i class="fa fa-trash" style="color:red;"></i>',
+      addText:'<i class="fa fa-plus">Add</i>'
+    });
+  })
+</script>
+
+<script>
+  $(function () {
+    $("#smsAttrTable").DataTable();
+  });
+  </script>
+
+<script type ='text/javascript'>
+   $(document).on('click', '#ionicProj_create',function(event){
+      debugger;
+      type ="";
+      projectid = event.currentTarget.dataset['projectid'];
+      url = event.currentTarget.dataset['url'];
+      id = event.currentTarget.dataset['id'];
+      spanid = event.currentTarget.dataset['span'];
+      if (id == "default"){
+      type = "default"
+      }
+      else{
+      type = document.getElementById(id).value;
+       }
+        $("#processing-modal").modal('show');
+         $.ajax({
+         type : 'POST',
+         url : '/project/'+url+'/'+projectid,
+         data : {itype:type},
+                    
+         success : function (data) {
+            //$("#processing-modal").modal('hide');
+            setTimeout(function() {
+              $("#processing-modal").modal('hide');
+              document.getElementsByName(spanid)[0].style['color'] = "brown"
+             popmessage(data);
+          },300);
+         },
+         error : function (data) {
+            debugger;
+            $("#processing-modal").modal('hide');
+            console.log(data.responseText);
+            popmessage(data.responseText);
+         }
+      });
+   });
+   
+   $(document).on('click', '#ionic_service',function(event){
+    projectid = event.currentTarget.dataset['projectid'];
+    var formdata = $("#serviceform").serialize();
+    $.ajax({
+         type : 'POST',
+         url : '/project/ionicService/'+projectid,
+         data : formdata,
+         success : function (data) {
+            popmessage("Added Successfully");
+         },
+         error : function (data) {
+           popmessage("Failed To Save");
+         }
+       });
+
+   });
+
+  $(document).on('click', '#ionic_notify',function(event){
+    projectid = event.currentTarget.dataset['projectid'];
+    var formdata = $("#notifyform").serialize();
+    $.ajax({
+         type : 'POST',
+         url : '/project/ionicNotify/'+projectid,
+         data : formdata,
+         success : function (data) {
+            popmessage("Added Successfully");
+         },
+         error : function (data) {
+           popmessage("Failed To Save");
+         }
+       });
+
+   });
+
+   $(document).on('click', '#ionic_sms',function(event){
+     debugger;
+    projectid = event.currentTarget.dataset['projectid'];
+    var formdata = $("#smsForm").serialize();
+    $.ajax({
+         type : 'POST',
+         url : '/project/ionicSMSSave/'+projectid,
+         data : formdata,
+         success : function (data) {
+           debugger;
+            popmessage("Added Successfully");
+            $("#SMSAttrTableDiv").empty();
+            $("#SMSAttrTableDiv").append(data);
+
+         },
+         error : function (data) {
+           popmessage("Failed To Save");
+         }
+       });
+
+   });
+
+
+  $(document).on('click', '#email_config',function(event){
+    debugger;
+      projectid = event.currentTarget.dataset['projectid'];
+      var formdata = $("#emailform").serialize();
+      $.ajax({
+          type : 'POST',
+          url : '/project/emailConfig/'+projectid,
+          data : formdata,
+          success : function (data) {
+              popmessage("Added Successfully");
+          },
+          error : function (data) {
+            popmessage("Failed To Save");
+          }
+        });
+
+    });
+
+    function googlesetup(event){
+      debugger;
+      projectid = event.currentTarget.dataset['projectid'];
+      var formdata = $("#googlesetupform").serialize();
+      $.ajax({
+          type : 'POST',
+          url : '/project/googleAPISetup/'+projectid,
+          data : formdata,
+          success : function (data) {
+              popmessage("Added Successfully");
+          },
+          error : function (data) {
+            popmessage("Failed To Save");
+          }
+        });
+
+
+    }
+   function popmessage(msg){
+    if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Information</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text(msg);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+
+   }
+
+
+   $(document).ready(function() {
+      debugger; 
+      var event = document.getElementsByName('createIonic');
+      projectid = event[0].dataset['projectid']
+      $.ajax({
+         type : 'get',
+         url : '/project/alreadyIonic/'+projectid,
+         //data : sample,
+         //dataType: 'json',            
+         success : function (data) {
+          if (data == "exist"){
+            document.getElementsByName('project_added')[0].style['color'] = "brown";
+          }
+          else if(data == "Platform exist"){
+            document.getElementsByName('project_added')[0].style['color'] = "brown";
+            document.getElementsByName('platform_added')[0].style['color'] = "brown";
+          }
+
+         }
+      });
+
+   });
+   
+</script>
+{% endblock contentmain %}

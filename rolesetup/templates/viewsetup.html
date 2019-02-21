@@ -1,0 +1,93 @@
+
+{% load static %}
+
+        
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'maincss/roleselect/bootstrap-multiselect.css' %}">
+</head>
+
+<body>
+    <form id="ViewForRoleForm">
+        <div class="container">
+            <div class="example">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#txview').multiselect({
+                            includeSelectAllOption: true,
+                            buttonWidth: 400,
+                            enableFiltering: true,
+                            maxHeight: 350,
+                        });
+                    });
+                </script>
+                <div>
+                    <label style="height:40px;font-size: 15px;"> Select Transaction View </label>
+                </div>
+                <div>
+                    <select name="txview" id="txview" multiple="multiple" >
+                        {% if homeTxViews %}
+                            {% for txview in homeTxViews %}
+                                {% if txview.id in selectedTxview %}
+                                    <option value="{{txview.id}}" selected>{{txview.transactionview.title}}</option>
+                                {% else %}
+                                    <option value="{{txview.id}}">{{txview.transactionview.title}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            
+                            
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="example">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#reportview').multiselect({
+                            includeSelectAllOption: true,
+                            buttonWidth: 400,
+                            enableFiltering: true,
+                            maxHeight: 350,
+                        });
+                    });
+                </script>
+                <div>
+                    <label style="height:40px;font-size:15px"> Select Report View </label>
+                </div>
+                <div>
+                    <select name="reportview" id="reportview" multiple="multiple" >
+                        {% if homeReportViews %}
+                            {% for report in homeReportViews %}
+                                {% if report.id in selectedReportView %}
+                                    <option value="{{report.id}}" selected>{{report.reportview.title}}</option>
+                                {% else %}
+                                    <option value="{{report.id}}">{{report.reportview.title}}</option>
+                                {% endif %} 
+                            {% endfor %}
+                        {% else %}                         
+
+                            
+                        {% endif %}
+                    
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="hidden" class="form-control" name="role" id="role" value="{{roleid}}" required>
+        </div>
+    </form>
+    
+</body>
+
+</html>
+
+
+<!-- Multi Select -->
+<script src=" {% static 'maincss/roleselect/bootstrap-multiselect.js' %}"></script>

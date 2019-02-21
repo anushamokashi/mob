@@ -1,0 +1,235 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block toolbar %}
+<li>
+    <a href="#" data-toggle="control-sidebar">{{ptitle}}</a>
+  </li>
+  <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Switch Project
+            <ul class="dropdown-menu">
+                <!-- inner menu: contains the actual data -->
+                 <li class="dropdown-item" style="height:45px;padding: 10px;text-align: center;">
+                <h4>Avaliable Projects</h4>
+              </li>
+                {% if projectselect %}
+                {% for selection in projectselect %}
+                  <li class="header">
+                    <a href="/project/ionicBuild/{{selection.id}}">
+                      <h4>
+                        <img src="{% static 'maincss/img/folder.png' %}" class="img-circle" alt="User Image"/>
+                           &nbsp;&nbsp;&nbsp;
+                           {{selection.title}}
+                      </h4>
+                    </a>
+                  </li>
+                  {% endfor %}
+                  {% endif %}
+                </ul></a>
+              </li>
+{% endblock toolbar %}
+{% block adminmenu %}
+<!-- sidebar menu: : style can be found in sidebar.less -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+          <li class="treeview">
+          <a href="/usersetup/userindex/">
+            <i class="fa fa-user-plus"></i> <span>User Setup</span>
+            <span class="pull-right-container">
+            <!--    <i class="fa fa-angle-left pull-right"></i> -->
+            </span>
+          </a>
+        <li class="treeview">
+          <a href="/project/projectindex/">
+            <i class="fa fa-folder"></i>
+            <span>Project Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="/schema/config/">
+            <i class="fa fa-database"></i> <span>DB Setup</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview" id ="createIoniclb">
+          <a href="/project/ionicProject/{{currentProject}}">
+            <i class="fa fa-android"></i> <span>Ionic Project Create</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="active treeview" id ="createIoniclb">
+          <a href="#">
+            <i class="fa fa-building-o"></i> <span>Ionic Build</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        </li>
+        </ul>
+<!-- /.sidebar -->
+{% endblock adminmenu %}
+{% block contentmain %}
+<section class="content-header">
+   <h1>
+      Ionic APK Build
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="/home/main/"><i class="fa fa-dashboard"></i> Home</a></li>
+       <li><a href="/project/projectindex/"><i class="fa fa-folder"></i> Project</a></li>
+      <li class="active">Ionic Build</li>
+   </ol>
+</section>
+<section class="content">
+        <div class="col-md-6">
+          <div class="box box-solid bg-yellow-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+              <i class="fa fa-th"></i>
+
+              <h3 class="box-title">Ionic Page Creation</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn bg-yellow btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body border-radius-none">
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-border">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                 <button type="button" data-projectid ={{currentProject}} id="generatepages" style="font-size:18px;color:green;" class="btn btn-link">Ionic Generate Pages</button>
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+        </div>
+
+                <div class="col-md-6">
+          <div class="box box-solid bg-yellow-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+              <i class="fa fa-android"></i>
+
+              <h3 class="box-title">Ionic Apk Creation</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn bg-yellow btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body border-radius-none">
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-border">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                 <button type="button" style="font-size:18px;color:green;" class="btn btn-link" data-projectid ={{currentProject}} id="generateapk">Ionic Generate Apk</button>
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+        </div>
+     </section>   
+<!-- jQuery 2.2.3 -->
+ <div class="example-modal" >
+        <div class="modal" id="processing-modal" role="dialog" aria-hidden="true" data-backdrop="false">
+     
+<div align="center" class="cssload-fond" style="margin:300px 0 0 0;">
+  <div class="cssload-container-general">
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_1"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_2"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_3"> </div></div>
+      <div class="cssload-internal"><div class="cssload-ballcolor cssload-ball_4"> </div></div>
+  </div>
+  <h3 style="color:white">Please Wait...</h3>
+</div>
+</div>
+</div>
+      <!-- /.example-modal -->
+
+ <style>
+</style>
+<script src="{% static 'maincss/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'maincss/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"> </script>
+
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+<script type ='text/javascript'>
+   $(document).on('click', '#generatepages',function(event){
+      debugger;
+      type ="";
+      projectid = event.currentTarget.dataset['projectid'];
+        $("#processing-modal").modal('show');
+         $.ajax({
+         type : 'POST',
+         url : '/project/ionicPages/'+projectid,
+         data : {itype:type},
+                    
+         success : function (data) {
+            //$("#processing-modal").modal('hide');
+            setTimeout(function() {
+              $("#processing-modal").modal('hide');
+              //document.getElementsByName(spanid)[0].style['color'] = "brown"
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Information</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text(data);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+          },300);
+         },
+         error : function (data) {
+            debugger;
+            console.log(data)
+         }
+      });
+   });
+
+  $(document).on('click', '#generateapk',function(event){
+      debugger;
+      type ="";
+      projectid = event.currentTarget.dataset['projectid'];
+        $("#processing-modal").modal('show');
+         $.ajax({
+         type : 'POST',
+         url : '/project/ionicapk/'+projectid,
+         data : {itype:type},
+                    
+         success : function (data) {
+            //$("#processing-modal").modal('hide');
+            setTimeout(function() {
+              $("#processing-modal").modal('hide');
+              if (data == "success"){
+                 window.location.href = '/project/apkdownload/'+projectid;
+               }
+              //document.getElementsByName(spanid)[0].style['color'] = "brown"
+            if (!$('#dataConfirmModal').length) {
+                $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Information</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button></div></div></div></div>');
+            }
+            $('#dataConfirmModal').find('.modal-body').text(data);
+            $('#dataConfirmModal').modal({
+                show: true
+            });
+            return false;
+          },300);
+         },
+         error : function (data) {
+            debugger;
+            console.log(data)
+         }
+      });
+   });
+   
+</script>
+{% endblock contentmain %}
